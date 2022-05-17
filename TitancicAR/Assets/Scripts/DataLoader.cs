@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEditor;
+using System.IO;
 
 public enum colums
 {
@@ -38,6 +40,7 @@ public class DataLoader : MonoBehaviour
         if(load)
         {
             load = false;
+
             LoadData();
 
             foreach(Passanger passanger in passangers)
@@ -45,13 +48,18 @@ public class DataLoader : MonoBehaviour
                 Debug.Log(passanger.name + " " + passanger.age);
             }
 
-            Debug.Log(passangers.Count);
+            //Debug.Log(passangers.Count);
         }
 
         if(check)
         {
             check = false;
-            Debug.Log(passangers.Count);
+            //Debug.Log(passangers.Count);
+
+            for(int i = 0; i < passangers.Count; i++)
+            {
+                Debug.Log(i + " " + passangers[i].name + " " + passangers[i].age);
+            }
         }
     }
 
@@ -70,17 +78,13 @@ public class DataLoader : MonoBehaviour
     void CreatePassenger(string line)
     {
         string[] lineData = line.Trim().Split(","[0]);
-        //Debug.Log(line);
-        
-        foreach(string column in lineData)
-        {
-            Debug.Log(column);
-        }
         
 
         if(lineData.Length > 3)
         {
             Passanger temp = new Passanger();
+            AssetDatabase.CreateAsset(temp, "Assets/Passengers/" + (lineData[(int)colums.lastName]).Replace("\"", "").Replace(" ", ""));
+            passangers.Add(temp);
 
             temp.name = lineData[(int)colums.lastName] + ", " + lineData[(int)colums.firstName];
             temp.name = temp.name.Replace("\"", "");
@@ -99,8 +103,6 @@ public class DataLoader : MonoBehaviour
             }
             temp.pClass = int.Parse(lineData[(int)colums.pClass]);
             temp.fare = float.Parse(lineData[(int)colums.fare]);
-
-            passangers.Add(temp);
         }
     }
 }
