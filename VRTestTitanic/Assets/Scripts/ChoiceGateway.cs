@@ -7,11 +7,11 @@ public class ChoiceGateway : MonoBehaviour
 {
     TextMeshProUGUI text;
 
-    [SerializeField] DataType dataType;
+    
     [SerializeField] string value;
 
-    [SerializeField] GameObject nextChoice;
-
+    [SerializeField] Choice parentChoice;
+    
     public void SetText(string choiceText)
     {
         text.SetText(choiceText);
@@ -19,8 +19,28 @@ public class ChoiceGateway : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.tag == "Player")
+        {
+            other.GetComponent<PlayerChoices>().GoThroughGateway(new DataEntry(parentChoice.dataType, value));
 
-        nextChoice.SetActive(true);
-        gameObject.SetActive(false);    
+            float percent = 0;
+
+            switch (parentChoice.dataType) {
+                case DataType.Age:
+                    percent = FindObjectOfType<DataReader>().CalculateSurvivalChanceAge(int.Parse(value));
+                    break;
+                case DataType.Class:
+                    percent = FindObjectOfType<DataReader>().CalculateSurvivalChanceClass(int.Parse(value));
+                    break;
+                case DataType.Sex:
+                    percent = FindObjectOfType<DataReader>().CalculateSurvivalChanceSex(value[0]);
+                    break;
+            }
+
+            Vector3 pos = other.transform.position;
+            pos.y = 0;
+            parentChoice.MoveToNextChoice(pos, percent);
+        }
+            
     }
 }
