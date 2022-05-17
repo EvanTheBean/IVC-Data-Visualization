@@ -24,6 +24,7 @@ public class UserBasedSimulation : MonoBehaviour
     {
         CalcData();
         waterPlane.transform.position = new Vector3(0,Mathf.Lerp(0,ud.height,percent),0);
+        waterPlane.SetActive(true);
     }
 
     void CalcData()
