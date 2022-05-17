@@ -20,21 +20,27 @@ public enum colums
     embarked
 }
 
-
-[ExecuteInEditMode]
 public class DataLoader : MonoBehaviour
 {
-    public bool load, check;
+    //public bool load, check;
     public List<Passanger> passangers = new List<Passanger>();
     // Start is called before the first frame update
     void Start()
     {
-        
+        LoadData();
+
+        foreach (Passanger passanger in passangers)
+        {
+            Debug.Log(passanger.name + " " + passanger.age);
+        }
+
+        Debug.Log(passangers.Count);
     }
 
     // Update is called once per frame
     void Update()
     {
+        /*
         if(load)
         {
             load = false;
@@ -53,6 +59,7 @@ public class DataLoader : MonoBehaviour
             check = false;
             Debug.Log(passangers.Count);
         }
+        */
     }
 
     void LoadData()
@@ -71,11 +78,12 @@ public class DataLoader : MonoBehaviour
     {
         string[] lineData = line.Trim().Split(","[0]);
         //Debug.Log(line);
-        
+        /*
         foreach(string column in lineData)
         {
             Debug.Log(column);
         }
+        */
         
 
         if(lineData.Length > 3)
