@@ -30,7 +30,7 @@ public class UserBasedSimulation : MonoBehaviour
     {
         foreach (Passanger passanger in dl.passangers)
         {
-            if ((passanger.age > ud.ages.x && passanger.age < ud.ages.y) || !passanger.documentedAge)
+            if ((passanger.age > ud.ages.x && passanger.age < ud.ages.y))
             {
                 if ((passanger.isMale && (ud.gender == Genders.male || ud.gender == Genders.other)) || (!passanger.isMale && (ud.gender == Genders.female || ud.gender == Genders.other)))
                 {
