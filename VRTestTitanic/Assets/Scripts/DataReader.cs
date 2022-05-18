@@ -7,12 +7,13 @@ public class DataReader : MonoBehaviour
     string fileName;
     List<Passenger> allPassengers = new List<Passenger>();
 
+    const string FILE_NAME = "train.csv";
+
     private void Start()
     {
-        fileName = "train.csv";
+        fileName = FILE_NAME;
 
         Read();
-        CalculateSurvivalChance(1, 'f', 20);
     }
 
 
@@ -48,14 +49,14 @@ public class DataReader : MonoBehaviour
         }
     }
 
-    float CalculateSurvivalChance(int pClass, char sex, int age)
+    public float CalculateSurvivalChance(int pClass, char sex, int age)
     {
         int similarPassengers = 0;
         int survived = 0;
 
         foreach (Passenger pass in allPassengers)
         {
-            if (pass.pClass == pClass && pass.sex == char.ToLower(sex) && (pass.age < age + 5 && pass.age > age-5))
+            if (pass.pClass == pClass && (pass.sex == char.ToLower(sex) || sex == 'o') && (pass.age < age + 5 && pass.age > age-5))
             {
                 similarPassengers++;
                 if (pass.survived)
@@ -73,9 +74,10 @@ public class DataReader : MonoBehaviour
     {
         int similarPassengers = 0;
         int survived = 0;
+        
         foreach (Passenger pass in allPassengers)
         {
-            if (pass.sex == char.ToLower(sex))
+            if (pass.sex == char.ToLower(sex) || sex == 'o')
             {
                 similarPassengers++;
                 if (pass.survived)
@@ -84,6 +86,7 @@ public class DataReader : MonoBehaviour
                 }
             }
         }
+
         return survived * 100 / similarPassengers;
 
     }
@@ -126,6 +129,17 @@ public class DataReader : MonoBehaviour
         }
 
         return survived * 100 / similarPassengers;
+    }
+
+    public List<Passenger> GetPassengersList()
+    {
+        if (allPassengers.Count == 0)
+        {
+            fileName = FILE_NAME;
+            Read();
+        }
+
+        return allPassengers;
     }
 
 }
