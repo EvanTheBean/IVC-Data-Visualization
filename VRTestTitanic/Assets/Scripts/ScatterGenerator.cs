@@ -33,7 +33,7 @@ public class ScatterGenerator : MonoBehaviour
                 point.GetComponentInChildren<MeshRenderer>().material = diedPointMaterial;
             }
 
-            Vector3 pos = new Vector3(passenger.age / xSpread, (-passenger.pClass + 3) / ySpread, 0);
+            Vector3 pos = new Vector3((Mathf.Round(passenger.age * 2) / 2 ) / xSpread, (-passenger.pClass + 3) / ySpread, 0);
             while (usedPositions.Contains(pos))
             {
                 pos.z += zSpread;
