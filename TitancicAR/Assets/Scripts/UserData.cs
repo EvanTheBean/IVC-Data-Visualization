@@ -14,7 +14,6 @@ public class UserData : MonoBehaviour
 {
     public Genders gender;
     public int ageGroup, pClass;
-    public float height;
     public Vector2 ages;
 
     // Start is called before the first frame update
@@ -26,7 +25,6 @@ public class UserData : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        height = Camera.main.gameObject.transform.position.y * 1.1f;
     }
 
     public void ChangeGender(TMP_Dropdown dropdown)

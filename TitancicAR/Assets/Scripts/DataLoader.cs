@@ -28,13 +28,14 @@ public class DataLoader : MonoBehaviour
     void Start()
     {
         LoadData();
-
+        /*
         foreach (Passanger passanger in passangers)
         {
             Debug.Log(passanger.name + " " + passanger.age);
         }
 
         Debug.Log(passangers.Count);
+        */
     }
 
     // Update is called once per frame
