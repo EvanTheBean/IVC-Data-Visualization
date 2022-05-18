@@ -9,6 +9,8 @@ public class UserBasedSimulation : MonoBehaviour
     public int dead, total;
     public float percent;
     public Passanger closest;
+    public float height, cHeight;
+    ControlWaterPlacement cwp;
 
     UserData ud;
     DataLoader dl;
@@ -18,13 +20,16 @@ public class UserBasedSimulation : MonoBehaviour
     {
         ud = GetComponent<UserData>();
         dl = GetComponent<DataLoader>();
+        cHeight = Camera.main.gameObject.transform.position.y;// * 1.1f;
+        cwp = GameObject.FindObjectOfType<ControlWaterPlacement>();
     }
 
     public void Simulate()
     {
         CalcData();
-        waterPlane.transform.position = new Vector3(0,Mathf.Lerp(0,ud.height,percent),0);
+        waterPlane.transform.position = new Vector3(0,Mathf.Lerp(cwp.placementPose.position.y,height,percent),0);
         waterPlane.SetActive(true);
+        Debug.Log("The water is at " + waterPlane.transform.position + " " + dead + " " + total + " " + percent);
     }
 
     void CalcData()

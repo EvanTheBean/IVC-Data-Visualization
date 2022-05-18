@@ -12,7 +12,7 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: DefaultCompany
+  companyName: EMCIVC
   productName: TitancicAR
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
@@ -142,10 +142,22 @@ PlayerSettings:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: -3059208455537666134, guid: 2e29d7f2c672548448dc1eaba98aab71, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 4800000, guid: e7c77f6eaab324a819efdc13b8125a39, type: 3}
+  - {fileID: 0}
+  - {fileID: -6631917857856460321, guid: 2e29d7f2c672548448dc1eaba98aab71, type: 2}
   - {fileID: 11400000, guid: bb89910a4ed12364da32ae9690459c8c, type: 2}
-  - {fileID: -2212976040340507007, guid: adb3dddbac13e984ba13cf69a4451a12, type: 2}
-  - {fileID: 4800000, guid: c9f956787b1d945e7b36e0516201fc76, type: 3}
+  - {fileID: 3249370618867307799, guid: adb3dddbac13e984ba13cf69a4451a12, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -165,7 +177,7 @@ PlayerSettings:
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
     Android: com.EMCIFV.TitancicAR
-    iPhone: com.DefaultCompany.TitancicAR
+    iPhone: com.EMCIVC.TitancicAR
   buildNumber:
     Standalone: 0
     iPhone: 0
@@ -187,7 +199,7 @@ PlayerSettings:
   StripUnusedMeshComponents: 1
   VertexChannelCompressionMask: 4054
   iPhoneSdkVersion: 988
-  iOSTargetOSVersionString: 11.0
+  iOSTargetOSVersionString: 12.0
   tvOSSdkVersion: 0
   tvOSRequireExtendedGameController: 0
   tvOSTargetOSVersionString: 11.0
@@ -241,7 +253,7 @@ PlayerSettings:
   iOSManualSigningProvisioningProfileType: 0
   tvOSManualSigningProvisioningProfileType: 0
   appleEnableAutomaticSigning: 0
-  iOSRequireARKit: 0
+  iOSRequireARKit: 1
   iOSAutomaticallyDetectAndAddCapabilities: 1
   appleEnableProMotion: 0
   shaderPrecisionModel: 0
@@ -569,7 +581,7 @@ PlayerSettings:
   enableInternalProfiler: 0
   logObjCUncaughtExceptions: 1
   enableCrashReportAPI: 0
-  cameraUsageDescription: 
+  cameraUsageDescription: Required for augmented reality support.
   locationUsageDescription: 
   microphoneUsageDescription: 
   bluetoothUsageDescription: 
@@ -809,7 +821,8 @@ PlayerSettings:
   webGLLinkerTarget: 1
   webGLThreadsSupport: 0
   webGLDecompressionFallback: 0
-  scriptingDefineSymbols: {}
+  scriptingDefineSymbols:
+    iPhone: UNITY_XR_ARKIT_LOADER_ENABLED
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend: {}
