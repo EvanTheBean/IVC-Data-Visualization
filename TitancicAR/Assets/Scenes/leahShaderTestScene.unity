@@ -426,7 +426,7 @@ GameObject:
   - component: {fileID: 182498114}
   - component: {fileID: 182498113}
   m_Layer: 0
-  m_Name: Box Volume
+  m_Name: underwaterVolume
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -469,13 +469,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 182498112}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.01, y: -0.02, z: 0.14}
-  m_LocalScale: {x: 9.412491, y: 4.1927, z: 13.527466}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.032898597, y: -2.98, z: 0.7412489}
+  m_LocalScale: {x: 8.320767, y: 4.1927, z: 7.511214}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_Father: {fileID: 876318937}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &233808902
 GameObject:
@@ -859,10 +859,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 876318933}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.047215044, y: 2.96, z: -1.1949666}
+  m_LocalPosition: {x: -0.047215044, y: 0.16, z: -1.1949666}
   m_LocalScale: {x: 1.1312047, y: 1, z: 1.8009695}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 182498115}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
