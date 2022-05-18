@@ -17,6 +17,7 @@ public class ScatterGenerator : MonoBehaviour
     void GenerateGraph()
     {
         List<Passenger> passengers = GetComponent<DataReader>().GetPassengersList();
+        List<Vector3> usedPositions = new List<Vector3>();
 
         foreach(Passenger passenger in passengers)
         {
@@ -26,7 +27,13 @@ public class ScatterGenerator : MonoBehaviour
             {
                 point.GetComponentInChildren<MeshRenderer>().material = diedPointMaterial;
             }
-            point.transform.localPosition = new Vector3(passenger.age / 3, -passenger.pClass + 3, 0);
+            Vector3 pos = new Vector3(passenger.age / 3, (-passenger.pClass + 3) / 2f, 0);
+            while (usedPositions.Contains(pos))
+            {
+                pos.z += 0.3f;
+            }
+            usedPositions.Add(pos);
+            point.transform.localPosition = pos;
         }
     }
 }
