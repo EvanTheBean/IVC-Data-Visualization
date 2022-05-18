@@ -49,7 +49,7 @@ public class DataReader : MonoBehaviour
         }
     }
 
-    public float CalculateSurvivalChance(int pClass, char sex, int age)
+    public float CalculateSurvivalChance(int pClass, char sex, float age)
     {
         int similarPassengers = 0;
         int survived = 0;
@@ -64,6 +64,11 @@ public class DataReader : MonoBehaviour
                     survived++;
                 }
             }
+        }
+
+        if (similarPassengers == 0)
+        {
+            return 100;
         }
 
         return survived * 100 / similarPassengers;
