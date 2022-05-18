@@ -181,6 +181,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   graphParent: {fileID: 942547614}
   passengerPointPrefab: {fileID: 4253534917300690106, guid: 9fc1152c147089d458615de0856dccff, type: 3}
+  diedPointMaterial: {fileID: 2100000, guid: dfee58b333f27664b8ab8a2965ac5a80, type: 2}
 --- !u!1 &381764673 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 107946, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
@@ -299,7 +300,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 942547613}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -9.59, y: 0, z: 1.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

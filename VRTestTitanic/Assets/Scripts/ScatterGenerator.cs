@@ -22,7 +22,11 @@ public class ScatterGenerator : MonoBehaviour
         {
             PassengerPoint point = Instantiate(passengerPointPrefab, graphParent);
             point.SetPassenger(passenger);
-            point.transform.localPosition = new Vector3(passenger.age / 3, passenger.pClass, 0);
+            if (!passenger.survived)
+            {
+                point.GetComponentInChildren<MeshRenderer>().material = diedPointMaterial;
+            }
+            point.transform.localPosition = new Vector3(passenger.age / 3, -passenger.pClass + 3, 0);
         }
     }
 }
