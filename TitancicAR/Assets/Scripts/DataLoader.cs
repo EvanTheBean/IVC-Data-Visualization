@@ -28,14 +28,14 @@ public class DataLoader : MonoBehaviour
     void Start()
     {
         LoadData();
-        /*
+        
         foreach (Passanger passanger in passangers)
         {
             Debug.Log(passanger.name + " " + passanger.age);
         }
 
         Debug.Log(passangers.Count);
-        */
+        
     }
 
     // Update is called once per frame
@@ -66,7 +66,7 @@ public class DataLoader : MonoBehaviour
     void LoadData()
     {
         passangers.Clear();
-        string fileData = System.IO.File.ReadAllText(Application.dataPath + "/Resources/train.csv");
+        string fileData = System.IO.File.ReadAllText(Application.streamingAssetsPath + "/train.csv");
         string[] lines  = fileData.Split("\n"[0]);
 
         for(int i = 1; i < lines.Length; i++)
