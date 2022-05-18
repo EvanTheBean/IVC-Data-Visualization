@@ -9,6 +9,7 @@ public class PassengerPoint : MonoBehaviour
 	Passenger passengerInfo;
 
 	[SerializeField] TextMeshProUGUI generalText;
+	[SerializeField] GameObject textBackground;
 
 	private Hand.AttachmentFlags attachmentFlags = Hand.defaultAttachmentFlags & (Hand.AttachmentFlags.SnapOnAttach) & (~Hand.AttachmentFlags.DetachOthers) & (Hand.AttachmentFlags.VelocityMovement) & (~Hand.AttachmentFlags.ParentToHand);
 
@@ -19,7 +20,7 @@ public class PassengerPoint : MonoBehaviour
 	{
 
 		generalText.text = "";
-
+		textBackground.SetActive(false);
 		interactable = this.GetComponent<Interactable>();
 	}
 
@@ -75,7 +76,7 @@ public class PassengerPoint : MonoBehaviour
 	//-------------------------------------------------
 	private void OnAttachedToHand(Hand hand)
 	{
-		string textOutput = string.Format("Name: {0}\nClass: {1}\nAge: {2}\nSex: {3}\n", passengerInfo.name, passengerInfo.pClass, passengerInfo.age, passengerInfo.sex);
+		string textOutput = string.Format("Name: {0} {1}\nClass: {2}\nAge: {3}\nSex: {4}\n", passengerInfo.fName,passengerInfo.lName, passengerInfo.pClass, passengerInfo.age, passengerInfo.sex);
 		if (passengerInfo.survived)
 		{
 			textOutput += "Survived";
@@ -85,6 +86,7 @@ public class PassengerPoint : MonoBehaviour
 			textOutput += "Did not survive";
         }
 		generalText.text = textOutput;
+		textBackground.SetActive(true);
 	}
 
 
@@ -95,6 +97,7 @@ public class PassengerPoint : MonoBehaviour
 	private void OnDetachedFromHand(Hand hand)
 	{
 		generalText.text = "";
+		textBackground.SetActive(false);
 	}
 
 

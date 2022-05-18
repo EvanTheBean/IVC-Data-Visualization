@@ -8,6 +8,11 @@ public class ScatterGenerator : MonoBehaviour
     [SerializeField] PassengerPoint passengerPointPrefab;
     [SerializeField] Material diedPointMaterial;
 
+    [SerializeField] float xSpread = 2.5f;
+    [SerializeField] float ySpread = 1.2f;
+    [SerializeField] float zSpread = 0.3f;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,10 +32,11 @@ public class ScatterGenerator : MonoBehaviour
             {
                 point.GetComponentInChildren<MeshRenderer>().material = diedPointMaterial;
             }
-            Vector3 pos = new Vector3(passenger.age / 3, (-passenger.pClass + 3) / 2f, 0);
+
+            Vector3 pos = new Vector3(passenger.age / xSpread, (-passenger.pClass + 3) / ySpread, 0);
             while (usedPositions.Contains(pos))
             {
-                pos.z += 0.3f;
+                pos.z += zSpread;
             }
             usedPositions.Add(pos);
             point.transform.localPosition = pos;
