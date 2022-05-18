@@ -38,6 +38,9 @@
         },
         {
             "m_Id": "69120dcb46624e6b852af40712a01761"
+        },
+        {
+            "m_Id": "a563ef5e5c144eac98cda564df76fc0b"
         }
     ],
     "m_Keywords": [],
@@ -1274,9 +1277,9 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 474.39990234375,
-            "y": -1893.5999755859375,
-            "width": 208.000244140625,
+            "x": 500.8000183105469,
+            "y": -3248.800048828125,
+            "width": 207.99990844726563,
             "height": 312.800048828125
         }
     },
@@ -1825,9 +1828,9 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 1336.0,
-            "y": -1938.4000244140625,
-            "width": 208.0,
+            "x": 1362.39990234375,
+            "y": -3293.60009765625,
+            "width": 208.000244140625,
             "height": 349.60009765625
         }
     },
@@ -2850,10 +2853,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 780.800048828125,
-            "y": -1589.5999755859375,
-            "width": 146.39990234375,
-            "height": 33.5999755859375
+            "x": 807.2000122070313,
+            "y": -2944.800048828125,
+            "width": 146.39996337890626,
+            "height": 33.599853515625
         }
     },
     "m_Slots": [
@@ -3634,8 +3637,8 @@
     "m_ObjectId": "6664755feff34dd1b6757aaedcee1987",
     "m_Title": "Displacment",
     "m_Position": {
-        "x": 448.800048828125,
-        "y": -1998.4000244140625
+        "x": 475.4588623046875,
+        "y": -3353.709228515625
     }
 }
 
@@ -4040,10 +4043,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 976.0,
-            "y": -1583.199951171875,
-            "width": 208.0,
-            "height": 301.5999755859375
+            "x": 1002.3999633789063,
+            "y": -2938.400146484375,
+            "width": 208.00018310546876,
+            "height": 301.60009765625
         }
     },
     "m_Slots": [
@@ -4364,10 +4367,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 726.400146484375,
-            "y": -1544.0,
-            "width": 208.0,
-            "height": 301.5999755859375
+            "x": 752.7998657226563,
+            "y": -2899.2001953125,
+            "width": 208.00018310546876,
+            "height": 301.599853515625
         }
     },
     "m_Slots": [
@@ -4620,9 +4623,9 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 720.800048828125,
-            "y": -1894.4000244140625,
-            "width": 119.199951171875,
+            "x": 747.2000122070313,
+            "y": -3249.60009765625,
+            "width": 119.19989013671875,
             "height": 148.800048828125
         }
     },
@@ -5027,6 +5030,35 @@
     "m_Value": 1.0,
     "m_DefaultValue": 1.0,
     "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.Texture2DShaderProperty",
+    "m_ObjectId": "a563ef5e5c144eac98cda564df76fc0b",
+    "m_Guid": {
+        "m_GuidSerialized": "eed519ea-e73e-4cc8-8634-8a1927e6fb1d"
+    },
+    "m_Name": "CausticMap",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "CausticMap",
+    "m_DefaultReferenceName": "_CausticMap",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_Value": {
+        "m_SerializedTexture": "{\"texture\":{\"instanceID\":0}}",
+        "m_Guid": ""
+    },
+    "isMainTexture": false,
+    "useTilingAndOffset": false,
+    "m_Modifiable": true,
+    "m_DefaultType": 0
 }
 
 {
@@ -5947,28 +5979,31 @@
             "m_Id": "2e7153718f1b4535ad2f030af4752b44"
         },
         {
-            "m_Id": "93badb93a0a64dd89c250838293c5717"
-        },
-        {
-            "m_Id": "47abbb8852ae42fbb38d10db1398827e"
-        },
-        {
-            "m_Id": "7c8c98a131724c4e9a7562873e90a211"
-        },
-        {
             "m_Id": "8963f93ef7bc46d2b9f7ee03aad817ca"
         },
         {
             "m_Id": "853a3012248f4401a02701bccfbcb43a"
         },
         {
-            "m_Id": "c68184c43169421ba1bdf0d23584e1bb"
+            "m_Id": "93badb93a0a64dd89c250838293c5717"
+        },
+        {
+            "m_Id": "47abbb8852ae42fbb38d10db1398827e"
         },
         {
             "m_Id": "1e309a8861cd44b38aa53b9148032e9f"
         },
         {
+            "m_Id": "7c8c98a131724c4e9a7562873e90a211"
+        },
+        {
             "m_Id": "69120dcb46624e6b852af40712a01761"
+        },
+        {
+            "m_Id": "c68184c43169421ba1bdf0d23584e1bb"
+        },
+        {
+            "m_Id": "a563ef5e5c144eac98cda564df76fc0b"
         }
     ]
 }
