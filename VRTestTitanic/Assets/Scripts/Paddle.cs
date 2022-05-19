@@ -1,58 +1,127 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Valve.VR;
 using Valve.VR.InteractionSystem;
 
+public class Paddle : MonoBehaviour
+{
+	private Vector3 oldPosition;
+	private Quaternion oldRotation;
 
-namespace Valve.VR.InteractionSystem.Sample {
-    public class Paddle : MonoBehaviour
-    {
-        private Interactable interactable;
-        private Hand.AttachmentFlags attachmentFlags = Hand.defaultAttachmentFlags & (Hand.AttachmentFlags.SnapOnAttach) & (~Hand.AttachmentFlags.DetachOthers) & (Hand.AttachmentFlags.VelocityMovement) & (~Hand.AttachmentFlags.ParentToHand);
+	private float attachTime;
+
+	private Hand.AttachmentFlags attachmentFlags = Hand.defaultAttachmentFlags & (~Hand.AttachmentFlags.SnapOnAttach) & (~Hand.AttachmentFlags.DetachOthers) & (~Hand.AttachmentFlags.VelocityMovement);
+
+	private Interactable interactable;
+
+	//-------------------------------------------------
+	void Awake()
+	{
+		interactable = this.GetComponent<Interactable>();
+	}
 
 
-        void Start()
-        {
-            interactable = GetComponent<Interactable>();
-        }
+	//-------------------------------------------------
+	// Called when a Hand starts hovering over this object
+	//-------------------------------------------------
+	private void OnHandHoverBegin(Hand hand)
+	{
+		hand.ShowGrabHint();
+	}
 
-        private void OnHandHoverBegin(Hand hand)
-        {
-            hand.ShowGrabHint();
-        }
 
-        private void OnHandHoverEnd(Hand hand)
-        {
-            hand.HideGrabHint();
-        }
+	//-------------------------------------------------
+	// Called when a Hand stops hovering over this object
+	//-------------------------------------------------
+	private void OnHandHoverEnd(Hand hand)
+	{
+		hand.HideGrabHint();
+	}
 
-        private void OnHandHoverUpdate(Hand hand)
-        {
-            GrabTypes grabType = hand.GetGrabStarting();
-            bool isGrabEnding = hand.IsGrabEnding(gameObject);
 
-            if (interactable.attachedToHand == null && grabType != GrabTypes.None)
-            {
-                hand.AttachObject(gameObject, grabType);
-                hand.HoverLock(interactable);
-            }
-            else if (isGrabEnding)
-            {
-                hand.DetachObject(gameObject);
-                hand.HoverUnlock(interactable);
-            }
-        }
+	//-------------------------------------------------
+	// Called every Update() while a Hand is hovering over this object
+	//-------------------------------------------------
+	private void HandHoverUpdate(Hand hand)
+	{
+		GrabTypes startingGrabType = hand.GetGrabStarting();
+		bool isGrabEnding = hand.IsGrabEnding(this.gameObject);
 
-        private void OnAttachedToHand(Hand hand)
-        {
+		if (interactable.attachedToHand == null && startingGrabType != GrabTypes.None)
+		{
+			// Save our position/rotation so that we can restore it when we detach
+			//oldPosition = transform.position;
+			//oldRotation = transform.rotation;
 
-        }
+			// Call this to continue receiving HandHoverUpdate messages,
+			// and prevent the hand from hovering over anything else
+			hand.HoverLock(interactable);
 
-        private void OnDetachedFromHand(Hand hand)
-        {
+			// Attach this object to the hand
+			hand.AttachObject(gameObject, startingGrabType, attachmentFlags);
+		}
+		else if (isGrabEnding)
+		{
+			// Detach this object from the hand
+			hand.DetachObject(gameObject);
 
-        }
+			// Call this to undo HoverLock
+			hand.HoverUnlock(interactable);
 
-    }
+			// Restore position/rotation
+			//transform.position = oldPosition;
+			//transform.rotation = oldRotation;
+		}
+	}
+
+
+	//-------------------------------------------------
+	// Called when this GameObject becomes attached to the hand
+	//-------------------------------------------------
+	private void OnAttachedToHand(Hand hand)
+	{
+
+	}
+
+
+
+	//-------------------------------------------------
+	// Called when this GameObject is detached from the hand
+	//-------------------------------------------------
+	private void OnDetachedFromHand(Hand hand)
+	{
+	}
+
+
+	//-------------------------------------------------
+	// Called every Update() while this GameObject is attached to the hand
+	//-------------------------------------------------
+	private void HandAttachedUpdate(Hand hand)
+	{
+	}
+
+	private bool lastHovering = false;
+	private void Update()
+	{
+		//if (interactable.isHovering != lastHovering) //save on the .tostrings a bit
+		//{
+		//	lastHovering = interactable.isHovering;
+		//}
+	}
+
+
+	//-------------------------------------------------
+	// Called when this attached GameObject becomes the primary attached object
+	//-------------------------------------------------
+	//private void OnHandFocusAcquired(Hand hand)
+	//{
+	//}
+
+
+	//-------------------------------------------------
+	// Called when another attached GameObject becomes the primary attached object
+	//-------------------------------------------------
+	//private void OnHandFocusLost(Hand hand)
+	//{
+	//}
 }
