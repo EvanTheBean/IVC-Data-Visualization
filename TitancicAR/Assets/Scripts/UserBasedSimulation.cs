@@ -11,6 +11,10 @@ public class UserBasedSimulation : MonoBehaviour
     public Passanger closest;
     public float height, cHeight;
     ControlWaterPlacement cwp;
+    public float goalHeight;
+    public float fillTime;
+    float tempTime;
+    bool flowingIn;
 
     UserData ud;
     DataLoader dl;
@@ -20,16 +24,33 @@ public class UserBasedSimulation : MonoBehaviour
     {
         ud = GetComponent<UserData>();
         dl = GetComponent<DataLoader>();
-        cHeight = Camera.main.gameObject.transform.position.y;// * 1.1f;
+        //cHeight = Camera.main.gameObject.transform.position.y;// * 1.1f;
         cwp = GameObject.FindObjectOfType<ControlWaterPlacement>();
+    }
+
+    public void Update()
+    {
+        height = Camera.main.gameObject.transform.position.y - cwp.placementPose.position.y;
+        if(flowingIn)
+        {
+            waterPlane.transform.position = new Vector3(0, Mathf.Lerp(cwp.placementPose.position.y, goalHeight, tempTime/fillTime), 0);
+            tempTime += Time.deltaTime;
+            if(tempTime > fillTime)
+            {
+                flowingIn = false;
+            }
+        }
     }
 
     public void Simulate()
     {
         CalcData();
-        waterPlane.transform.position = new Vector3(0,Mathf.Lerp(cwp.placementPose.position.y,height,percent),0);
+        //waterPlane.transform.position = new Vector3(0,Mathf.Lerp(cwp.placementPose.position.y,height,percent),0);
+        goalHeight = Mathf.Lerp(cwp.placementPose.position.y, height, percent);
         waterPlane.SetActive(true);
         Debug.Log("The water is at " + waterPlane.transform.position + " " + dead + " " + total + " " + percent);
+        flowingIn = true;
+        tempTime = 0;
     }
 
     void CalcData()
