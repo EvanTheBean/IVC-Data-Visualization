@@ -36,6 +36,7 @@ public class ControlWaterPlacement : MonoBehaviour
         raycastManager = GameObject.FindObjectOfType<ARRaycastManager>();
         usb = GameObject.FindObjectOfType<UserBasedSimulation>();
         tc.Touch.TouchInput.started += ctx => Touched();
+        placementPose.position = Vector3.zero;
     }
 
     // Update is called once per frame
@@ -50,7 +51,7 @@ public class ControlWaterPlacement : MonoBehaviour
                 water.transform.position = placementPose.position;
                 displayPoint.SetActive(false);
                 touched = false;
-                usb.height = usb.cHeight - water.transform.position.y;
+                //usb.height = usb.cHeight - water.transform.position.y;
                 Debug.Log("Water Placed at " + water.transform.position);
             }
         }

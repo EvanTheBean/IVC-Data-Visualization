@@ -488,7 +488,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0-10
+  m_text: 0-17
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1200,7 +1200,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 204659847}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.0135, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3385,15 +3385,15 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: 0-10
+    - m_Text: 0-17
       m_Image: {fileID: 0}
-    - m_Text: 11-18
+    - m_Text: 18-23
       m_Image: {fileID: 0}
-    - m_Text: 19-25
+    - m_Text: 25-29
       m_Image: {fileID: 0}
-    - m_Text: 26-35
+    - m_Text: 31-37
       m_Image: {fileID: 0}
-    - m_Text: 36-50
+    - m_Text: 38-49
       m_Image: {fileID: 0}
     - m_Text: 50+
       m_Image: {fileID: 0}
@@ -4028,6 +4028,8 @@ MonoBehaviour:
   percent: 0
   height: 0
   cHeight: 0
+  goalHeight: 0
+  fillTime: 1
 --- !u!1 &1533412765
 GameObject:
   m_ObjectHideFlags: 0
