@@ -9,7 +9,8 @@ public class Paddle : MonoBehaviour
 
 	private Vector3 oldPosition;
 	private float timeDiff;
-	public Vector3 velocity;
+	Vector3 velocity;
+	[SerializeField] float speed = 0.5f; 
 
 	private float attachTime;
 
@@ -98,7 +99,6 @@ public class Paddle : MonoBehaviour
 			velocity = (transform.position - oldPosition) / Time.fixedDeltaTime;
 			velocity.y = 0;
 			oldPosition = transform.position;
-			Debug.Log(velocity);
 		}
 	}
 
@@ -125,7 +125,7 @@ public class Paddle : MonoBehaviour
 	//-------------------------------------------------
 	private void HandAttachedUpdate(Hand hand)
 	{
-		player.AddForce(-velocity);
+		player.AddForce(-speed*velocity);
 	}
 
 	private bool lastHovering = false;
