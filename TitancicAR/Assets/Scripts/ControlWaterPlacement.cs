@@ -4,16 +4,18 @@ using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.Experimental.XR;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class ControlWaterPlacement : MonoBehaviour
 {
-    public GameObject water, displayPoint;
+    public GameObject water, displayPoint, floorplane;
     private ARSessionOrigin origin;
     private ARRaycastManager raycastManager;
     public Pose placementPose;
     bool placedWater, isValid, touched;
     UserBasedSimulation usb;
     private TouchControls tc;
+    public CanvasGroup startup, simulate;
 
     private void Awake()
     {
@@ -36,6 +38,7 @@ public class ControlWaterPlacement : MonoBehaviour
         raycastManager = GameObject.FindObjectOfType<ARRaycastManager>();
         usb = GameObject.FindObjectOfType<UserBasedSimulation>();
         tc.Touch.TouchInput.started += ctx => Touched();
+        tc.Touch.DevMode.performed += ctx => GameObject.FindObjectOfType<DevMode>().Activate();
         placementPose.position = Vector3.zero;
     }
 
@@ -49,10 +52,14 @@ public class ControlWaterPlacement : MonoBehaviour
             {
                 placedWater = true;
                 water.transform.position = placementPose.position;
+                floorplane.transform.position = placementPose.position + new Vector3(0,0.1f,0);
+                floorplane.SetActive(true);
                 displayPoint.SetActive(false);
                 touched = false;
                 //usb.height = usb.cHeight - water.transform.position.y;
                 Debug.Log("Water Placed at " + water.transform.position);
+                startup.alpha = 0.0f;
+                simulate.alpha = 1.0f;
             }
         }
     }

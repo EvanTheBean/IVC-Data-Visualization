@@ -35,6 +35,15 @@ public partial class @TouchControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": ""Press"",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DevMode"",
+                    ""type"": ""Button"",
+                    ""id"": ""920d6773-7ba8-43b5-848b-a0f5eb45a852"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""MultiTap(tapCount=3)"",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -48,6 +57,17 @@ public partial class @TouchControls : IInputActionCollection2, IDisposable
                     ""action"": ""TouchInput"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""734e780e-22c1-4b09-a644-85023b7ca64b"",
+                    ""path"": ""<Touchscreen>/primaryTouch/press"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DevMode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -57,6 +77,7 @@ public partial class @TouchControls : IInputActionCollection2, IDisposable
         // Touch
         m_Touch = asset.FindActionMap("Touch", throwIfNotFound: true);
         m_Touch_TouchInput = m_Touch.FindAction("TouchInput", throwIfNotFound: true);
+        m_Touch_DevMode = m_Touch.FindAction("DevMode", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -117,11 +138,13 @@ public partial class @TouchControls : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Touch;
     private ITouchActions m_TouchActionsCallbackInterface;
     private readonly InputAction m_Touch_TouchInput;
+    private readonly InputAction m_Touch_DevMode;
     public struct TouchActions
     {
         private @TouchControls m_Wrapper;
         public TouchActions(@TouchControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @TouchInput => m_Wrapper.m_Touch_TouchInput;
+        public InputAction @DevMode => m_Wrapper.m_Touch_DevMode;
         public InputActionMap Get() { return m_Wrapper.m_Touch; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -134,6 +157,9 @@ public partial class @TouchControls : IInputActionCollection2, IDisposable
                 @TouchInput.started -= m_Wrapper.m_TouchActionsCallbackInterface.OnTouchInput;
                 @TouchInput.performed -= m_Wrapper.m_TouchActionsCallbackInterface.OnTouchInput;
                 @TouchInput.canceled -= m_Wrapper.m_TouchActionsCallbackInterface.OnTouchInput;
+                @DevMode.started -= m_Wrapper.m_TouchActionsCallbackInterface.OnDevMode;
+                @DevMode.performed -= m_Wrapper.m_TouchActionsCallbackInterface.OnDevMode;
+                @DevMode.canceled -= m_Wrapper.m_TouchActionsCallbackInterface.OnDevMode;
             }
             m_Wrapper.m_TouchActionsCallbackInterface = instance;
             if (instance != null)
@@ -141,6 +167,9 @@ public partial class @TouchControls : IInputActionCollection2, IDisposable
                 @TouchInput.started += instance.OnTouchInput;
                 @TouchInput.performed += instance.OnTouchInput;
                 @TouchInput.canceled += instance.OnTouchInput;
+                @DevMode.started += instance.OnDevMode;
+                @DevMode.performed += instance.OnDevMode;
+                @DevMode.canceled += instance.OnDevMode;
             }
         }
     }
@@ -148,5 +177,6 @@ public partial class @TouchControls : IInputActionCollection2, IDisposable
     public interface ITouchActions
     {
         void OnTouchInput(InputAction.CallbackContext context);
+        void OnDevMode(InputAction.CallbackContext context);
     }
 }

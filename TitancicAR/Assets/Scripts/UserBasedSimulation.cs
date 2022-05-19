@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using TMPro;
 public class UserBasedSimulation : MonoBehaviour
 {
     public GameObject waterPlane;
@@ -15,6 +15,8 @@ public class UserBasedSimulation : MonoBehaviour
     public float fillTime;
     float tempTime;
     bool flowingIn;
+
+    public TextMeshProUGUI percentageDisplay;
 
     UserData ud;
     DataLoader dl;
@@ -30,7 +32,7 @@ public class UserBasedSimulation : MonoBehaviour
 
     public void Update()
     {
-        height = Camera.main.gameObject.transform.position.y - cwp.placementPose.position.y;
+        //height = Camera.main.gameObject.transform.position.y - cwp.placementPose.position.y;
         if(flowingIn)
         {
             waterPlane.transform.position = new Vector3(0, Mathf.Lerp(cwp.placementPose.position.y, goalHeight, tempTime/fillTime), 0);
@@ -46,11 +48,13 @@ public class UserBasedSimulation : MonoBehaviour
     {
         CalcData();
         //waterPlane.transform.position = new Vector3(0,Mathf.Lerp(cwp.placementPose.position.y,height,percent),0);
-        goalHeight = Mathf.Lerp(cwp.placementPose.position.y, height, percent);
+        goalHeight = Mathf.Lerp(cwp.placementPose.position.y, Camera.main.gameObject.transform.position.y, percent);
         waterPlane.SetActive(true);
         Debug.Log("The water is at " + waterPlane.transform.position + " " + dead + " " + total + " " + percent);
         flowingIn = true;
         tempTime = 0;
+        percentageDisplay.enabled = true;
+        percentageDisplay.text = (percent * 100).ToString("F0");
     }
 
     void CalcData()
