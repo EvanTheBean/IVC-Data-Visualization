@@ -15,6 +15,14 @@ public class QuizMovement : MonoBehaviour
     * Plane/Water Collider
     * Amount Moved/Speed
     */
+    public GameObject Paddle;
+    public GameObject Paddle1;
+    public GameObject Water;
+    public GameObject Player;
+    public Collider PaddleCollider;
+    public Collider PaddleCollider1;
+    public Collider WaterCollider;
+    public int moveSpeed;
 
     // Start is called before the first frame update
     void Start()
