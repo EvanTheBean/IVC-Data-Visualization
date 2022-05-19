@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class ControlWaterPlacement : MonoBehaviour
 {
-    public GameObject water, displayPoint;
+    public GameObject water, displayPoint, floorplane;
     private ARSessionOrigin origin;
     private ARRaycastManager raycastManager;
     public Pose placementPose;
@@ -52,6 +52,8 @@ public class ControlWaterPlacement : MonoBehaviour
             {
                 placedWater = true;
                 water.transform.position = placementPose.position;
+                floorplane.transform.position = placementPose.position;
+                floorplane.SetActive(true);
                 displayPoint.SetActive(false);
                 touched = false;
                 //usb.height = usb.cHeight - water.transform.position.y;
