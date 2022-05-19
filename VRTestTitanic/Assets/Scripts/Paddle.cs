@@ -1,45 +1,58 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Valve.VR;
+using Valve.VR.InteractionSystem;
+
 
 namespace Valve.VR.InteractionSystem.Sample {
-public class Paddle : MonoBehaviour
-{
-    /*Code Goals: Player will be able to do the following:
-     * Pick up paddle
-     * Move paddle
-     * Put down paddle
-     * If paddle falls off boat, paddle will respawn
-     */
-
-    /*Variables Needed:
-     * Paddle Collider
-     * "Under the Map" Collider
-     *  Respawn Location
-     */
-    private Interactable interactable;
-
-    void Awake()
+    public class Paddle : MonoBehaviour
     {
-        interactable = this.GetComponent<Interactable>();
+        private Interactable interactable;
+        private Hand.AttachmentFlags attachmentFlags = Hand.defaultAttachmentFlags & (Hand.AttachmentFlags.SnapOnAttach) & (~Hand.AttachmentFlags.DetachOthers) & (Hand.AttachmentFlags.VelocityMovement) & (~Hand.AttachmentFlags.ParentToHand);
+
+
+        void Start()
+        {
+            interactable = GetComponent<Interactable>();
+        }
+
+        private void OnHandHoverBegin(Hand hand)
+        {
+            hand.ShowGrabHint();
+        }
+
+        private void OnHandHoverEnd(Hand hand)
+        {
+            hand.HideGrabHint();
+        }
+
+        private void OnHandHoverUpdate(Hand hand)
+        {
+            GrabTypes grabType = hand.GetGrabStarting();
+            bool isGrabEnding = hand.IsGrabEnding(gameObject);
+
+            if (interactable.attachedToHand == null && grabType != GrabTypes.None)
+            {
+                hand.AttachObject(gameObject, grabType);
+                hand.HoverLock(interactable);
+            }
+            else if (isGrabEnding)
+            {
+                hand.DetachObject(gameObject);
+                hand.HoverUnlock(interactable);
+            }
+        }
+
+        private void OnAttachedToHand(Hand hand)
+        {
+
+        }
+
+        private void OnDetachedFromHand(Hand hand)
+        {
+
+        }
+
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    //Pick up paddle
-    public void pickUpPaddle()
-    {
-
-    }
-
-    //If paddle falls off boat, paddle will respawn
-    public void paddleRespawn()
-    {
-
-    }
-}
 }
