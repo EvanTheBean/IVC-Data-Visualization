@@ -74,16 +74,16 @@ Material:
     - _Foam_Width: 0.45
     - _Noise_Scale: 4.49
     - _Noise_Speed: 0.25
-    - _Normal_Strength: 1
+    - _Normal_Strength: 0.39
     - _Octave_Factor: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Refraction_Strength: 2
-    - _Smoothness: 0
+    - _Smoothness: 1
     - _Speed: 200
     - _SrcBlend: 5
-    - _Strength: 0.13
+    - _Strength: 0.21
     - _Surface: 1
     - _WorkflowMode: 1
     - _ZTest: 4
