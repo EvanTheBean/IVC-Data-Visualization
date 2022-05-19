@@ -81,8 +81,12 @@ public class Paddle : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+		Debug.Log(other);
+
 		if (other.tag == WATER_TAG)
         {
+
+			Debug.Log("hi");
 			oldPosition = transform.position;
         }
     }
