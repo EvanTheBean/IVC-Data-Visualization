@@ -52,7 +52,7 @@ public class ControlWaterPlacement : MonoBehaviour
             {
                 placedWater = true;
                 water.transform.position = placementPose.position;
-                floorplane.transform.position = placementPose.position;
+                floorplane.transform.position = placementPose.position + new Vector3(0,0.1f,0);
                 floorplane.SetActive(true);
                 displayPoint.SetActive(false);
                 touched = false;
