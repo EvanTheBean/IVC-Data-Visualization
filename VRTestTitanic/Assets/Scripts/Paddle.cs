@@ -5,14 +5,20 @@ using Valve.VR.InteractionSystem;
 
 public class Paddle : MonoBehaviour
 {
+	const string WATER_TAG = "Finish";
+
 	private Vector3 oldPosition;
-	private Quaternion oldRotation;
+	private float timeDiff;
+	Vector3 velocity;
+	[SerializeField] float speed = 0.5f; 
 
 	private float attachTime;
 
-	private Hand.AttachmentFlags attachmentFlags = Hand.defaultAttachmentFlags & (~Hand.AttachmentFlags.SnapOnAttach) & (~Hand.AttachmentFlags.DetachOthers) & (~Hand.AttachmentFlags.VelocityMovement);
+	private Hand.AttachmentFlags attachmentFlags = Hand.defaultAttachmentFlags & (~Hand.AttachmentFlags.SnapOnAttach) & (~Hand.AttachmentFlags.DetachOthers) & (~Hand.AttachmentFlags.VelocityMovement) & (~Hand.AttachmentFlags.ParentToHand);
 
 	private Interactable interactable;
+
+	[SerializeField] Rigidbody player;
 
 	//-------------------------------------------------
 	void Awake()
@@ -74,13 +80,34 @@ public class Paddle : MonoBehaviour
 		}
 	}
 
+    private void OnTriggerEnter(Collider other)
+    {
+		Debug.Log(other);
 
-	//-------------------------------------------------
-	// Called when this GameObject becomes attached to the hand
-	//-------------------------------------------------
-	private void OnAttachedToHand(Hand hand)
+		if (other.tag == WATER_TAG)
+        {
+
+			Debug.Log("hi");
+			oldPosition = transform.position;
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.tag == WATER_TAG)
+        {
+			velocity = (transform.position - oldPosition) / Time.fixedDeltaTime;
+			velocity.y = 0;
+			oldPosition = transform.position;
+		}
+	}
+
+
+    //-------------------------------------------------
+    // Called when this GameObject becomes attached to the hand
+    //-------------------------------------------------
+    private void OnAttachedToHand(Hand hand)
 	{
-
 	}
 
 
@@ -98,6 +125,7 @@ public class Paddle : MonoBehaviour
 	//-------------------------------------------------
 	private void HandAttachedUpdate(Hand hand)
 	{
+		player.AddForce(-speed*velocity);
 	}
 
 	private bool lastHovering = false;
