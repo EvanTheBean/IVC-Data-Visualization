@@ -14,7 +14,7 @@ public class Paddle : MonoBehaviour
 
 	private float attachTime;
 
-	private Hand.AttachmentFlags attachmentFlags = Hand.defaultAttachmentFlags & (~Hand.AttachmentFlags.SnapOnAttach) & (~Hand.AttachmentFlags.DetachOthers) & (~Hand.AttachmentFlags.VelocityMovement) & (~Hand.AttachmentFlags.ParentToHand);
+	private Hand.AttachmentFlags attachmentFlags = Hand.defaultAttachmentFlags;
 
 	private Interactable interactable;
 
@@ -81,13 +81,10 @@ public class Paddle : MonoBehaviour
 	}
 
     private void OnTriggerEnter(Collider other)
-    {
-		Debug.Log(other);
+	{ 
 
 		if (other.tag == WATER_TAG)
         {
-
-			Debug.Log("hi");
 			oldPosition = transform.position;
         }
     }
@@ -125,7 +122,7 @@ public class Paddle : MonoBehaviour
 	//-------------------------------------------------
 	private void HandAttachedUpdate(Hand hand)
 	{
-		player.AddForce(-speed*velocity);
+		
 	}
 
 	private bool lastHovering = false;
@@ -137,19 +134,24 @@ public class Paddle : MonoBehaviour
 		//}
 	}
 
-
-	//-------------------------------------------------
-	// Called when this attached GameObject becomes the primary attached object
-	//-------------------------------------------------
-	//private void OnHandFocusAcquired(Hand hand)
-	//{
-	//}
+    private void FixedUpdate()
+    {
+		player.AddForce(-speed * velocity);
+	}
 
 
-	//-------------------------------------------------
-	// Called when another attached GameObject becomes the primary attached object
-	//-------------------------------------------------
-	//private void OnHandFocusLost(Hand hand)
-	//{
-	//}
+    //-------------------------------------------------
+    // Called when this attached GameObject becomes the primary attached object
+    //-------------------------------------------------
+    //private void OnHandFocusAcquired(Hand hand)
+    //{
+    //}
+
+
+    //-------------------------------------------------
+    // Called when another attached GameObject becomes the primary attached object
+    //-------------------------------------------------
+    //private void OnHandFocusLost(Hand hand)
+    //{
+    //}
 }
