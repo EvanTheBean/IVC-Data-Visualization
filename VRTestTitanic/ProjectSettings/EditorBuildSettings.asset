@@ -4,7 +4,28 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/ScatterPlotTest.unity
+    guid: c17c18be5f10fda4497a67ffcdcdafd6
+  - enabled: 1
+    path: Assets/Scenes/ChoiceTesting.unity
+    guid: 45b7845b2cb18a145a04347a36fcebec
+  - enabled: 1
+    path: Assets/Scenes/SampleScene.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/InteractableScreens/FirstClassLounge.unity
+    guid: 8d94f5c70b4fd0546850363ae1d788bc
+  - enabled: 1
+    path: Assets/Scenes/InteractableScreens/QuizScreen.unity
+    guid: e66f079f26868464095c4fd7223412db
+  - enabled: 1
+    path: Assets/Scenes/QuizEndings/QuizEndingDied.unity
+    guid: a9faf34adacaf5b4abe938bb05de0f64
+  - enabled: 1
+    path: Assets/Scenes/QuizEndings/QuizEndingSurvived.unity
+    guid: edc57a521e6c60b498d39cfea15ed003
   m_configObjects:
     Unity.XR.OpenVR.Settings: {fileID: 11400000, guid: 618538046f3e0644d88687d0750f4c26, type: 2}
     Unity.XR.WindowsMR.Settings: {fileID: 11400000, guid: 4510efb3883976947835905c61267e9c, type: 2}
