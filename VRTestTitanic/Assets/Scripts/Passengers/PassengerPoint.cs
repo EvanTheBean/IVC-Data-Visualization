@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Valve.VR.InteractionSystem;
 using TMPro;
+using System;
 
 public class PassengerPoint : MonoBehaviour
 {
@@ -76,29 +77,45 @@ public class PassengerPoint : MonoBehaviour
 	//-------------------------------------------------
 	private void OnAttachedToHand(Hand hand)
 	{
-		string textOutput = string.Format("Name: {0} {1}\nClass: {2}\nAge: {3}\nSex: {4}\n", passengerInfo.fName,passengerInfo.lName, passengerInfo.pClass, passengerInfo.age, passengerInfo.sex);
-		if (passengerInfo.survived)
-		{
-			textOutput += "Survived";
-		}
-		else
-        {
-			textOutput += "Did not survive";
-        }
-		generalText.text = textOutput;
-		textBackground.SetActive(true);
+		DisplayData(true);
 	}
-
-
 
 	//-------------------------------------------------
 	// Called when this GameObject is detached from the hand
 	//-------------------------------------------------
 	private void OnDetachedFromHand(Hand hand)
 	{
-		generalText.text = "";
-		textBackground.SetActive(false);
+		DisplayData(false);
 	}
+
+
+	private void DisplayData(bool display)
+	{
+		if (display)
+		{
+			//text formatting
+			string textOutput = string.Format("Name: {0} {1}\nClass: {2}\nAge: {3}\nSex: {4}\n", passengerInfo.fName, passengerInfo.lName, passengerInfo.pClass, passengerInfo.age, passengerInfo.sex);
+			if (passengerInfo.survived)
+			{
+				textOutput += "Survived";
+			}
+			else
+			{
+				textOutput += "Did not survive";
+			}
+			generalText.text = textOutput;
+			textBackground.SetActive(true);
+		}
+		else
+		{
+			generalText.text = "";
+			textBackground.SetActive(false);
+		}
+	}
+
+
+
+    
 
 
 	//-------------------------------------------------
