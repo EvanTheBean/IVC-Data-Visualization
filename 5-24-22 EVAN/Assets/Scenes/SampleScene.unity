@@ -317,8 +317,8 @@ MonoBehaviour:
   InvertY: 1
   simulate3ButtonMouse: 0
   zoomSpeed: 5
-  moveSpeed: 5
-  rotSpeeds: {x: 1, y: 1}
+  moveSpeed: 1
+  rotSpeeds: {x: 5, y: 5}
   yRotLimits: {x: -40, y: 60}
   selectedObject: {fileID: 0}
 --- !u!1 &1090096906

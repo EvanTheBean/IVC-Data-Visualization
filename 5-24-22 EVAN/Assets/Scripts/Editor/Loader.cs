@@ -122,7 +122,7 @@ public class Loader : EditorWindow
                     writer.WriteLine("displayBox.text = ");
                     first = false;
                 }
-                writer.WriteLine(rowNames[i].Replace(" ", "") + ".ToString() + \"\n\"");
+                writer.WriteLine( "\"" + rowNames[i] + ": \" + " + rowNames[i].Replace(" ", "") + ".ToString() + \"\\n\"");
             }
         }
         writer.WriteLine(";\n}");
@@ -149,10 +149,22 @@ public class Loader : EditorWindow
 
     void CreateObjects()
     {
-        objects.RemoveAll((o) => o == null);
         objects.Clear();
-
         DataPoint[] currentData = GameObject.FindObjectsOfType<DataPoint>();
+
+        foreach(DataPoint point in currentData)
+        {
+            objects.Add(point.gameObject);
+        }
+
+        Debug.Log(objects.Count);
+
+        foreach(GameObject @object in objects)
+        {
+            DestroyImmediate(@object);
+        }
+
+        objects.RemoveAll((o) => o == null);
 
 
         string fileData = System.IO.File.ReadAllText(path);
@@ -197,11 +209,11 @@ public class Loader : EditorWindow
                 }
                 if (axisTypes[j] == axisType.Y)
                 {
-                    temp.transform.position = new Vector3(temp.transform.position.z, float.Parse(lineData[j]),temp.transform.position.z);
+                    temp.transform.position = new Vector3(temp.transform.position.x, float.Parse(lineData[j]),temp.transform.position.z);
                 }
                 if (axisTypes[j] == axisType.Z)
                 {
-                    temp.transform.position = new Vector3(temp.transform.position.z, temp.transform.position.y, float.Parse(lineData[j]));
+                    temp.transform.position = new Vector3(temp.transform.position.x, temp.transform.position.y, float.Parse(lineData[j]));
                 }
             }
 

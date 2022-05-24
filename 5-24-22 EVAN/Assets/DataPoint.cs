@@ -24,11 +24,11 @@ public void ShowDisplay()
 displayBox.enabled = true;
 
 displayBox.text = 
-NAME.ToString()
-
+"NAME " + NAME.ToString() + "\n"
 +
-random.ToString()
-
+"random " + random.ToString() + "\n"
++
+"This is a bool " + Thisisabool.ToString() + "\n"
 ;
 }
 public void HideDisplay()
