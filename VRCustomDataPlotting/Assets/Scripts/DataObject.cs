@@ -4,7 +4,15 @@ using UnityEngine;
 
 public class DataObject
 {
-    List<string> dataEntries;
+    string[] data;
     
+    public DataObject(string[] data)
+    {
+        this.data = data;
+    }
 
+    public string GetDataAt(int index)
+    {
+        return data[index];
+    }
 }

@@ -8,6 +8,7 @@ public class DataReader : MonoBehaviour
     public static DataReader Instance { get; private set; }
 
     string[] dataCategories;
+    List<DataObject> dataObjects = new List<DataObject>();
 
     private void Start()
     {
@@ -30,19 +31,15 @@ public class DataReader : MonoBehaviour
             csvParser.HasFieldsEnclosedInQuotes = true;
 
             //identify column names
-            {
-                string[] fields = csvParser.ReadFields();
-                
+            
+            string[] dataCategories = csvParser.ReadFields();
 
-            }
             //read data
             while (!csvParser.EndOfData)
             {
                 // Read current line fields, pointer moves to the next line.
                 string[] fields = csvParser.ReadFields();
-                Debug.Log("DataReader -> Read(): " + fields.Length.ToString() + " fields identified.");
-
-                
+                dataObjects.Add(new DataObject(fields));
             }
         }
     }

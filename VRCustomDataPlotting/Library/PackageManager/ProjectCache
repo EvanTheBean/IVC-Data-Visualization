@@ -5,16 +5,16 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 637890011482817303
-    m_Hash: 911341218
+      ticks: 637890100842583050
+    m_Hash: 2537332601
   m_LockFileStatus:
     m_FilePath: C:/Users/lucia.hughes/source/repos/IVC-Data-Visualization/VRCustomDataPlotting/Packages/packages-lock.json
     m_PathExists: 1
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 637890011482947177
-    m_Hash: 2330441856
+      ticks: 637890100842583050
+    m_Hash: 3008872798
 m_EmbeddedPackageManifests:
   m_ManifestsStatus: {}
 m_PackageAssets:
@@ -1193,7 +1193,7 @@ m_PackageAssets:
       isDirectDependency: 1
       version: 1.1.4
       source: 6
-      resolvedPath: C:\Users\lucia.hughes\source\repos\IVC-Data-Visualization\VRCustomDataPlotting\Library\PackageCache\com.valvesoftware.unity.openvr@d871a8c104ea-1614121125000
+      resolvedPath: C:\Users\lucia.hughes\source\repos\IVC-Data-Visualization\VRCustomDataPlotting\Library\PackageCache\com.valvesoftware.unity.openvr@d871a8c104ea-1653413275695
       assetPath: Packages/com.valvesoftware.unity.openvr
       name: com.valvesoftware.unity.openvr
       displayName: OpenVR XR Plugin
@@ -3541,7 +3541,7 @@ m_PackageAssets:
       m_ContentTrackingEnabled: 1
       m_ModificationDate:
         serializedVersion: 2
-        ticks: 637497179250000000
+        ticks: 637890100756945867
       m_Hash: 2919789393
 m_ProjectPath: C:/Users/lucia.hughes/source/repos/IVC-Data-Visualization/VRCustomDataPlotting/Packages
 m_EditorVersion: 2020.3.28f1 (f5400f52e03f)
