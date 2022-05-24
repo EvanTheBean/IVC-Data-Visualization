@@ -33,6 +33,7 @@ public class DataReader : MonoBehaviour
             {
                 string[] fields = csvParser.ReadFields();
                 
+
             }
             //read data
             while (!csvParser.EndOfData)
