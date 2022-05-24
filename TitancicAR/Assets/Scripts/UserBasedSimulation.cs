@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 public class UserBasedSimulation : MonoBehaviour
 {
-    public GameObject waterPlane;
+    public GameObject waterPlane, floorPlane;
     public List<Passanger> valid = new List<Passanger>();
     public int dead, total;
     public float percent;
@@ -50,6 +50,7 @@ public class UserBasedSimulation : MonoBehaviour
         //waterPlane.transform.position = new Vector3(0,Mathf.Lerp(cwp.placementPose.position.y,height,percent),0);
         goalHeight = Mathf.Lerp(cwp.placementPose.position.y, Camera.main.gameObject.transform.position.y, percent);
         waterPlane.SetActive(true);
+        //floorPlane.SetActive(true);
         Debug.Log("The water is at " + waterPlane.transform.position + " " + dead + " " + total + " " + percent);
         flowingIn = true;
         tempTime = 0;

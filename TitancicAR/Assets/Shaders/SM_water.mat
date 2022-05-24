@@ -90,7 +90,7 @@ Material:
     - _ZWrite: 0
     - _ZWriteControl: 0
     m_Colors:
-    - _Deep_Water_Color: {r: 0.15589178, g: 0.2735849, b: 0.25389698, a: 1}
+    - _Deep_Water_Color: {r: 0.15589178, g: 0.2735849, b: 0.25389698, a: 0.6862745}
     - _Foam_Color: {r: 1, g: 1, b: 1, a: 0}
     - _Shallow_Water_Color: {r: 0.40626556, g: 0.6792453, b: 0.43562022, a: 0}
     - _Tiling: {r: 0.3, g: 0.3, b: 0, a: 0}
