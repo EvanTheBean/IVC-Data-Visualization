@@ -85,11 +85,13 @@ public class CameraController2 : MonoBehaviour
                 if(selectedObject != null)
                 {
                     selectedObject.GetComponent<MeshRenderer>().material.color = Color.white;
+                    selectedObject.GetComponent<DataPoint>().HideDisplay();
                 }
 
                 selectedObject = hit.collider.gameObject;
                 selectedObject.GetComponent<MeshRenderer>().material.color = Color.red;
-                Debug.Log("clicked " + selectedObject.name);
+                selectedObject.GetComponent<DataPoint>().ShowDisplay();
+                //Debug.Log("clicked " + selectedObject.name);
             }
         }
 

@@ -5,6 +5,8 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using System.IO;
 using UnityEditorInternal;
+using TMPro;
+using UnityEngine.UI;
 
 
 public enum rowType
@@ -34,8 +36,9 @@ public class Loader : EditorWindow
 
     bool dataRead;
 
-    Mesh mesh;
-    Material material;
+    GameObject placeHolder;
+    //Mesh mesh;
+    //Material material;
     string path;
 
     [MenuItem("Tools/Loader")]
@@ -59,8 +62,9 @@ public class Loader : EditorWindow
                 EditorGUILayout.EndHorizontal();
             }
 
-            mesh = (Mesh)EditorGUILayout.ObjectField("Shape (for now)", mesh, typeof(Mesh), false);
-            material = (Material)EditorGUILayout.ObjectField("Material (for now)", material, typeof(Material), false);
+            //mesh = (Mesh)EditorGUILayout.ObjectField("Shape (for now)", mesh, typeof(Mesh), false);
+            //material = (Material)EditorGUILayout.ObjectField("Material (for now)", material, typeof(Material), false);
+            placeHolder = (GameObject)EditorGUILayout.ObjectField("Object", placeHolder, typeof(GameObject), false);
 
             if (GUILayout.Button("Place Objects"))
             {
@@ -86,6 +90,8 @@ public class Loader : EditorWindow
     void CreateAll()
     {
         CreateClass();
+        CreateObjects();
+        //Waiting();
     }
 
     void CreateClass()
@@ -93,20 +99,114 @@ public class Loader : EditorWindow
         string classPath = Application.dataPath + "/DataPoint.cs";
         StreamWriter writer = new StreamWriter(classPath, false);
 
-        writer.WriteLine("using System.Collections;\nusing System.Collections.Generic;\nusing UnityEngine;\npublic class DataPoint : MonoBehaviour\n{\n");
+        writer.WriteLine("using System.Collections;\nusing System.Collections.Generic;\nusing UnityEngine;\nusing UnityEngine.UI;\nusing TMPro;\npublic class DataPoint : MonoBehaviour\n{\n");
         
         for(int i =0; i < rowNames.Count; i++)
         {
-            //writer.WriteLine("public " + rowTypes[i].ToString())
+            writer.WriteLine("public " + rowTypes[i].ToString().ToLower() + " " + rowNames[i].Replace(" ", "") + ";\n");
         }
+
+        writer.WriteLine("public TextMeshProUGUI displayBox;");
+        writer.WriteLine("public void ShowDisplay()\n{\ndisplayBox.enabled = true;\n");
+        bool first = true;
+        for (int i = 0; i < rowNames.Count; i++)
+        {
+            if(axisTypes[i] == axisType.ShowOnClick)
+            {
+                if(!first)
+                {
+                    writer.WriteLine("+");
+                }
+                if(first)
+                {
+                    writer.WriteLine("displayBox.text = ");
+                    first = false;
+                }
+                writer.WriteLine(rowNames[i].Replace(" ", "") + ".ToString() + \"\n\"");
+            }
+        }
+        writer.WriteLine(";\n}");
+
+        writer.WriteLine("public void HideDisplay()\n{\ndisplayBox.enabled = false;\n}");
 
         writer.WriteLine("\n}");
         writer.Close();
+        AssetDatabase.Refresh();
     }
 
-    void PlaceObjects()
+    IEnumerator Waiting()
     {
+        Debug.Log("Started Coroutine at timestamp : " + Time.time);
 
+        //yield on a new YieldInstruction that waits for 5 seconds.
+        yield return new WaitForSeconds(1);
+
+        //After we have waited 5 seconds print the time again.
+        Debug.Log("Finished Coroutine at timestamp : " + Time.time);
+
+        CreateObjects();
+    }
+
+    void CreateObjects()
+    {
+        objects.RemoveAll((o) => o == null);
+        objects.Clear();
+
+        DataPoint[] currentData = GameObject.FindObjectsOfType<DataPoint>();
+
+
+        string fileData = System.IO.File.ReadAllText(path);
+        string[] lines = fileData.Split("\n"[0]);
+
+        for(int i = 1; i < lines.Length; i++)
+        {
+            GameObject temp = Instantiate(placeHolder);
+            temp.name = i.ToString();
+            objects.Add(temp);
+            //temp.AddComponent<MeshRenderer>();
+            //temp.AddComponent<MeshFilter>();
+            //temp.AddComponent<DataPoint>();
+            DataPoint tempDP = temp.AddComponent<DataPoint>();
+
+            //temp.GetComponent<MeshFilter>().mesh = mesh;
+            //temp.GetComponent<MeshRenderer>().material = material;
+
+            string[] lineData = lines[i].Trim().Split(","[0]);
+
+            for(int j = 0; j < lineData.Length; j++)
+            {
+                switch(rowTypes[j])
+                {
+                    case rowType.Bool:
+                        tempDP.GetType().GetField(rowNames[j].Replace(" ", "")).SetValue(tempDP, bool.Parse(lineData[j]));
+                        break;
+                    case rowType.Int:
+                        tempDP.GetType().GetField(rowNames[j].Replace(" ", "")).SetValue(tempDP, int.Parse(lineData[j]));
+                        break;
+                    case rowType.Float:
+                        tempDP.GetType().GetField(rowNames[j].Replace(" ", "")).SetValue(tempDP, float.Parse(lineData[j]));
+                        break;
+                    case rowType.String:
+                        tempDP.GetType().GetField(rowNames[j].Replace(" ", "")).SetValue(tempDP, lineData[j]);
+                        break;
+                }
+
+                if(axisTypes[j] == axisType.X)
+                {
+                    temp.transform.position = new Vector3(float.Parse(lineData[j]), temp.transform.position.y, temp.transform.position.z);
+                }
+                if (axisTypes[j] == axisType.Y)
+                {
+                    temp.transform.position = new Vector3(temp.transform.position.z, float.Parse(lineData[j]),temp.transform.position.z);
+                }
+                if (axisTypes[j] == axisType.Z)
+                {
+                    temp.transform.position = new Vector3(temp.transform.position.z, temp.transform.position.y, float.Parse(lineData[j]));
+                }
+            }
+
+            tempDP.displayBox = temp.GetComponentInChildren<TextMeshProUGUI>();
+        }
     }
 
     void LoadRows()
@@ -129,7 +229,7 @@ public class Loader : EditorWindow
             }
             else if(int.TryParse(line2[i], out resultI))
             {
-                rowTypes.Add(rowType.Integer);
+                rowTypes.Add(rowType.Int);
             }
             else if(float.TryParse(line2[i], out resultF))
             {

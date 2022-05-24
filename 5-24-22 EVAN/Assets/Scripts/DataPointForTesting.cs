@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class DataPointForTesting : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class DataPointForTesting : MonoBehaviour
     public int dataI;
     public bool dataB;
 
-    public Text displayBox;
+    public TextMeshProUGUI displayBox;
 
     // Start is called before the first frame update
     void Start()
