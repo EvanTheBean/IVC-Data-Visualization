@@ -1,0 +1,8 @@
+Design Question: How can we combine the creative side of Data Visualization (Knitting, Bullet Jounraling, Etc) with the VR/Technology side of Data Visualization? 
+
+This prototype will allow the player to enter their mood (from one of the six "main" moods- Joy, Love, Fear, Surprise, Anger, Sadness -with these being explained when the player first starts the game) and will keep track of the mood within a CSV file. They will enter their mood via a "stamp" on a calendar. It will also keep track of the date the data was entered. Then, the player will be able to see different visuals of their emotions in a 3D space. 
+
+- Have Data entered to and saved on a CSV file
+- Access the Date on the computer
+- Access the Data from the CSV
+- Create Visuals from the CSV file
