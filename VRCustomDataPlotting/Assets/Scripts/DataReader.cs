@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Microsoft.VisualBasic.FileIO;
 using System.IO;
+using System;
+
 public enum dataType
 {
     Int,
@@ -19,6 +21,8 @@ public class DataReader : MonoBehaviour
     string[] dataCategories;
     dataType[] dataTypes;
     List<DataObject> dataObjects = new List<DataObject>();
+
+    [SerializeField] AxisBall axisBallPrefab;
 
     private void Start()
     {
@@ -100,6 +104,7 @@ public class DataReader : MonoBehaviour
 
             dataTypes[i] = result;
         }
+        SpawnAxisBalls();
     }
 
     bool StringArrayTryParse(string str, out string[] strArray)
@@ -128,4 +133,24 @@ public class DataReader : MonoBehaviour
         }
         return true;
     }
+
+    private void SpawnAxisBalls()
+    {
+        Vector3 instantiatePos = new Vector3(-6, 0, 2);
+        for(int i = 0; i < dataCategories.Length; i++)
+        {
+            if (dataTypes[i] == dataType.Float || dataTypes[i] == dataType.Int)
+            {
+                AxisBall ball = Instantiate(axisBallPrefab, instantiatePos, Quaternion.identity);
+                ball.SetUp(dataCategories[i], i);
+                instantiatePos.x += 1.5f;
+            }
+        }
+    }
+
+    public List<DataObject> GetDataObjects()
+    {
+        return dataObjects;
+    }
+
 }
