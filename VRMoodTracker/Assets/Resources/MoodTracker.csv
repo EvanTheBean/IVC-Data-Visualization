@@ -1,4 +1,5 @@
-mood,date,numdaystracked
-Fear,5/22/2022,1
-Joy,5/23/2022,2
-Love,5/24/2022,3
+mood,date
+Fear,5/22/2022
+Joy,5/23/2022
+Love,5/24/2022
+Surprise,5/25/22

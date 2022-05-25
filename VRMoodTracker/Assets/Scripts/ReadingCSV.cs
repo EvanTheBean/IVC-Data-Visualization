@@ -5,9 +5,9 @@ using UnityEngine;
 public class ReadingCSV : MonoBehaviour
 {
     List<Moods> moodList = new List<Moods>(); //Keeps tracks of all of the instances of the Mood class
-    
+
     // Start is called before the first frame update
-    void Start()
+    public void ReadFile()
     {
         TextAsset moodSpreadsheet = Resources.Load<TextAsset>("MoodTracker"); //Finds the MoodTracker CSV File in the folders and references it
 
@@ -27,16 +27,15 @@ public class ReadingCSV : MonoBehaviour
             Moods m = new Moods();
             m.mood = row[0]; //Imports the mood and assigns it
             m.date = row[1]; //Import the date and assigns it
-            int.TryParse(row[2], out m.numdaystracked); //Import the days tracked and assigns it - turns it into an int if theres a number there
+            //int.TryParse(row[2], out m.numdaystracked); //Import the days tracked and assigns it - turns it into an int if theres a number there
 
             moodList.Add(m);
          }
 
-        foreach (Moods m in moodList) //To test that they were all parsed and turned into their own Moods in the list
-        {
-            Debug.Log(m.mood);
-        }
-
+        //foreach (Moods m in moodList) //To test that they were all parsed and turned into their own Moods in the list
+        //{
+           // Debug.Log(m.mood);
+        //}
     }
 
     // Update is called once per frame
