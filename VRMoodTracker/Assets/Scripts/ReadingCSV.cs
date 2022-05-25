@@ -1,3 +1,5 @@
+using System;
+using System.Threading;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,8 +7,14 @@ using UnityEngine;
 public class ReadingCSV : MonoBehaviour
 {
     List<Moods> moodList = new List<Moods>(); //Keeps tracks of all of the instances of the Mood class
+    public int NumOfJoy;
+    public int NumOfLove;
+    public int NumOfFear;
+    public int NumOfAnger;
+    public int NumOfSadness;
+    public int NumOfSurprise;
 
-    // Start is called before the first frame update
+    //Reads the file and sorts it into a list
     public void ReadFile()
     {
         TextAsset moodSpreadsheet = Resources.Load<TextAsset>("MoodTracker"); //Finds the MoodTracker CSV File in the folders and references it
@@ -38,9 +46,81 @@ public class ReadingCSV : MonoBehaviour
         //}
     }
 
-    // Update is called once per frame
-    void Update()
+    //Figures out the amount of times the user inputted that they felt Joy
+    public void JoyCounter()
     {
-        
+        NumOfJoy = 0;
+        foreach (Moods m in moodList) 
+        {
+            if (String.Compare(m.mood, "Joy", true) == 0)
+            {
+                NumOfJoy++;
+            }
+        }
+    }
+
+    //Figures out the amount of times the user inputted that they felt Love
+    public void LoveCounter()
+    {
+        NumOfLove = 0;
+        foreach (Moods m in moodList)
+        {
+            if (String.Compare(m.mood, "Love", true) == 0)
+            {
+                NumOfLove++;
+            }
+        }
+    }
+
+    //Figures out the amount of times the user inputted that they felt Fear
+    public void FearCounter()
+    {
+        NumOfFear = 0;
+        foreach (Moods m in moodList)
+        {
+            if (String.Compare(m.mood, "Fear", true) == 0)
+            {
+                NumOfFear++;
+            }
+        }
+    }
+
+    //Figures out the amount of times the user inputted that they felt Anger
+    public void AngerCounter()
+    {
+        NumOfAnger = 0;
+        foreach (Moods m in moodList)
+        {
+            if (String.Compare(m.mood, "Anger", true) == 0)
+            {
+                NumOfAnger++;
+            }
+        }
+    }
+
+    //Figures out the amount of times the user inputted that they felt Sadness
+    public void SadnessCounter()
+    {
+        NumOfSadness = 0;
+        foreach (Moods m in moodList)
+        {
+            if (String.Compare(m.mood, "Sadness", true) == 0)
+            {
+                NumOfSadness++;
+            }
+        }
+    }
+
+    //Figures out the amount of times the user inputted that they felt Surprise
+    public void SurpriseCounter()
+    {
+        NumOfSurprise = 0;
+        foreach (Moods m in moodList)
+        {
+            if (String.Compare(m.mood, "Surprise", true) == 0)
+            {
+                NumOfSurprise++;
+            }
+        }
     }
 }

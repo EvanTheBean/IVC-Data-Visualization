@@ -21,12 +21,12 @@ public class ButtonPressed : MonoBehaviour
 	public int DaysTracked;
 
 	public GameObject CSVManager;
+	public string sceneName;
 
 	//-------------------------------------------------
 	void Awake()
 	{
 		interactable = this.GetComponent<Interactable>();
-		CSVManager.GetComponent<ReadingCSV>().ReadFile();
 	}
 
 
@@ -77,7 +77,7 @@ public class ButtonPressed : MonoBehaviour
 
 			// Call this to undo HoverLock
 			hand.HoverUnlock(interactable);
-
+			SceneManager.LoadScene(sceneName);
 			// Restore position/rotation
 			//transform.position = oldPosition;
 			//transform.rotation = oldRotation;
