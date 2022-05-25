@@ -84,12 +84,14 @@ public class CameraController2 : MonoBehaviour
             {
                 if(selectedObject != null)
                 {
-                    selectedObject.GetComponent<MeshRenderer>().material.color = Color.white;
+                    //selectedObject.GetComponent<MeshRenderer>().material.color = Color.white;
+                    selectedObject.GetComponent("Halo").GetType().GetProperty("enabled").SetValue(selectedObject.GetComponent("Halo"), false, null);
                     selectedObject.GetComponent<DataPoint>().HideDisplay();
                 }
 
                 selectedObject = hit.collider.gameObject;
-                selectedObject.GetComponent<MeshRenderer>().material.color = Color.red;
+                //selectedObject.GetComponent<MeshRenderer>().material.color = Color.red;
+                selectedObject.GetComponent("Halo").GetType().GetProperty("enabled").SetValue(selectedObject.GetComponent("Halo"), true, null);
                 selectedObject.GetComponent<DataPoint>().ShowDisplay();
                 //Debug.Log("clicked " + selectedObject.name);
             }
