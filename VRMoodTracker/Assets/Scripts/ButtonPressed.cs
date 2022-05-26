@@ -59,7 +59,7 @@ public class ButtonPressed : MonoBehaviour
 		{
 			// Call this to continue receiving HandHoverUpdate messages,
 			// and prevent the hand from hovering over anything else
-			hand.HoverLock(interactable);
+			//hand.HoverLock(interactable);
 
 			//Save emotion, date, and time
 			MoodPressed = ButtonMood;
@@ -76,7 +76,7 @@ public class ButtonPressed : MonoBehaviour
 			hand.DetachObject(gameObject);
 
 			// Call this to undo HoverLock
-			hand.HoverUnlock(interactable);
+			//hand.HoverUnlock(interactable);
 			SceneManager.LoadScene(sceneName);
 			// Restore position/rotation
 			//transform.position = oldPosition;
