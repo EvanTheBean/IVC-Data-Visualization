@@ -130,7 +130,28 @@ public class ReadingCSV : MonoBehaviour
                 NumOfSurprise++;
             }
         }
+    }
+    /*This method will go through for each mood and figure out the dates. 
+     *It will compare the dates with each other to find the most recent.
+     * It will only keep the most recent dates for each emotion.
+     * It will then start the next function "Visual Creator"
+     */
+
+    /* Helpful Resources
+     * https://www.tutorialspoint.com/datetime-compare-method-in-chash
+     * https://www.codegrepper.com/code-examples/csharp/c%23+how+to+compare+2+dates+without+time
+     * https://docs.microsoft.com/en-us/dotnet/standard/base-types/parsing-datetime
+     * https://www.c-sharpcorner.com/UploadFile/manas1/string-to-datetime-conversion-in-C-Sharp/
+     */
+
+    public void DateParser()
+    {
+        //This method will through for each mood and figure out the dates.
+        foreach (Moods m in moodList)
+        {
+            //It will compare the dates with each other to find the most recent.
+        }
         //Visual Creator Goes Here
-        VisualCreator.GetComponent<VisualCreator>().visualCreator(NumOfJoy, NumOfLove, NumOfFear, NumOfAnger, NumOfSadness, NumOfSurprise);
+        //VisualCreator.GetComponent<VisualCreator>().visualCreator(NumOfJoy, NumOfLove, NumOfFear, NumOfAnger, NumOfSadness, NumOfSurprise);
     }
 }

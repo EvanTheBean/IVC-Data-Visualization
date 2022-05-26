@@ -25,12 +25,16 @@ public class VisualCreator : MonoBehaviour
 
         if (String.Compare(sceneName, "PaintBlobVis", false) == 0)
         {
+            // Changing the size of the spheres to match the amount of times the feeling is felt
             joySphere.transform.localScale = new Vector3( joy, joy, joy);
             loveSphere.transform.localScale = new Vector3(love, love, love);
             fearSphere.transform.localScale = new Vector3(fear, fear, fear);
             angerSphere.transform.localScale = new Vector3(anger, anger, anger);
             sadnessSphere.transform.localScale = new Vector3(sadness, sadness, sadness);
             surpriseSphere.transform.localScale = new Vector3(surprise, surprise, surprise);
+
+            // Parsing the different dates to figure out which is the most recent
+
         }
     }
 }
