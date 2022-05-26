@@ -21,6 +21,7 @@ public class HeatMapShaderMath : MonoBehaviour
             for (int x = 0; x < texture.width; x += 1)
             {
                 texture.SetPixel(x, y, new Color(0,0,0,0));
+                textureFloats[x,y]= new Color(0,0,0,0);
             }
         }
 
@@ -34,45 +35,45 @@ public class HeatMapShaderMath : MonoBehaviour
                 if(hits.Length > 0)
                 {
                     Color color = new Color(hits.Length/5f, 0, 0, 1);
-                    Debug.Log(color + " " + x + " " + y + "CURRENT");
-                    texture.SetPixel(x, y, color);
-                    textureFloats[x,y] = color;
-                    //texture.Apply();
-
-                    //Color colorY = texture.GetPixel(x, y - 10);
-                    Color colorY = textureFloats[x, y - 10];
-                    Debug.Log(colorY + " " + x + " " + (y - 10) + "High Y");
-                    for (int i = y-9; i < y; i++)
+                    for (int i = x - 5; i <= x + 5; i++)
                     {
-                        Color temp = Color.Lerp(colorY, color, (i-y)/10f);
-                        Debug.Log(temp);
-                        texture.SetPixel(x, i, temp);
-                        textureFloats[x,i] = temp;
-                    }
-                    //texture.Apply();
-
-                    for (int i = y -9; i <= y; i ++)
-                    {
-                        //Color colorX = texture.GetPixel(x - 10, i);
-                        Color colorX = textureFloats[x - 10, i];
-                        //Color colorX2 = texture.GetPixel(x + 10, i);
-                        Color colorX2 = textureFloats[x + 10, i];
-                        Debug.Log(colorX + " " + colorX2 + " " + (x-10) + " " + (x+10) + " high and low x :)");
-                        for (int j = x - 9; j <= x; j++)
+                        for (int j = y - 5; j <= y + 5; j++)
                         {
-                            Color temp = Color.Lerp(colorX, colorX2, (j - x) / 10f);
-                            //Debug.Log(temp);
-                            texture.SetPixel(j, i, temp);
-                            textureFloats[j, i] = temp; 
+                            //Color temp = color - new Color(((0.2f) * new Vector2(Mathf.Abs(i - x), Mathf.Abs(j - y)).magnitude), 0, 0, 0);
+                            //textureFloats[i, j] += temp;
+                            texture.SetPixel(i, j, color);
                         }
                     }
-                    //texture.Apply();
+                    /*
+                    for (int i = x - 10; i <= x + 10; i++)
+                    {
+                        for(int j = y - 10; j <= y + 10; j++)
+                        {
+                            Color temp = color - new Color(((0.2f) * new Vector2(Mathf.Abs(i-x), Mathf.Abs(j-y)).magnitude), 0, 0, 0);
+                            //textureFloats[i, j] += temp;
+                            texture.SetPixel(i,j, temp + texture.GetPixel(i,j));
+                        }
+                    }
+                    */
                 }
 
                 //Debug.Log(x + " " + y + " " + hits.Length);
                 //Debug.Log(color);
             }
         }
+
+       /*
+        for (int y = 0; y < texture.height; y ++)
+        {
+            for (int x = 0; x < texture.width; x ++)
+            {
+                texture.SetPixel(x,y, textureFloats[x, y]);
+                Debug.Log(textureFloats[x, y]);
+            }
+        }
+       */
+        
+
         texture.Apply();
 
         material.SetTexture("_Texture", texture);
@@ -81,6 +82,52 @@ public class HeatMapShaderMath : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        for (int y = 0; y < texture.height; y += 1)
+        {
+            for (int x = 0; x < texture.width; x += 1)
+            {
+                texture.SetPixel(x, y, new Color(0, 0, 0, 0));
+                textureFloats[x, y] = new Color(0, 0, 0, 0);
+            }
+        }
+
+        for (int y = 0; y < texture.height; y += 10)
+        {
+            for (int x = 0; x < texture.width; x += 10)
+            {
+                Ray ray = Camera.main.ScreenPointToRay(new Vector2(x, y));
+                RaycastHit[] hits = Physics.RaycastAll(ray, 100f);
+
+
+                if (hits.Length > 0)
+                {
+                    Color color = new Color(hits.Length / 5f, 0, 0, 1);
+                    for (int i = x - 5; i <= x + 5; i++)
+                    {
+                        for (int j = y - 5; j <= y + 5; j++)
+                        {
+                            //Color temp = color - new Color(((0.2f) * new Vector2(Mathf.Abs(i - x), Mathf.Abs(j - y)).magnitude), 0, 0, 0);
+                            //textureFloats[i, j] += temp;
+                            texture.SetPixel(i, j, color);
+                        }
+                    }
+                    /*
+                    for (int i = x - 10; i <= x + 10; i++)
+                    {
+                        for(int j = y - 10; j <= y + 10; j++)
+                        {
+                            Color temp = color - new Color(((0.2f) * new Vector2(Mathf.Abs(i-x), Mathf.Abs(j-y)).magnitude), 0, 0, 0);
+                            //textureFloats[i, j] += temp;
+                            texture.SetPixel(i,j, temp + texture.GetPixel(i,j));
+                        }
+                    }
+                    */
+                }
+
+                //Debug.Log(x + " " + y + " " + hits.Length);
+                //Debug.Log(color);
+            }
+        }
+        texture.Apply();
     }
 }

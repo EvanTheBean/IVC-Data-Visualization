@@ -1106,6 +1106,7 @@ GameObject:
   - component: {fileID: 1194492338}
   - component: {fileID: 1194492337}
   - component: {fileID: 1194492341}
+  - component: {fileID: 1194492342}
   m_Layer: 0
   m_Name: MainCamera
   m_TagString: MainCamera
@@ -1130,7 +1131,7 @@ MonoBehaviour:
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
   m_Cameras: []
-  m_RendererIndex: 1
+  m_RendererIndex: 0
   m_VolumeLayerMask:
     serializedVersion: 2
     m_Bits: 1
@@ -1225,6 +1226,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 2100000, guid: 1ae7438a643bfa24789b08e03b982030, type: 2}
+--- !u!114 &1194492342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1194492336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbb60be7a13e3d94ba1bcf25b2170960, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InvertY: 1
+  simulate3ButtonMouse: 0
+  zoomSpeed: 5
+  moveSpeed: 1
+  rotSpeeds: {x: 5, y: 5}
+  yRotLimits: {x: -40, y: 60}
+  selectedObject: {fileID: 0}
 --- !u!1 &1260918353
 GameObject:
   m_ObjectHideFlags: 0

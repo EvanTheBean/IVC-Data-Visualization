@@ -63,6 +63,7 @@ Material:
     - _BUILTIN_QueueOffset: 0
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _screenIntesity: 1
     m_Colors: []
   m_BuildTextureStacks: []
 --- !u!114 &3736016063259119988
