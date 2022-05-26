@@ -463,7 +463,7 @@ public class Loader : EditorWindow
             }
             if(!holder.axisTypes.Contains(axisType.Color))
             {
-                temp.GetComponent<MeshRenderer>().material.color = Color.white;
+                //temp.GetComponent<MeshRenderer>().material.color = Color.white;
             }
             if (!holder.axisTypes.Contains(axisType.Size))
             {
