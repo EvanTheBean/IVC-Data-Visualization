@@ -14,7 +14,7 @@ public class WritingCSV : MonoBehaviour
     {
         //TextAsset moodSpreadsheet = Resources.Load<TextAsset>("MoodTracker"); //Finds the MoodTracker CSV File in the folders and references it
         string filepath = "Assets/Resources/MoodTracker.csv"; //Saves it as a String
-        string sceneName = "DataVisScreen";
+        string sceneName = "PaintBlobVis";
         try
         {
             using (System.IO.StreamWriter file = new System.IO.StreamWriter(@filepath, true))

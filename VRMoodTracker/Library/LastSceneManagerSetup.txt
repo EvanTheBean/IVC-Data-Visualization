@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/Scenes/3D Scenes/DataVisScreen.unity
+- path: Assets/Scenes/3D Scenes/MoodSelectionScreen.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0

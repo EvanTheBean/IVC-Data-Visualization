@@ -14,9 +14,15 @@ public class ReadingCSV : MonoBehaviour
     public int NumOfSadness;
     public int NumOfSurprise;
 
+    public GameObject VisualCreator;
+    public GameObject Pedestal;
+    public GameObject Button;
+
     //Reads the file and sorts it into a list
     public void ReadFile()
     {
+        Destroy(Pedestal);
+        Destroy(Button);
         TextAsset moodSpreadsheet = Resources.Load<TextAsset>("MoodTracker"); //Finds the MoodTracker CSV File in the folders and references it
 
         //Testing to make sure that the CSV File is being read
@@ -40,10 +46,7 @@ public class ReadingCSV : MonoBehaviour
             moodList.Add(m);
          }
 
-        //foreach (Moods m in moodList) //To test that they were all parsed and turned into their own Moods in the list
-        //{
-           // Debug.Log(m.mood);
-        //}
+         JoyCounter();
     }
 
     //Figures out the amount of times the user inputted that they felt Joy
@@ -57,6 +60,7 @@ public class ReadingCSV : MonoBehaviour
                 NumOfJoy++;
             }
         }
+        LoveCounter();
     }
 
     //Figures out the amount of times the user inputted that they felt Love
@@ -70,6 +74,7 @@ public class ReadingCSV : MonoBehaviour
                 NumOfLove++;
             }
         }
+        FearCounter();
     }
 
     //Figures out the amount of times the user inputted that they felt Fear
@@ -83,6 +88,7 @@ public class ReadingCSV : MonoBehaviour
                 NumOfFear++;
             }
         }
+        AngerCounter();
     }
 
     //Figures out the amount of times the user inputted that they felt Anger
@@ -96,6 +102,7 @@ public class ReadingCSV : MonoBehaviour
                 NumOfAnger++;
             }
         }
+        SadnessCounter();
     }
 
     //Figures out the amount of times the user inputted that they felt Sadness
@@ -109,6 +116,7 @@ public class ReadingCSV : MonoBehaviour
                 NumOfSadness++;
             }
         }
+        SurpriseCounter();
     }
 
     //Figures out the amount of times the user inputted that they felt Surprise
@@ -122,5 +130,7 @@ public class ReadingCSV : MonoBehaviour
                 NumOfSurprise++;
             }
         }
+        //Visual Creator Goes Here
+        VisualCreator.GetComponent<VisualCreator>().visualCreator(NumOfJoy, NumOfLove, NumOfFear, NumOfAnger, NumOfSadness, NumOfSurprise);
     }
 }
