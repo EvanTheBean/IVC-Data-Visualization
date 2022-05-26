@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: confusion
-  m_Shader: {fileID: -6465566751694194690, guid: d1c0894061530b445a544869d1ce2f1f, type: 3}
+  m_Shader: {fileID: 4800000, guid: 3b85026a5f11791498a2ab52ab43386e, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -34,7 +34,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 8400000, guid: 7371b61f5c9a3514099b26446fd5f5b8, type: 2}
+        m_Texture: {fileID: 10309, guid: 0000000000000000f000000000000000, type: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Texture:
@@ -63,7 +63,7 @@ Material:
     - _BUILTIN_QueueOffset: 0
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _screenIntesity: 1
+    - _screenIntesity: 0.8
     m_Colors: []
   m_BuildTextureStacks: []
 --- !u!114 &3736016063259119988
