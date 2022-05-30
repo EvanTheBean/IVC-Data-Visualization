@@ -12,24 +12,30 @@ public class AxisSetter : MonoBehaviour
     {
         if (other.tag == "axisball")
         {
-            if (axisBall != null)
-            {
-                axisBall.transform.SetParent(null);
-                axisBall.Unlock();
-                axisBall = null;
-            }
-
             GameObject obj = other.gameObject;
-            while (axisBall == null && obj != null)
+            AxisBall newAxisBall = null;
+            while (newAxisBall == null && obj != null)
             {
-                axisBall = obj.GetComponentInParent<AxisBall>();
+                newAxisBall = obj.GetComponentInParent<AxisBall>();
                 obj = obj.transform.parent.gameObject;
             }
+            Debug.Log(obj);
+            Debug.Log(newAxisBall);
+            if (newAxisBall != axisBall)
+            {
+                if (axisBall != null)
+                {
+                    axisBall.transform.SetParent(null);
+                    axisBall.Unlock();    
+                }
 
-            axisBall.Lock();
-            axisBall.transform.SetParent(transform);
-            axisBall.transform.position = Vector3.zero;
-            ScatterGenerator.Instance.SetPositions(axisBall.categoryIndex, axis);
+                axisBall = newAxisBall;
+                axisBall.transform.SetParent(transform);
+                axisBall.transform.localPosition = Vector3.zero;
+
+                axisBall.Lock();
+                ScatterGenerator.Instance.SetPositions(axisBall.categoryIndex, axis);
+            }
         }
     }
 }

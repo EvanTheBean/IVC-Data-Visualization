@@ -25,6 +25,8 @@ public class AxisBall : MonoBehaviour
     {
         rb.useGravity = false;
         rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        rb.transform.localPosition = Vector3.zero;
     }
 
     public void Unlock()

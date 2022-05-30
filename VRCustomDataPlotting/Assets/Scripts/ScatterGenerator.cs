@@ -9,6 +9,8 @@ public class ScatterGenerator : MonoBehaviour
     [SerializeField] DataPoint dataPointPrefab; 
     List<DataPoint> dataPoints = new List<DataPoint>();
     bool generated = false;
+
+    [SerializeField] Transform scatterParent;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,7 +37,7 @@ public class ScatterGenerator : MonoBehaviour
         {
             foreach (DataObject obj in DataReader.Instance.GetDataObjects())
             {
-                DataPoint newDataPoint = Instantiate(dataPointPrefab);
+                DataPoint newDataPoint = Instantiate(dataPointPrefab, scatterParent);
                 newDataPoint.SetUp(obj);
                 newDataPoint.SetPosition(categoryIndex, axis);
                 dataPoints.Add(newDataPoint);

@@ -136,7 +136,7 @@ public class DataReader : MonoBehaviour
 
     private void SpawnAxisBalls()
     {
-        Vector3 instantiatePos = new Vector3(-6, 0, 2);
+        Vector3 instantiatePos = new Vector3(-6, 2, 2);
         for(int i = 0; i < dataCategories.Length; i++)
         {
             if (dataTypes[i] == dataType.Float || dataTypes[i] == dataType.Int)
@@ -153,4 +153,9 @@ public class DataReader : MonoBehaviour
         return dataObjects;
     }
 
+
+    public string GetCategory(int index)
+    {
+        return dataCategories[index];
+    }
 }

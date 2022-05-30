@@ -15,4 +15,9 @@ public class DataObject
     {
         return data[index];
     }
+
+    public int Length()
+    {
+        return data.Length;
+    }
 }
