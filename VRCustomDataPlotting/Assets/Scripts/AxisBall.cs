@@ -9,10 +9,11 @@ public class AxisBall : MonoBehaviour
     public int categoryIndex { get; private set; }
 
     Rigidbody rb;
-
+    Vector3 originalPosition;
     private void Start()
     {
         rb = GetComponentInChildren<Rigidbody>();
+        originalPosition = transform.position;
     }
 
     public void SetUp(string text, int index)
@@ -32,5 +33,6 @@ public class AxisBall : MonoBehaviour
     public void Unlock()
     {
         rb.useGravity = true;
+        transform.position = originalPosition;
     }
 }

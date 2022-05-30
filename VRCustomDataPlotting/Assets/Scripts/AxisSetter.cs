@@ -19,8 +19,7 @@ public class AxisSetter : MonoBehaviour
                 newAxisBall = obj.GetComponentInParent<AxisBall>();
                 obj = obj.transform.parent.gameObject;
             }
-            Debug.Log(obj);
-            Debug.Log(newAxisBall);
+
             if (newAxisBall != axisBall)
             {
                 if (axisBall != null)

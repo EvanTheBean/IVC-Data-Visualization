@@ -14,7 +14,6 @@ public enum axis
 public class DataPoint : MonoBehaviour
 {
     DataObject data;
-    float scale = 0.25f;
 
 	List<axis> undefined = new List<axis>();
 
@@ -23,16 +22,15 @@ public class DataPoint : MonoBehaviour
         data = dataObj;
     }
 
-    public void SetPosition(int categoryIndex, axis axis)
+    public float SetPosition(int categoryIndex, axis axis, float scale)
     {
         Vector3 newPos = transform.localPosition;
         
         if (!float.TryParse(data.GetDataAt(categoryIndex), out float val))
         {
-            Debug.Log("no data for " + data.GetDataAt(1) + " found at index " + categoryIndex.ToString());
             gameObject.SetActive(false);
 			undefined.Add(axis);
-            return;
+            return 0.0f;
         }
 
 		if (undefined.Contains(axis))
@@ -42,7 +40,7 @@ public class DataPoint : MonoBehaviour
 
 		if (undefined.Count != 0)
         {
-			return;
+			return 0.0f;
         }
 
         val *= scale;
@@ -59,8 +57,9 @@ public class DataPoint : MonoBehaviour
                 newPos.z = val;
                 break;
         }
-
+		
         transform.localPosition = newPos;
+		return val;
     }
 
 
