@@ -43,7 +43,7 @@ public class CameraController2 : MonoBehaviour
                 transform.Rotate(new Vector3(Input.GetAxis("Mouse Y") * rotSpeeds.y * invert, 0, 0), Space.Self);
 
                 //Limit angles here :)
-                Debug.Log(transform.localEulerAngles);
+                //Debug.Log(transform.localEulerAngles);
                 if (transform.rotation.eulerAngles.z > 1 || transform.rotation.eulerAngles.z < -1)
                 {
                     transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, 0);
@@ -51,12 +51,12 @@ public class CameraController2 : MonoBehaviour
 
                 if (transform.rotation.eulerAngles.x < yRotLimits.y && transform.rotation.eulerAngles.x > 180)
                 {
-                    Debug.Log("Up");
+                    //Debug.Log("Up");
                     transform.rotation = Quaternion.Euler(yRotLimits.y, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
                 }
                 else if (transform.rotation.eulerAngles.x > yRotLimits.x && transform.rotation.eulerAngles.x < 180)
                 {
-                    Debug.Log("Down");
+                    //Debug.Log("Down");
                     transform.rotation = Quaternion.Euler(yRotLimits.x, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
                 }
 

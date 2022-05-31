@@ -293,6 +293,8 @@ public class Loader : EditorWindow
 
             tempDP.displayBox = temp.GetComponentInChildren<TextMeshProUGUI>();
         }
+
+        FindObjectOfType<HeatMapShaderMath>().updatePointList();
     }
 
     void UpdateObjects()

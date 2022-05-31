@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - axisText
+  - point
   layers:
   - Default
   - TransparentFX

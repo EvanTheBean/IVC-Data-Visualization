@@ -2,7 +2,22 @@ Shader "Unlit/HeatMapCode"
 {
     Properties
     {
-        _MainTex ("Texture", 2D) = "white" {}
+        _MainTex("Texture", 2D) = "white" {}
+    _Color0("Color 0",Color) = (0,0,0,1)
+      _Color1("Color 1",Color) = (0,.9,.2,1)
+      _Color2("Color 2",Color) = (.9,1,.3,1)
+      _Color3("Color 3",Color) = (.9,.7,.1,1)
+      _Color4("Color 4",Color) = (1,0,0,1)
+
+      _Range0("Range 0",Range(0,1)) = 0.
+      _Range1("Range 1",Range(0,1)) = 0.25
+      _Range2("Range 2",Range(0,1)) = 0.5
+      _Range3("Range 3",Range(0,1)) = 0.75
+      _Range4("Range 4",Range(0,1)) = 1
+
+      _Diameter("Diameter",Range(0,1)) = 1.0
+      _Strength("Strength",Range(.1,4)) = 1.0
+      _Visibility("Visibility",Range(0,1)) = 1.0
     }
     SubShader
     {
@@ -49,6 +64,7 @@ Shader "Unlit/HeatMapCode"
             float _Range4;
             float _Diameter;
             float _Strength;
+            float _Visibility;
 
             v2f vert (appdata v)
             {
@@ -62,33 +78,28 @@ Shader "Unlit/HeatMapCode"
             float4 colors[5];
             float pointranges[5];
 
-            float _Hits[3 * 32];
+            float _Hits[4 * 128];
             float _HitCount = 0;
 
-            void initalize()
+            void init()
             {
-                colors[0] = float4(0,0,0,0);
-                colors[1] = float4(1, 0, 0, 1);
-                colors[2] = float4(0, 1, 0, 1);
-                colors[3] = float4(0, 0, 1, 1);
-                colors[4] = float4(1, 1, 1, 1);
-                pointranges[0] = 0;
-                pointranges[1] = 0.25;
-                pointranges[2] = 0.5;
-                pointranges[3] = 0.75;
-                pointranges[4] = 1.0;
-
-                _HitCount = 1;
-                _Hits[0] = 0;
-                _Hits[1] = 1;
-                _Hits[2] = 2;
+                colors[0] = _Color0;
+                colors[1] = _Color1;
+                colors[2] = _Color2;
+                colors[3] = _Color3;
+                colors[4] = _Color4;
+                pointranges[0] = _Range0;
+                pointranges[1] = _Range1;
+                pointranges[2] = _Range2;
+                pointranges[3] = _Range3;
+                pointranges[4] = _Range4;
             }
 
-            float distsq(float2 a, float2 b)
+            float distsq(float2 a, float2 b, float area_of_effect)
             {
-                float area_of_effect_size = 1.0f;
+                //float area_of_effect_size = 1.0f;
 
-                return  pow(max(0.0, 1.0 - distance(a, b) / area_of_effect_size), 2.0);
+                return  pow(max(0.0, 1.0 - distance(a, b) / area_of_effect), 2.0);
             }
 
             float4 pixelHeat(float weight)
@@ -113,7 +124,9 @@ Shader "Unlit/HeatMapCode"
                         float4 color_range = colors[i] - colors[i - 1];
                         float4 color_contribution = color_range * ratio;
 
-                        return colors[i - 1] + color_contribution;
+                        float4 new_color = colors[i - 1] + color_contribution;
+                        return new_color;
+                        //return colors[i - 1] + color_contribution;
                     }
                 }
 
@@ -122,24 +135,35 @@ Shader "Unlit/HeatMapCode"
 
             fixed4 frag (v2f i) : SV_Target
             {
+                colors[0] = _Color0;
+                colors[1] = _Color1;
+                colors[2] = _Color2;
+                colors[3] = _Color3;
+                colors[4] = _Color4;
+                pointranges[0] = _Range0;
+                pointranges[1] = _Range1;
+                pointranges[2] = _Range2;
+                pointranges[3] = _Range3;
+                pointranges[4] = _Range4;
+
                 fixed4 col = tex2D(_MainTex, i.uv);
 
             float2 uv = i.uv;
-            uv = uv * 4 - float2(2.0, 2.0);
+            uv = uv * 10 - float2(5.0, 5.0);
 
             float totalWeight = 0;
             for (int i = 0; i < _HitCount; i++)
             {
-                float pt_intensity = _Hits[i * 3 + 2];
-                float2 work_pt = float2(_Hits[i * 3], _Hits[i*3 +1]) * pt_intensity;
+                float pt_intensity = _Hits[i * 4 + 2] * _Strength;
+                float2 work_pt = float2(_Hits[i * 4], _Hits[i * 4 + 1]);// *pt_intensity;
 
-                totalWeight += 0.5 * distsq(uv, work_pt) * pt_intensity;
+                totalWeight += 0.5 * distsq(uv, work_pt, _Hits[i * 4 + 3]) * pt_intensity;
 
             }
 
             float4 heat = pixelHeat(totalWeight);
 
-            return col + heat;
+            return (col * (1 - heat.a * _Visibility)) + (heat * _Visibility);
             }
             ENDCG
         }
