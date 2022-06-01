@@ -37,7 +37,6 @@ public class UIFileChooser : MonoBehaviour
 
 		// Dialog is closed
 		// Print whether the user has selected some files/folders or cancelled the operation (FileBrowser.Success)
-		Debug.Log(FileBrowser.Success);
 
 		if (FileBrowser.Success)
 		{

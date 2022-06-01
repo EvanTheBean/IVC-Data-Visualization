@@ -8,7 +8,8 @@ public enum axis
 {
     X,
     Y,
-    Z
+    Z,
+	NULL
 }
 
 public class DataPoint : MonoBehaviour
@@ -59,7 +60,7 @@ public class DataPoint : MonoBehaviour
         }
 		
         transform.localPosition = newPos;
-		return val;
+		return val / scale;
     }
 
 
