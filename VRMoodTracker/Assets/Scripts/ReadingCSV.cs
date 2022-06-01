@@ -14,6 +14,24 @@ public class ReadingCSV : MonoBehaviour
     public int NumOfSadness;
     public int NumOfSurprise;
 
+    public string ClosestDateJoy = "";
+    public string CurrentDateJoy;
+
+    public string ClosestDateLove = "";
+    public string CurrentDateLove;
+
+    public string ClosestDateFear = "";
+    public string CurrentDateFear;
+
+    public string ClosestDateAnger = "";
+    public string CurrentDateAnger;
+
+    public string ClosestDateSadness = "";
+    public string CurrentDateSadness;
+
+    public string ClosestDateSurprise = "";
+    public string CurrentDateSurprise;
+
     public GameObject VisualCreator;
     public GameObject Pedestal;
     public GameObject Button;
@@ -130,6 +148,7 @@ public class ReadingCSV : MonoBehaviour
                 NumOfSurprise++;
             }
         }
+        DateParser();
     }
     /*This method will go through for each mood and figure out the dates. 
      *It will compare the dates with each other to find the most recent.
@@ -149,9 +168,134 @@ public class ReadingCSV : MonoBehaviour
         //This method will through for each mood and figure out the dates.
         foreach (Moods m in moodList)
         {
-            //It will compare the dates with each other to find the most recent.
+            string CurrentDate = m.date;
+            DateTime CurrentDateDT = DateTime.Parse(CurrentDate);
+
+            if (String.Compare(m.mood, "Joy", true) == 0)
+            {
+                if (ClosestDateJoy.Length == 0) //If the string "ClosestDateJoy" is empty
+                {
+                    ClosestDateJoy = CurrentDate;
+                }
+                else
+                {
+                    DateTime ClosestDateJ = DateTime.Parse(ClosestDateJoy);
+
+                    if (ClosestDateJ.CompareTo(CurrentDateDT) < 0) //If the closest date happened before than the current date
+                    {
+                        ClosestDateJoy = CurrentDate;
+                    }
+                    else
+                    {
+                        ClosestDateJoy = ClosestDateJoy;
+                    }
+                }
+
+            }
+            else if (String.Compare(m.mood, "Love", true) == 0)
+            {
+                if (ClosestDateLove.Length == 0) //If the string "ClosestDateLove" is empty
+                {
+                    ClosestDateLove = CurrentDate;
+                }
+                else
+                {
+                    DateTime ClosestDateL = DateTime.Parse(ClosestDateLove);
+
+                    if (ClosestDateL.CompareTo(CurrentDateDT) < 0) //If the closest date happened before than the current date
+                    {
+                        ClosestDateLove = CurrentDate;
+                    }
+                    else
+                    {
+                        ClosestDateLove = ClosestDateLove;
+                    }
+                }
+            }
+            else if (String.Compare(m.mood, "Fear", true) == 0)
+            {
+                if (ClosestDateFear.Length == 0) //If the string "ClosestDateFear" is empty
+                {
+                    ClosestDateFear = CurrentDate;
+                }
+                else
+                {
+                    DateTime ClosestDateF = DateTime.Parse(ClosestDateFear);
+
+                    if (ClosestDateF.CompareTo(CurrentDateDT) < 0) //If the closest date happened before than the current date
+                    {
+                        ClosestDateFear = CurrentDate;
+                    }
+                    else
+                    {
+                        ClosestDateFear = ClosestDateFear;
+                    }
+                }
+            }
+            else if (String.Compare(m.mood, "Anger", true) == 0)
+            {
+                if (ClosestDateAnger.Length == 0) //If the string "ClosestDateAnger" is empty
+                {
+                    ClosestDateAnger = CurrentDate;
+                }
+                else
+                {
+                    DateTime ClosestDateA = DateTime.Parse(ClosestDateAnger);
+
+                    if (ClosestDateA.CompareTo(CurrentDateDT) < 0) //If the closest date happened before than the current date
+                    {
+                        ClosestDateAnger = CurrentDate;
+                    }
+                    else
+                    {
+                        ClosestDateAnger = ClosestDateAnger;
+                    }
+                }
+            }
+            else if (String.Compare(m.mood, "Sadness", true) == 0)
+            {
+                if (ClosestDateSadness.Length == 0) //If the string "ClosestDateSadness" is empty
+                {
+                    ClosestDateSadness = CurrentDate;
+                }
+                else
+                {
+                    DateTime ClosestDateSd = DateTime.Parse(ClosestDateSadness);
+
+                    if (ClosestDateSd.CompareTo(CurrentDateDT) < 0) //If the closest date happened before than the current date
+                    {
+                        ClosestDateSadness = CurrentDate;
+                    }
+                    else
+                    {
+                        ClosestDateSadness = ClosestDateSadness;
+                    }
+
+                }
+            }
+            else if (String.Compare(m.mood, "Surprise", true) == 0)
+            {
+                if (ClosestDateSurprise.Length == 0) //If the string "ClosestDateSurprise" is empty
+                {
+                    ClosestDateSurprise = CurrentDate;
+                }
+                else
+                {
+                    DateTime ClosestDateSu = DateTime.Parse(ClosestDateSurprise);
+
+                    if (ClosestDateSu.CompareTo(CurrentDateDT) < 0) //If the closest date happened before than the current date
+                    {
+                        ClosestDateSurprise = CurrentDate;
+                    }
+                    else
+                    {
+                        ClosestDateSurprise = ClosestDateSurprise;
+                    }
+                }
+            }
         }
+
         //Visual Creator Goes Here
-        //VisualCreator.GetComponent<VisualCreator>().visualCreator(NumOfJoy, NumOfLove, NumOfFear, NumOfAnger, NumOfSadness, NumOfSurprise);
+        VisualCreator.GetComponent<VisualCreator>().visualCreator(NumOfJoy, NumOfLove, NumOfFear, NumOfAnger, NumOfSadness, NumOfSurprise, ClosestDateJoy, ClosestDateLove, ClosestDateFear, ClosestDateAnger, ClosestDateSadness, ClosestDateSurprise);
     }
 }
