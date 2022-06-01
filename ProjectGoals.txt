@@ -1,0 +1,4 @@
+For this project, the design question is:
+How to show "word data" in an interactive way?
+
+I am inspired by Danmaku, the idea of having comments sort of "fly" across the screen. I was thinking that the player could then grab it (the comment) and see the data behind how many people commented and at what times it was commented.
