@@ -164,6 +164,7 @@ Shader "Unlit/HeatMapCode"
 
                 float4 heat = pixelHeat(totalWeight);
 
+                //return col;
                 return (col * (1 - heat.a * _Visibility)) + (heat * _Visibility);
             }
             ENDCG
