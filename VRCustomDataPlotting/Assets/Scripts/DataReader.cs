@@ -20,6 +20,8 @@ public class DataReader : MonoBehaviour
 
     string[] dataCategories;
     dataType[] dataTypes;
+    float[] mins;
+    float[] maxs;
     List<DataObject> dataObjects = new List<DataObject>();
 
     [SerializeField] AxisBall axisBallPrefab;
@@ -104,6 +106,7 @@ public class DataReader : MonoBehaviour
 
             dataTypes[i] = result;
         }
+        FillMinMaxes();
         SpawnAxisBalls();
     }
 
@@ -146,6 +149,41 @@ public class DataReader : MonoBehaviour
                 instantiatePos.x += 1.5f;
             }
         }
+    }
+
+    void FillMinMaxes()
+    {
+        mins = new float[dataCategories.Length];
+        maxs = new float[dataCategories.Length];
+        for (int i =0; i < dataCategories.Length; i++)
+        {
+            mins[i] = float.MaxValue;
+            maxs[i] = float.MinValue;
+        }
+
+        float dataVal;
+        foreach (DataObject dataObj in dataObjects)
+        {
+            for (int i = 0; i < dataCategories.Length; i++)
+            {
+                if (dataTypes[i] == dataType.Float || dataTypes[i] == dataType.Int)
+                {
+                    float.TryParse(dataObj.GetDataAt(i), out dataVal);
+                    if (mins[i] > dataVal) mins[i] = dataVal;
+                    if (maxs[i] < dataVal) maxs[i] = dataVal;
+                }
+            }
+        }
+    }
+
+    public float GetMin(int categoryIndex)
+    {
+        return mins[categoryIndex];
+    }
+
+    public float GetMax(int categoryIndex)
+    {
+        return maxs[categoryIndex];
     }
 
     public List<DataObject> GetDataObjects()

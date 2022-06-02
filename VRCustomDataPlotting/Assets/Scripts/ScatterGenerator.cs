@@ -8,7 +8,7 @@ public class ScatterGenerator : MonoBehaviour
 
     [SerializeField] int axisTickCount = 4;
     [SerializeField] UIAxisLabel axisTickPrefab;
-    [SerializeField] int[] maxAxisVal = new int[3];
+    public float[] maxAxisVal = new float[5];
 
     [SerializeField] DataPoint dataPointPrefab; 
     List<DataPoint> dataPoints = new List<DataPoint>();
@@ -17,9 +17,9 @@ public class ScatterGenerator : MonoBehaviour
     [SerializeField] Transform scatterParent;
 
     const float DEFAULT_NORMSCALE = 1;
-    float[] axisScales = new float[3] { 0.5f, 0.5f, 0.5f };
-    float[] normalizeScale = new float[3] { DEFAULT_NORMSCALE, DEFAULT_NORMSCALE, DEFAULT_NORMSCALE};
-    int[] axisFactors = new int[3] { -1, -1, -1 };
+    float[] axisScales = new float[5] { 0.5f, 0.5f, 0.5f, 0.5f, 0.5f };
+    float[] normalizeScale = new float[5] { DEFAULT_NORMSCALE, DEFAULT_NORMSCALE, DEFAULT_NORMSCALE, DEFAULT_NORMSCALE, DEFAULT_NORMSCALE};
+    int[] axisFactors = new int[5] { -1, -1, -1, -1, -1 };
 
     List<UIAxisLabel> axisLabels = new List<UIAxisLabel>();
 
@@ -59,24 +59,19 @@ public class ScatterGenerator : MonoBehaviour
             GeneratePoints();
         }
 
-        float maxVal = 0, val;
-        foreach (DataPoint dataPoint in dataPoints)
-        {
-            val = dataPoint.SetPosition(categoryIndex, axis, axisScales[(int)axis] * normalizeScale[(int)axis]);
-            if (maxVal < val)
-            {
-                maxVal = val;
-            }
-        }
+        float maxVal = DataReader.Instance.GetMax(categoryIndex);
 
-        if (maxVal > maxAxisVal[(int)axis])
+        if (maxVal > maxAxisVal[(int)axis] && axis != axis.COLOR && axis != axis.SIZE)
         {
             normalizeScale[(int)axis] = maxAxisVal[(int)axis] / maxVal;
-            foreach (DataPoint dataPoint in dataPoints)
-            {
-                val = dataPoint.SetPosition(categoryIndex, axis, axisScales[(int)axis] * normalizeScale[(int)axis]);
-            }
         }
+
+        foreach (DataPoint dataPoint in dataPoints)
+        {
+           dataPoint.SetPosition(categoryIndex, axis, axisScales[(int)axis] * normalizeScale[(int)axis]);
+        }
+
+        
         UpdateAxisLabels(axis);
     }
 
@@ -95,6 +90,7 @@ public class ScatterGenerator : MonoBehaviour
 
     void SpawnAxisTicks(axis axis)
     {
+
         Vector3 instPos = Vector3.zero;
         for (int i = 0; i < axisTickCount; i++)
         {
@@ -121,6 +117,11 @@ public class ScatterGenerator : MonoBehaviour
 
     bool CheckAxisTicks(axis axis)
     {
+        if (axis != axis.X && axis != axis.Y && axis != axis.Z)
+        {
+            return true;
+        }
+
         bool valid = false;
         foreach (UIAxisLabel label in axisLabels)
         {

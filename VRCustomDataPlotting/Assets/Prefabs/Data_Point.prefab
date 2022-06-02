@@ -110,6 +110,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08162aa091629ab41bf1fdbd86152f30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gradient:
+    serializedVersion: 2
+    key0: {r: 0, g: 1, b: 0.9876542, a: 0.39215687}
+    key1: {r: 0.3160377, g: 1, b: 0.35904318, a: 0.39215687}
+    key2: {r: 0.8663286, g: 1, b: 0, a: 0}
+    key3: {r: 1, g: 0.4009434, b: 0.4009434, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 21203
+    ctime2: 46646
+    ctime3: 65535
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 4
+    m_NumAlphaKeys: 2
   generalText: {fileID: 8469477592910001923}
 --- !u!114 &2845295860090008137
 MonoBehaviour:

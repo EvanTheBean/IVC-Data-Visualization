@@ -9,6 +9,8 @@ public enum axis
     X,
     Y,
     Z,
+	COLOR,
+	SIZE,
 	NULL
 }
 
@@ -16,6 +18,7 @@ public class DataPoint : MonoBehaviour
 {
     DataObject data;
 
+	[SerializeField] Gradient gradient;
 	List<axis> undefined = new List<axis>();
 
     public void SetUp(DataObject dataObj)
@@ -44,25 +47,48 @@ public class DataPoint : MonoBehaviour
 			return 0.0f;
         }
 
-        val *= scale;
+        
         gameObject.SetActive(true);
         switch (axis)
         {
             case axis.X:
-                newPos.x = val;
+				val *= scale;
+				newPos.x = val;
                 break;
             case axis.Y:
-                newPos.y = val;
+				val *= scale;
+				newPos.y = val;
                 break;
             case axis.Z:
-                newPos.z = val;
+				val *= scale;
+				newPos.z = val;
                 break;
+			case axis.COLOR:
+				float gradTime = val / (DataReader.Instance.GetMax(categoryIndex) * scale - DataReader.Instance.GetMin(categoryIndex));
+				
+
+				if (gradTime > 1 )
+                {
+					gradTime = 1;
+				}
+
+				if (gradTime < 0 || float.IsNaN(gradTime))
+				{
+					gradTime = 0;
+				}
+
+				GetComponent<MeshRenderer>().material.color = gradient.Evaluate(gradTime);
+                break;
+            case axis.SIZE:
+				float scalar = Mathf.Lerp(0.1f, ScatterGenerator.Instance.maxAxisVal[4], val / (DataReader.Instance.GetMax(categoryIndex) * scale - DataReader.Instance.GetMin(categoryIndex)));
+				if (float.IsNaN(scalar)) scalar = 0.1f; 
+				transform.localScale = Vector3.one * scalar;
+				break;
         }
 		
         transform.localPosition = newPos;
 		return val / scale;
     }
-
 
 	[SerializeField] TextMeshPro generalText;
 
