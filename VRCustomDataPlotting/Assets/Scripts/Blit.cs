@@ -67,6 +67,11 @@ public class Blit : ScriptableRendererFeature
             if (destination == RenderTargetHandle.CameraTarget)
                 cmd.ReleaseTemporaryRT(m_TemporaryColorTexture.id);
         }
+
+        public override void OnCameraSetup(CommandBuffer cmd, ref RenderingData renderingData)
+        {
+            ConfigureTarget(new RenderTargetIdentifier(source, 0, CubemapFace.Unknown, -1));
+        }
     }
 
     [System.Serializable]

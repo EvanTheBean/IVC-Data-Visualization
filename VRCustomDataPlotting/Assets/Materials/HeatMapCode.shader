@@ -148,22 +148,22 @@ Shader "Unlit/HeatMapCode"
 
                 fixed4 col = tex2D(_MainTex, i.uv);
 
-            float2 uv = i.uv;
-            uv = uv * 10 - float2(5.0, 5.0);
+                float2 uv = i.uv;
+                uv = uv * 10 - float2(5.0, 5.0);
 
-            float totalWeight = 0;
-            for (int i = 0; i < _HitCount; i++)
-            {
-                float pt_intensity = _Hits[i * 4 + 2] * _Strength;
-                float2 work_pt = float2(_Hits[i * 4], _Hits[i * 4 + 1]);// *pt_intensity;
+                float totalWeight = 0;
+                for (int i = 0; i < _HitCount; i++)
+                {
+                    float pt_intensity = _Hits[i * 4 + 2] * _Strength;
+                    float2 work_pt = float2(_Hits[i * 4], _Hits[i * 4 + 1]);// *pt_intensity;
 
-                totalWeight += 0.5 * distsq(uv, work_pt, _Hits[i * 4 + 3]) * pt_intensity;
+                    totalWeight += 0.5 * distsq(uv, work_pt, _Hits[i * 4 + 3]) * pt_intensity;
 
-            }
+                }
 
-            float4 heat = pixelHeat(totalWeight);
+                float4 heat = pixelHeat(totalWeight);
 
-            return (col * (1 - heat.a * _Visibility)) + (heat * _Visibility);
+                return (col * (1 - heat.a * _Visibility)) + (heat * _Visibility);
             }
             ENDCG
         }

@@ -59,7 +59,7 @@ Material:
     m_Floats:
     - _BUILTIN_QueueControl: 0
     - _BUILTIN_QueueOffset: 0
-    - _Diameter: 3.14
+    - _Diameter: 3.08
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Range0: 0
@@ -68,7 +68,7 @@ Material:
     - _Range3: 0.75
     - _Range4: 1
     - _Strength: 4
-    - _Visibility: 0.779
+    - _Visibility: 0.702
     - _screenIntesity: 0.8
     m_Colors:
     - _Color0: {r: 0, g: 0, b: 0, a: 0}

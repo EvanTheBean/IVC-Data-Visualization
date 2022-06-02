@@ -4,8 +4,12 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/PlotWorld.unity
+    guid: 99f48294cc3200c42bec320ade0648f0
   m_configObjects:
     Unity.XR.OpenVR.Settings: {fileID: 11400000, guid: 6f20f3682cb210747b036a9e55be6f71, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 5a437742f29bc1b46b0a6d84b861adb2, type: 2}
     com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 0798c0ba3d015db4ca31c6d2211626b3, type: 2}
+    xr.sdk.mock-hmd.settings: {fileID: 11400000, guid: 9807a13600e958b4890d5f29b62264a0, type: 2}
