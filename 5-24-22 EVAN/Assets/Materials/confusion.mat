@@ -69,13 +69,13 @@ Material:
     - _Range2: 0.5
     - _Range3: 0.75
     - _Range4: 1
-    - _Strength: 1.04
-    - _Visibility: 0.779
+    - _Strength: 0.1
+    - _Visibility: 0.562
     - _screenIntesity: 0.8
     m_Colors:
     - _Color0: {r: 0, g: 0, b: 0, a: 0}
     - _Color1: {r: 0, g: 0.9, b: 0.2, a: 1}
-    - _Color2: {r: 0.9, g: 1, b: 0.3, a: 1}
+    - _Color2: {r: 0.33962262, g: 0.33962262, b: 0.33962262, a: 1}
     - _Color3: {r: 1, g: 0.3582606, b: 0, a: 1}
     - _Color4: {r: 1, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
