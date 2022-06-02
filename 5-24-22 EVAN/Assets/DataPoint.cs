@@ -6,29 +6,17 @@ using TMPro;
 public class DataPoint : MonoBehaviour
 {
 
-public int PassengerId;
+public string NAME;
 
-public int Survived;
+public int x;
 
-public int Class;
+public int y;
 
-public string Name;
+public int z;
 
-public string Sex;
+public float random;
 
-public float Age;
-
-public int Sibsp;
-
-public int Parch;
-
-public int Ticket;
-
-public float Fair;
-
-public string Cabin;
-
-public string Embarked;
+public bool Thisisabool;
 
 public TextMeshProUGUI displayBox;
 public void ShowDisplay()
@@ -36,29 +24,17 @@ public void ShowDisplay()
 displayBox.enabled = true;
 
 displayBox.text = 
-"Passenger Id: " + PassengerId.ToString() + "\n"
+"NAME: " + NAME.ToString() + "\n"
 +
-"Survived: " + Survived.ToString() + "\n"
+"x: " + x.ToString() + "\n"
 +
-"Class: " + Class.ToString() + "\n"
+"y: " + y.ToString() + "\n"
 +
-"Name: " + Name.ToString() + "\n"
+"z: " + z.ToString() + "\n"
 +
-"Sex: " + Sex.ToString() + "\n"
+"random: " + random.ToString() + "\n"
 +
-"Age: " + Age.ToString() + "\n"
-+
-"Sibsp: " + Sibsp.ToString() + "\n"
-+
-"Parch: " + Parch.ToString() + "\n"
-+
-"Ticket: " + Ticket.ToString() + "\n"
-+
-"Fair: " + Fair.ToString() + "\n"
-+
-"Cabin: " + Cabin.ToString() + "\n"
-+
-"Embarked: " + Embarked.ToString() + "\n"
+"This is a bool: " + Thisisabool.ToString() + "\n"
 ;
 }
 public void HideDisplay()
