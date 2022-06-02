@@ -47,7 +47,7 @@ x => Vector2.SqrMagnitude(x.transform.position - this.transform.position)
                     addHitPoint(pointData.x, pointData.y, pointData.z);
                 }
             }
-            Debug.Log(mHitCount);
+            //Debug.Log(mHitCount);
         }
     }
 
