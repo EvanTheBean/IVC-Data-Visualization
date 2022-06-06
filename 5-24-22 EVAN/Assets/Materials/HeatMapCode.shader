@@ -9,13 +9,13 @@ Shader "Unlit/HeatMapCode"
       _Color3("Color 3",Color) = (.9,.7,.1,1)
       _Color4("Color 4",Color) = (1,0,0,1)
 
-      _Range0("Range 0",Range(0,1)) = 0.
-      _Range1("Range 1",Range(0,1)) = 0.25
-      _Range2("Range 2",Range(0,1)) = 0.5
-      _Range3("Range 3",Range(0,1)) = 0.75
-      _Range4("Range 4",Range(0,1)) = 1
+      _Range0("Range 0",Range(0,5)) = 0.
+      _Range1("Range 1",Range(0,5)) = 0.25
+      _Range2("Range 2",Range(0,5)) = 0.5
+      _Range3("Range 3",Range(0,5)) = 0.75
+      _Range4("Range 4",Range(0,5)) = 1
 
-      _Diameter("Diameter",Range(0,1)) = 1.0
+      _Diameter("Diameter",Range(0,2)) = 1.0
       _Strength("Strength",Range(.1,4)) = 1.0
       _Visibility("Visibility",Range(0,1)) = 1.0
     }
@@ -97,7 +97,7 @@ Shader "Unlit/HeatMapCode"
 
             float distsq(float2 a, float2 b, float area_of_effect)
             {
-                //float area_of_effect_size = 1.0f;
+                area_of_effect *= _Diameter;
 
                 return  pow(max(0.0, 1.0 - distance(a, b) / area_of_effect), 2.0);
             }

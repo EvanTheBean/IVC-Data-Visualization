@@ -43,7 +43,7 @@ x => Vector2.SqrMagnitude(x.transform.position - this.transform.position)
                 {
                     pointData.x = (screenPoint.x - (Screen.width / 2f)) / (Screen.width / 2f) * 5f;
                     pointData.y = (screenPoint.y - (Screen.height / 2f)) / (Screen.height / 2f) * 5f;
-                    pointData.z = points[i].transform.localScale.x;
+                    pointData.z = points[i].transform.localScale.x / (this.transform.position - points[i].transform.position).magnitude * 10f;
                     addHitPoint(pointData.x, pointData.y, pointData.z);
                 }
             }
