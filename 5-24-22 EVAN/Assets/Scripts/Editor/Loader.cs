@@ -219,7 +219,7 @@ public class Loader : EditorWindow
 
             string[] lineData = lines[i].Trim().Split(","[0]);
 
-            for(int j = 0; j < lineData.Length; j++)
+            for(int j = 0; j < holder.rowTypes.Count && j < lineData.Length; j++)
             {
                 switch(holder.rowTypes[j])
                 {
@@ -317,7 +317,7 @@ public class Loader : EditorWindow
 
             string[] lineData = lines[i].Trim().Split(","[0]);
 
-            for (int j = 0; j < lineData.Length; j++)
+            for (int j = 0; j < holder.axisTypes.Count && j < lineData.Length; j++)
             {
                 if (holder.axisTypes[j] == axisType.X)
                 {
@@ -395,6 +395,7 @@ public class Loader : EditorWindow
                     {
                         float replaceF;
                         float.TryParse(lineData[j], out replaceF);
+                        
                         if (replaceF > holder.axisMinMax[j].y)
                         {
                             holder.axisMinMax[j] = new Vector2(holder.axisMinMax[j].x, replaceF);
@@ -403,9 +404,15 @@ public class Loader : EditorWindow
                         {
                             holder.axisMinMax[j] = new Vector2(replaceF, holder.axisMinMax[j].y);
                         }
+                        
 
                         temp.GetComponent<MeshRenderer>().material.color = holder.axisGradients[j].Evaluate(replaceF / (holder.axisMinMax[j].y - holder.axisMinMax[j].x));
-                        //Debug.Log(holder.axisGradients[j].Evaluate(float.Parse(lineData[j]) / (holder.axisMinMax[j].y - holder.axisMinMax[j].x)) + " " + float.Parse(lineData[j]) / (holder.axisMinMax[j].y - holder.axisMinMax[j].x));
+
+                        Debug.Log(holder.axisMinMax[j].y + " " + holder.axisMinMax[j].x);
+                        //temp.GetComponent<MeshRenderer>().material.color = holder.axisGradients[j].Evaluate(replaceF);
+                        //Debug.Log(holder.axisGradients[j].Evaluate(replaceF) + " " + replaceF);
+                        Debug.Log(holder.axisGradients[j].Evaluate((replaceF - holder.axisMinMax[j].x) / (holder.axisMinMax[j].y - holder.axisMinMax[j].x)) + " " + (replaceF - holder.axisMinMax[j].x) / (holder.axisMinMax[j].y - holder.axisMinMax[j].x));
+                        //Debug.Log(replaceF);
                     }
                 }
                 if(holder.axisTypes[j] == axisType.Size)

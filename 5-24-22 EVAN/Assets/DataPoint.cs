@@ -34,6 +34,13 @@ public int messagerelativedifference;
 
 public string examples;
 
+public string examples1;
+
+public string examples2;
+
+public string examples3;
+
+public string examples4;
 
 public TextMeshProUGUI displayBox;
 public void ShowDisplay()
@@ -69,13 +76,13 @@ displayBox.text =
 +
 "examples: " + examples.ToString() + "\n"
 +
-"examples: " + examples.ToString() + "\n"
+"examples1: " + examples1.ToString() + "\n"
 +
-"examples: " + examples.ToString() + "\n"
+"examples2: " + examples2.ToString() + "\n"
 +
-"examples: " + examples.ToString() + "\n"
+"examples3: " + examples3.ToString() + "\n"
 +
-"examples: " + examples.ToString() + "\n"
+"examples4: " + examples4.ToString() + "\n"
 ;
 }
 public void HideDisplay()
