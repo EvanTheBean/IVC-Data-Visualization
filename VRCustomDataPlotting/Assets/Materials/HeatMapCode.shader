@@ -146,7 +146,8 @@ Shader "Unlit/HeatMapCode"
                 pointranges[3] = _Range3;
                 pointranges[4] = _Range4;
 
-                fixed4 col = tex2D(_MainTex, i.uv);
+                //fixed4 col = tex2D(_MainTex, i.uv);
+                fixed4 col = tex2D(_MainTex, UnityStereoScreenSpaceUVAdjust(i.uv, _MainTex_ST));
 
                 float2 uv = i.uv;
                 uv = uv * 10 - float2(5.0, 5.0);
@@ -163,6 +164,7 @@ Shader "Unlit/HeatMapCode"
 
                 float4 heat = pixelHeat(totalWeight);
 
+                //return col;
                 return (col * (1 - heat.a * _Visibility)) + (heat * _Visibility);
             }
             ENDCG
