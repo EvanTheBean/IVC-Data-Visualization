@@ -29,6 +29,6 @@ public class VRScrollView : MonoBehaviour
             rect.velocity = scroll;
         }
 
-        Debug.Log(scroll);
+        //Debug.Log(scroll);
     }
 }
