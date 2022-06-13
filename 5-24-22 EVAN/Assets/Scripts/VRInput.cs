@@ -46,18 +46,18 @@ public class VRInput : BaseInputModule
     {
         ExecuteEvents.Execute(data.pointerPress, data, ExecuteEvents.pointerUpHandler);
 
-        GameObject newPointerPress = ExecuteEvents.GetEventHandler<IPointerClickHandler>(currentObject);
+        GameObject pointerUpHandler = ExecuteEvents.GetEventHandler<IPointerClickHandler>(currentObject);
 
-        if(data.pointerPress == null)
+        if(data.pointerPress == pointerUpHandler)
         {
             ExecuteEvents.Execute(data.pointerPress, data, ExecuteEvents.pointerClickHandler);
         }
 
         eventSystem.SetSelectedGameObject(null);
 
-        data.pressPosition = data.position;
-        data.pointerPress = newPointerPress;
-        data.rawPointerPress = currentObject;
+        data.pressPosition = Vector2.zero;
+        data.pointerPress = null;
+        data.rawPointerPress = null;
     }
 
     public override void Process()
