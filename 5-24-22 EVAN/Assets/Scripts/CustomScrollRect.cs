@@ -24,7 +24,7 @@ public class CustomScrollRect : MonoBehaviour
 
     public void OnBeginDrag(PointerEventData data)
     {
-        Debug.Log("BeginDrag");
+        Debug.Log("Begin Drag");
     }
 
     public void OnEndDrag(PointerEventData data)
