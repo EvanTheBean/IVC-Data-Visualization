@@ -76,18 +76,21 @@ public class VRInput : BaseInputModule
 
         m_RaycastResultCache.Clear();
 
-        HandlePointerExitAndEnter(data, currentObject);
-
-        if(clickAction.GetStateDown(targetSource))
+        if(camera.gameObject.GetComponent<VRPointer>().show)
         {
-            ProcessPress(data);
-        }
+            HandlePointerExitAndEnter(data, currentObject);
 
-        if(clickAction.GetStateUp(targetSource))
-        {
-            ProcessRelease(data);
-        }
+            if (clickAction.GetStateDown(targetSource))
+            {
+                ProcessPress(data);
+            }
 
-        ExecuteEvents.Execute(data.pointerDrag, data, ExecuteEvents.dragHandler);
+            if (clickAction.GetStateUp(targetSource))
+            {
+                ProcessRelease(data);
+            }
+
+            ExecuteEvents.Execute(data.pointerDrag, data, ExecuteEvents.dragHandler);
+        }
     }
 }
