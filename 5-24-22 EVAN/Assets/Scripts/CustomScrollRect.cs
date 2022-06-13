@@ -22,12 +22,12 @@ public class CustomScrollRect : MonoBehaviour
         
     }
 
-    public virtual void OnBeginDrag(PointerEventData data)
+    public void OnBeginDrag(PointerEventData data)
     {
         Debug.Log("BeginDrag");
     }
 
-    public virtual void OnEndDrag(PointerEventData data)
+    public void OnEndDrag(PointerEventData data)
     {
         Debug.Log("End Drag");
     }
