@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using Valve.VR;
 
-public class CustomScrollRect : MonoBehaviour
+public class CustomScrollRect : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     public Image area;
     public GameObject viewPort, contentBox;
@@ -13,7 +13,6 @@ public class CustomScrollRect : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -30,6 +29,11 @@ public class CustomScrollRect : MonoBehaviour
     public void OnEndDrag(PointerEventData data)
     {
         Debug.Log("End Drag");
+    }
+
+    public void OnDrag(PointerEventData data)
+    {
+        Debug.Log("Dragging");
     }
 
 
