@@ -29,7 +29,7 @@ public class CustomScrollRect : MonoBehaviour, IBeginDragHandler, IDragHandler, 
     {
         Debug.Log("Begin Drag");
         dragStart = data.position;
-        contentStart = contentBox.transform.position;
+        contentStart = contentBox.GetComponent<RectTransform>().position;
     }
 
     public void OnEndDrag(PointerEventData data)
@@ -40,7 +40,7 @@ public class CustomScrollRect : MonoBehaviour, IBeginDragHandler, IDragHandler, 
     public void OnDrag(PointerEventData data)
     {
         Debug.Log("Dragging");
-        contentBox.transform.position += new Vector3(contentBox.transform.position.x + Mathf.Sign(data.position.x - dragStart.x), contentBox.transform.position.y, contentBox.transform.position.z);
+        contentBox.GetComponent<RectTransform>().position += new Vector3(Mathf.Sign(data.position.x - dragStart.x),0, 0).normalized;
     }
 
 
