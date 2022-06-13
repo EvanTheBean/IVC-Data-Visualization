@@ -65,6 +65,11 @@ public class VRInput : BaseInputModule
         data.rawPointerPress = null;
     }
 
+    private void ProcessHold(PointerEventData data)
+    {
+        ExecuteEvents.Execute(data.pointerDrag, data, ExecuteEvents.dragHandler);
+    }
+
     public override void Process()
     {
         data.Reset();
@@ -89,6 +94,11 @@ public class VRInput : BaseInputModule
             if (clickAction.GetStateUp(targetSource))
             {
                 ProcessRelease(data);
+            }
+
+            if(clickAction.GetState(targetSource))
+            {
+                ProcessHold(data);
             }
 
             ExecuteEvents.Execute(data.pointerDrag, data, ExecuteEvents.dragHandler);

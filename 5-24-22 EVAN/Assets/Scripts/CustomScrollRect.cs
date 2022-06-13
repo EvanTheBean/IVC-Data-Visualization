@@ -28,7 +28,7 @@ public class CustomScrollRect : MonoBehaviour, IBeginDragHandler, IDragHandler, 
     public void OnBeginDrag(PointerEventData data)
     {
         //Debug.Log("Begin Drag");
-        dragStart = data.position;
+        dragStart = data.pointerCurrentRaycast.screenPosition;
         contentStart = contentBox.GetComponent<RectTransform>().position;
     }
 
@@ -40,8 +40,8 @@ public class CustomScrollRect : MonoBehaviour, IBeginDragHandler, IDragHandler, 
     public void OnDrag(PointerEventData data)
     {
         //Debug.Log("Dragging");
-        contentBox.GetComponent<RectTransform>().position += new Vector3(Mathf.Sign(data.position.x - dragStart.x),0, 0).normalized * 0.0001f;
-        Debug.Log(data.position.x - dragStart.x);
+        contentBox.GetComponent<RectTransform>().position += new Vector3(Mathf.Sign(data.pointerCurrentRaycast.screenPosition.x - dragStart.x),0, 0).normalized * 0.0001f;
+        Debug.Log(data.pointerCurrentRaycast.screenPosition.x - dragStart.x);
     }
 
 
