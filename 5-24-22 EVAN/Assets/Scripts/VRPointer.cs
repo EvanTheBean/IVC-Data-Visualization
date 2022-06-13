@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Valve.VR;
 
 public class VRPointer : MonoBehaviour
 {
@@ -10,15 +11,39 @@ public class VRPointer : MonoBehaviour
     public VRInput inputModule;
 
     private LineRenderer lr = null;
+
+    public SteamVR_Input_Sources targetSource;
+    public SteamVR_Action_Boolean clickAction;
+    public bool show;
     private void Awake()
     {
         lr = GetComponent<LineRenderer>();
+        lr.enabled = false;
+        dot.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        UpdateLine();
+        if(show)
+        {
+            UpdateLine();
+        }
+
+        if(clickAction.GetStateDown(targetSource))
+        {
+            show = !show;
+            if(!show)
+            {
+                lr.enabled = false;
+                dot.SetActive(false);
+            }
+            else
+            {
+                lr.enabled = true;
+                dot.SetActive(true);
+            }
+        }
     }
 
     private void UpdateLine()

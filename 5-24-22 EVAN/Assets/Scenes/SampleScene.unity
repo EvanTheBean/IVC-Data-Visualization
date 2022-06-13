@@ -6173,6 +6173,14 @@ PrefabInstance:
       propertyPath: inputModule
       value: 
       objectReference: {fileID: 1553858813}
+    - target: {fileID: 1566983576460927028, guid: 89abbf2100417e248bb61c57a559eb93, type: 3}
+      propertyPath: targetSource
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1566983576460927028, guid: 89abbf2100417e248bb61c57a559eb93, type: 3}
+      propertyPath: clickAction.actionPath
+      value: /actions/default/in/GrabGrip
+      objectReference: {fileID: 0}
     - target: {fileID: 7411354124799963938, guid: 89abbf2100417e248bb61c57a559eb93, type: 3}
       propertyPath: m_Name
       value: pointer
