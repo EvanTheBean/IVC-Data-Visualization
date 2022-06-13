@@ -39,6 +39,8 @@ public class VRInput : BaseInputModule
 
         data.pressPosition = data.position;
         data.pointerPress = newPointerPress;
+        data.pointerDrag = ExecuteEvents.GetEventHandler<IDragHandler>(data.pointerPressRaycast.gameObject);
+        ExecuteEvents.Execute(data.pointerDrag, data, ExecuteEvents.beginDragHandler);
         data.rawPointerPress = currentObject;
     }
 
@@ -52,11 +54,13 @@ public class VRInput : BaseInputModule
         {
             ExecuteEvents.Execute(data.pointerPress, data, ExecuteEvents.pointerClickHandler);
         }
+        ExecuteEvents.Execute(data.pointerDrag, data, ExecuteEvents.endDragHandler);
 
         eventSystem.SetSelectedGameObject(null);
 
         data.pressPosition = Vector2.zero;
         data.pointerPress = null;
+        data.pointerDrag = null;
         data.rawPointerPress = null;
     }
 
@@ -83,5 +87,7 @@ public class VRInput : BaseInputModule
         {
             ProcessRelease(data);
         }
+
+        ExecuteEvents.Execute(data.pointerDrag, data, ExecuteEvents.dragHandler);
     }
 }
