@@ -22,6 +22,13 @@ public class VRScrollView : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        rect.velocity = trackPadAction.GetAxis(trackPadSource);
+        Vector2 scroll = trackPadAction.GetAxis(trackPadSource);
+
+        if (scroll != Vector2.zero)
+        {
+            rect.velocity = scroll;
+        }
+
+        Debug.Log(scroll);
     }
 }
