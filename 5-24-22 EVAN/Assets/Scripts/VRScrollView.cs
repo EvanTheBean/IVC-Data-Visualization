@@ -24,7 +24,7 @@ public class VRScrollView : MonoBehaviour
     {
         Vector2 scroll = trackPadAction.GetAxis(trackPadSource);
 
-        if (scroll != Vector2.zero)
+        if (scroll != Vector2.zero && scroll != null)
         {
             rect.velocity = scroll;
         }
