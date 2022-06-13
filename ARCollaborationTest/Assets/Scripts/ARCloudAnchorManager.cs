@@ -126,6 +126,8 @@ public class ARCloudAnchorManager : MonoBehaviour
         {
             anchorHostInProgress = false;
             anchorIDToResolve = cloudAnchor.cloudAnchorId;
+            DebugCanvas.Instance.Log($"Anchor hosted: {anchorIDToResolve}");
+
         }
         else if (cloudAnchorState != CloudAnchorState.TaskInProgress)
         {
@@ -135,6 +137,12 @@ public class ARCloudAnchorManager : MonoBehaviour
     }
 
     #endregion
+
+
+    public void SetAnchorIDToResolve(string id)
+    {
+        anchorIDToResolve = id;
+    }
 
     // Update is called once per frame
     void Update()
