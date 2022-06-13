@@ -1,0 +1,16 @@
+{
+  "source": "Unity",
+  "applications": [
+    {
+      "app_key": "application.generated.unity.52422evan.exe",
+      "launch_type": "url",
+      "url": "steam://launch/",
+      "action_manifest_path": "C:\\Users\\evan.koppers\\source\\repos\\IVC-Data-Visualization\\5-24-22 EVAN\\Assets\\StreamingAssets\\SteamVR\\actions.json",
+      "strings": {
+        "en_us": {
+          "name": "5-24-22 EVAN [Testing]"
+        }
+      }
+    }
+  ]
+}
