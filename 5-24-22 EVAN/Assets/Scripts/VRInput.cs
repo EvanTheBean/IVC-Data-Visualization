@@ -12,6 +12,7 @@ public class VRInput : BaseInputModule
 
     private GameObject currentObject = null;
     private PointerEventData data = null;
+    private VRPointer pointer;
 
 
     protected override void Awake()
@@ -19,6 +20,7 @@ public class VRInput : BaseInputModule
         base.Awake();
 
         data = new PointerEventData(eventSystem);
+        pointer = GameObject.FindObjectOfType<VRPointer>();
     }
 
     public PointerEventData GetData()
@@ -43,6 +45,7 @@ public class VRInput : BaseInputModule
         ExecuteEvents.Execute(data.pointerDrag, data, ExecuteEvents.beginDragHandler);
 	    Debug.Log("drag hold " + data.pointerDrag); 
         data.rawPointerPress = currentObject;
+        pointer.ColorLine(true);
     }
 
     private void ProcessRelease(PointerEventData data)
@@ -63,6 +66,7 @@ public class VRInput : BaseInputModule
         data.pointerPress = null;
         data.pointerDrag = null;
         data.rawPointerPress = null;
+        pointer.ColorLine(false);
     }
 
     private void ProcessHold(PointerEventData data)

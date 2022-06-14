@@ -15,6 +15,7 @@ public class VRPointer : MonoBehaviour
     public SteamVR_Input_Sources targetSource;
     public SteamVR_Action_Boolean clickAction;
     public bool show;
+    public bool colored;
     private void Awake()
     {
         lr = GetComponent<LineRenderer>();
@@ -72,5 +73,19 @@ public class VRPointer : MonoBehaviour
         Physics.Raycast(ray, out hit, length);
 
         return hit; 
+    }
+
+    public void ColorLine(bool yes)
+    {
+        if(yes)
+        {
+            colored = true;
+            lr.colorGradient.colorKeys[0].color = Color.red;
+        }
+        else
+        {
+            colored = false;
+            lr.colorGradient.colorKeys[0].color = Color.white;
+        }
     }
 }
