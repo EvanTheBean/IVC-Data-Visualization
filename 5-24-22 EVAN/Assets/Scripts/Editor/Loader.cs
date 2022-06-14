@@ -483,25 +483,42 @@ public class Loader : EditorWindow
 
     void CreateAxisRows(Vector2 minMaxLabels, Vector2 minMaxPlacement, axisType correspondingAxis)
     {
+        GameObject x = null, y = null, z = null;
+        foreach(GameObject temp in axisText)
+        {
+            if(temp.name == "AxisText X")
+            {
+                x = temp;
+            }
+            if (temp.name == "AxisText Y")
+            {
+                y = temp;
+            }
+            if (temp.name == "AxisText Z")
+            {
+                z = temp;
+            }
+        }
+
         if(correspondingAxis == axisType.X)
         {
-            axisText[1].gameObject.transform.position = new Vector3(minMaxPlacement.y, 0,0);
-            axisText[1].GetComponent<TextMeshProUGUI>().text = minMaxLabels.y.ToString();
-            axisText[1].GetComponent<LineRenderer>().SetPosition(1, axisText[1].transform.position);
+            x.transform.position = new Vector3(minMaxPlacement.y, 0,0);
+            x.GetComponent<TextMeshProUGUI>().text = minMaxLabels.y.ToString();
+            x.GetComponent<LineRenderer>().SetPosition(1, axisText[1].transform.position);
             //Debug.Log(axisText[1].gameObject + " X");
         }
         else if(correspondingAxis == axisType.Y)
         {
-            axisText[2].gameObject.transform.position = new Vector3(0,minMaxPlacement.y,0);
-            axisText[2].GetComponent<TextMeshProUGUI>().text = minMaxLabels.y.ToString();
-            axisText[2].GetComponent<LineRenderer>().SetPosition(1, axisText[2].transform.position);
+            y.gameObject.transform.position = new Vector3(0,minMaxPlacement.y,0);
+            y.GetComponent<TextMeshProUGUI>().text = minMaxLabels.y.ToString();
+            y.GetComponent<LineRenderer>().SetPosition(1, axisText[2].transform.position);
             //Debug.Log(axisText[2].gameObject + " Y");
         }
         else if(correspondingAxis==axisType.Z)
         {
-            axisText[3].gameObject.GetComponent<RectTransform>().position = new Vector3(0,0,minMaxPlacement.y);
-            axisText[3].GetComponent<TextMeshProUGUI>().text = minMaxLabels.y.ToString();
-            axisText[3].GetComponent<LineRenderer>().SetPosition(1, axisText[3].transform.position);
+            z.gameObject.GetComponent<RectTransform>().position = new Vector3(0,0,minMaxPlacement.y);
+            z.GetComponent<TextMeshProUGUI>().text = minMaxLabels.y.ToString();
+            z.GetComponent<LineRenderer>().SetPosition(1, axisText[3].transform.position);
             //Debug.Log(axisText[3].gameObject + " Z");
         }
 
