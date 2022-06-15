@@ -43,7 +43,7 @@ public class CustomScrollRect : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         Vector3 dif = data.pointerCurrentRaycast.worldPosition - dragStart;
         Vector3 right = this.transform.right;
         Vector3 difRot = new Vector3(dif.x * right.x, dif.y * right.y, dif.z * right.z);
-        contentBox.GetComponent<RectTransform>().anchoredPosition += new Vector2(difRot.magnitude, 0);
+        contentBox.GetComponent<RectTransform>().anchoredPosition += new Vector2(difRot.magnitude * 10f, 0);
         Debug.Log(contentBox.GetComponent<RectTransform>().position);
         dragStart = data.pointerCurrentRaycast.worldPosition;
     }

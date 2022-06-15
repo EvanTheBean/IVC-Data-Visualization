@@ -79,6 +79,7 @@ public class VRPointer : MonoBehaviour
     {
         if(yes)
         {
+	Debug.Log("Colored");
             colored = true;
             lr.colorGradient.colorKeys[0].color = Color.red;
         }
