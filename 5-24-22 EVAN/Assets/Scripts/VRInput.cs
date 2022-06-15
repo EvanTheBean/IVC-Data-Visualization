@@ -91,7 +91,8 @@ public class VRInput : BaseInputModule
         {
             RaycastHit hit;
             Physics.Raycast(transform.position, transform.forward, out hit, pointer.defaultLength);
-Debug.Log(hit.collider);
+            Debug.DrawRay(transform.position, transform.forward * pointer.defaultLength, Color.red);
+            Debug.Log(hit.collider);
             currentObject = hit.transform.gameObject;
             Debug.Log("was null " + currentObject.name);
         }
