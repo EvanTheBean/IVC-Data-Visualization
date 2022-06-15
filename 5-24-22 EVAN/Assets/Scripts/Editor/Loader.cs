@@ -133,7 +133,7 @@ public class Loader : EditorWindow
         string classPath = Application.dataPath + "/DataPoint.cs";
         StreamWriter writer = new StreamWriter(classPath, false);
 
-        writer.WriteLine("using System.Collections;\nusing System.Collections.Generic;\nusing UnityEngine;\nusing UnityEngine.UI;\nusing TMPro;\npublic class DataPoint : MonoBehaviour\n{\n");
+        writer.WriteLine("using System.Collections;\nusing System.Collections.Generic;\nusing UnityEngine;\nusing UnityEngine.UI;\nusing TMPro;\n using UnityEngine.EventSystems; \n\n public class DataPoint : MonoBehaviour, IPointerDownHandler, IPointerUpHandler\n{\n");
         
         for(int i =0; i < holder.rowNames.Count; i++)
         {
@@ -141,7 +141,7 @@ public class Loader : EditorWindow
         }
 
         writer.WriteLine("public TextMeshProUGUI displayBox;");
-        writer.WriteLine("public void ShowDisplay()\n{\ndisplayBox.enabled = true;\n");
+        writer.WriteLine("public void OnPointerDown(PointerEventData eventData)\n{\ndisplayBox.enabled = !displayBox.enabled;\n");
         bool first = true;
         for (int i = 0; i < holder.rowNames.Count; i++)
         {
@@ -162,6 +162,7 @@ public class Loader : EditorWindow
         writer.WriteLine(";\n}");
 
         writer.WriteLine("public void HideDisplay()\n{\ndisplayBox.enabled = false;\n}");
+        writer.WriteLine("public voidOnPointerUp(PointerEventData eventData)\n{\ndisplayBox.enabled = false;\n}");
 
         writer.WriteLine("\n}");
         writer.Close();
@@ -500,21 +501,21 @@ public class Loader : EditorWindow
             }
         }
 
-        if(correspondingAxis == axisType.X)
+        if(correspondingAxis == axisType.X && x != null)
         {
             x.transform.position = new Vector3(minMaxPlacement.y, 0,0);
             x.GetComponent<TextMeshProUGUI>().text = minMaxLabels.y.ToString();
             x.GetComponent<LineRenderer>().SetPosition(1, axisText[1].transform.position);
             //Debug.Log(axisText[1].gameObject + " X");
         }
-        else if(correspondingAxis == axisType.Y)
+        else if(correspondingAxis == axisType.Y && y !=  null)
         {
             y.gameObject.transform.position = new Vector3(0,minMaxPlacement.y,0);
             y.GetComponent<TextMeshProUGUI>().text = minMaxLabels.y.ToString();
             y.GetComponent<LineRenderer>().SetPosition(1, axisText[2].transform.position);
             //Debug.Log(axisText[2].gameObject + " Y");
         }
-        else if(correspondingAxis==axisType.Z)
+        else if(correspondingAxis==axisType.Z && z != null)
         {
             z.gameObject.GetComponent<RectTransform>().position = new Vector3(0,0,minMaxPlacement.y);
             z.GetComponent<TextMeshProUGUI>().text = minMaxLabels.y.ToString();

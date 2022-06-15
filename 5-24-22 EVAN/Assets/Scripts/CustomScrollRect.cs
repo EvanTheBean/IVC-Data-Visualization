@@ -136,6 +136,4 @@ public class CustomScrollRect : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         //Debug.Log(contentBox.GetComponent<RectTransform>().position);
         dragStart = pos;
     }
-
-
 }
