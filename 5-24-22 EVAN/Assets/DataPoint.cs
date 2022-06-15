@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
  using UnityEngine.EventSystems; 
 
- public class DataPoint : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+ public class DataPoint : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerClickHandler
 {
 
 public string NAME;
@@ -47,6 +47,26 @@ displayBox.enabled = false;
 public void OnPointerUp(PointerEventData eventData)
 {
 //displayBox.enabled = false;
+}
+
+public void OnPointerClick(PointerEventData eventData)
+{
+displayBox.enabled = !displayBox.enabled;
+        Debug.Log(displayBox.enabled);
+
+displayBox.text = 
+"NAME: " + NAME.ToString() + "\n"
++
+"x: " + x.ToString() + "\n"
++
+"y: " + y.ToString() + "\n"
++
+"z: " + z.ToString() + "\n"
++
+"random: " + random.ToString() + "\n"
++
+"This is a bool: " + Thisisabool.ToString() + "\n"
+;
 }
 
 }

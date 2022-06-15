@@ -48,7 +48,7 @@ public class VRInput : BaseInputModule
         data.rawPointerPress = currentObject;
         pointer.ColorLine(true);
 
-        Debug.Log("press on " + data.pointerClick.name);
+        Debug.Log("press on " + data.rawPointerPress.name);
     }
 
     private void ProcessRelease(PointerEventData data)
