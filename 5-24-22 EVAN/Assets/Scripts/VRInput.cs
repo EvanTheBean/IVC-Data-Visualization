@@ -44,7 +44,7 @@ public class VRInput : BaseInputModule
         data.pointerPress = newPointerPress;
         data.pointerDrag = ExecuteEvents.GetEventHandler<IDragHandler>(data.pointerPressRaycast.gameObject);
         ExecuteEvents.Execute(data.pointerDrag, data, ExecuteEvents.beginDragHandler);
-	    //Debug.Log("drag hold " + data.pointerDrag); 
+	//Debug.Log("drag hold " + data.pointerDrag); 
         data.rawPointerPress = currentObject;
         pointer.ColorLine(true);
 
@@ -86,7 +86,9 @@ public class VRInput : BaseInputModule
         eventSystem.RaycastAll(data, m_RaycastResultCache);
         data.pointerCurrentRaycast = FindFirstRaycast(m_RaycastResultCache);
         currentObject = data.pointerCurrentRaycast.gameObject;
-
+	
+	Debug.Log(currentObject.name);
+	
         m_RaycastResultCache.Clear();
 
         if(camera.gameObject.GetComponent<VRPointer>().show)
