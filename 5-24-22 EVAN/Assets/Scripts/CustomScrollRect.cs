@@ -40,7 +40,7 @@ public class CustomScrollRect : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         float currentPer = currentLoc % size;
         if(currentPer > size /2f)
         {
-            contentBox.GetComponent<RectTransform>().anchoredPosition -= new Vector2(currentPer - (size / 2f), 0);
+            contentBox.GetComponent<RectTransform>().anchoredPosition -= new Vector2(size - currentPer, 0);
         }
         else
         {
