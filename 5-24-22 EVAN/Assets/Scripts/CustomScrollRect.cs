@@ -45,6 +45,15 @@ public class CustomScrollRect : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         {
             contentBox.GetComponent<RectTransform>().anchoredPosition -= new Vector2(currentPer - (size / 2f), 0);
         }
+
+        if (contentBox.GetComponent<RectTransform>().anchoredPosition.x < 0)
+        {
+            contentBox.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, contentBox.GetComponent<RectTransform>().anchoredPosition.y);
+        }
+        else if (contentBox.GetComponent<RectTransform>().anchoredPosition.x > (contentBox.transform.childCount - 1) * size)
+        {
+            contentBox.GetComponent<RectTransform>().anchoredPosition = new Vector2((contentBox.transform.childCount - 1) * size, contentBox.GetComponent<RectTransform>().anchoredPosition.y);
+        }
     }
 
     public void OnDrag(PointerEventData data)
