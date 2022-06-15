@@ -86,8 +86,18 @@ public class VRInput : BaseInputModule
         eventSystem.RaycastAll(data, m_RaycastResultCache);
         data.pointerCurrentRaycast = FindFirstRaycast(m_RaycastResultCache);
         currentObject = data.pointerCurrentRaycast.gameObject;
-	
-	Debug.Log(currentObject.name);
+
+        if(currentObject == null)
+        {
+            RaycastHit hit;
+            Physics.Raycast(transform.position, transform.forward, out hit, pointer.defaultLength);
+            currentObject = hit.transform.gameObject;
+            Debug.Log("was null " + currentObject.name);
+        }
+        else
+        {
+            Debug.Log(currentObject.name);
+        }
 
 	
         m_RaycastResultCache.Clear();
