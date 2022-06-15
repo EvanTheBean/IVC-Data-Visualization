@@ -43,7 +43,7 @@ public void HideDisplay()
 {
 displayBox.enabled = false;
 }
-public voidOnPointerUp(PointerEventData eventData)
+public void OnPointerUp(PointerEventData eventData)
 {
 displayBox.enabled = false;
 }

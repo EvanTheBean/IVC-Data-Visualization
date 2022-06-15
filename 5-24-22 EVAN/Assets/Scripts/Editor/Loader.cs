@@ -162,7 +162,7 @@ public class Loader : EditorWindow
         writer.WriteLine(";\n}");
 
         writer.WriteLine("public void HideDisplay()\n{\ndisplayBox.enabled = false;\n}");
-        writer.WriteLine("public voidOnPointerUp(PointerEventData eventData)\n{\ndisplayBox.enabled = false;\n}");
+        writer.WriteLine("public void OnPointerUp(PointerEventData eventData)\n{\ndisplayBox.enabled = false;\n}");
 
         writer.WriteLine("\n}");
         writer.Close();
