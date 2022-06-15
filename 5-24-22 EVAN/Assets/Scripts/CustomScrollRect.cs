@@ -35,6 +35,16 @@ public class CustomScrollRect : MonoBehaviour, IBeginDragHandler, IDragHandler, 
     public void OnEndDrag(PointerEventData data)
     {
         //Debug.Log("End Drag");
+        float currentLoc = contentBox.GetComponent<RectTransform>().anchoredPosition.x;
+        float currentPer = currentLoc % size;
+        if(currentPer > size /2f)
+        {
+            contentBox.GetComponent<RectTransform>().anchoredPosition += new Vector2(currentPer - (size / 2f), 0);
+        }
+        else
+        {
+            contentBox.GetComponent<RectTransform>().anchoredPosition -= new Vector2(currentPer - (size / 2f), 0);
+        }
     }
 
     public void OnDrag(PointerEventData data)
@@ -44,7 +54,17 @@ public class CustomScrollRect : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         Vector3 right = this.transform.right;
         Vector3 difRot = new Vector3(dif.x * right.x, dif.y * right.y, dif.z * right.z);
         contentBox.GetComponent<RectTransform>().anchoredPosition += new Vector2(difRot.magnitude * 10f * Mathf.Sign(difRot.x), 0);
-        Debug.Log(contentBox.GetComponent<RectTransform>().position);
+
+        if(contentBox.GetComponent<RectTransform>().anchoredPosition.x < 0)
+        {
+            contentBox.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, contentBox.GetComponent<RectTransform>().anchoredPosition.y);
+        }
+        else if (contentBox.GetComponent<RectTransform>().anchoredPosition.x > (contentBox.transform.childCount - 1) * size)
+        {
+            contentBox.GetComponent<RectTransform>().anchoredPosition = new Vector2((contentBox.transform.childCount - 1) * size, contentBox.GetComponent<RectTransform>().anchoredPosition.y);
+        }
+
+        //Debug.Log(contentBox.GetComponent<RectTransform>().position);
         dragStart = data.pointerCurrentRaycast.worldPosition;
     }
 

@@ -79,13 +79,13 @@ public class VRPointer : MonoBehaviour
     {
         if(yes)
         {
-	        Debug.Log("Colored");
+	        //Debug.Log("Colored");
             colored = true;
             lr.startColor = Color.red;
         }
         else
         {
-            Debug.Log("UnColored");
+            //Debug.Log("UnColored");
             colored = false;
             lr.startColor = Color.white;
         }
