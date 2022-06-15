@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-public class DataPoint : MonoBehaviour
+ using UnityEngine.EventSystems; 
+
+ public class DataPoint : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
 
 public string NAME;
@@ -19,9 +21,9 @@ public float random;
 public bool Thisisabool;
 
 public TextMeshProUGUI displayBox;
-public void ShowDisplay()
+public void OnPointerDown(PointerEventData eventData)
 {
-displayBox.enabled = true;
+displayBox.enabled = !displayBox.enabled;
 
 displayBox.text = 
 "NAME: " + NAME.ToString() + "\n"
@@ -38,6 +40,10 @@ displayBox.text =
 ;
 }
 public void HideDisplay()
+{
+displayBox.enabled = false;
+}
+public voidOnPointerUp(PointerEventData eventData)
 {
 displayBox.enabled = false;
 }
