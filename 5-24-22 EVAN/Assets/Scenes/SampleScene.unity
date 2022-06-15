@@ -793,6 +793,7 @@ MonoBehaviour:
   trackPadAction:
     actionPath: /actions/default/in/TrackPadMove
     needsReinit: 0
+  rect: {fileID: 0}
 --- !u!114 &260847968
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3960,6 +3961,7 @@ GameObject:
   - component: {fileID: 1328653521}
   - component: {fileID: 1328653520}
   - component: {fileID: 1328653519}
+  - component: {fileID: 1328653522}
   m_Layer: 26
   m_Name: Test Canvas
   m_TagString: Untagged
@@ -4049,6 +4051,23 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &1328653522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1328653517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c75496ad6d502c14c80035f92e2c7572, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetSource: 1
+  moveAction:
+    actionPath: /actions/default/in/TrackPadMove
+    needsReinit: 0
+  scrollRect: {fileID: 260847968}
 --- !u!1 &1424682073
 GameObject:
   m_ObjectHideFlags: 0

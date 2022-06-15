@@ -20,6 +20,7 @@ public class VRInput : BaseInputModule
         base.Awake();
 
         data = new PointerEventData(eventSystem);
+        data.useDragThreshold = true;
         pointer = GameObject.FindObjectOfType<VRPointer>();
     }
 
@@ -102,7 +103,7 @@ public class VRInput : BaseInputModule
 
             if(clickAction.GetState(targetSource))
             {
-                ProcessHold(data);
+                //ProcessHold(data);
             }
 
             ExecuteEvents.Execute(data.pointerDrag, data, ExecuteEvents.dragHandler);

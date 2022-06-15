@@ -81,5 +81,61 @@ public class CustomScrollRect : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         dragStart = data.pointerCurrentRaycast.worldPosition;
     }
 
+    public void BeginDrag(Vector3 pos)
+    {
+        //Debug.Log("Begin Drag");
+        dragStart = pos;
+        contentStart = contentBox.GetComponent<RectTransform>().position;
+    }
+
+    public void EndDrag()
+    {
+
+        //Debug.Log("End Drag");
+        float currentLoc = contentBox.GetComponent<RectTransform>().anchoredPosition.x * -1f;
+        float currentPer = currentLoc % size;
+        if (currentPer > size / 2f)
+        {
+            contentBox.GetComponent<RectTransform>().anchoredPosition -= new Vector2(size - currentPer, 0);
+        }
+        else
+        {
+            contentBox.GetComponent<RectTransform>().anchoredPosition += new Vector2(currentPer, 0);
+        }
+
+        Debug.Log(currentLoc + " " + currentPer + " " + contentBox.GetComponent<RectTransform>().anchoredPosition.x);
+
+        if (contentBox.GetComponent<RectTransform>().anchoredPosition.x > 0)
+        {
+            contentBox.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, contentBox.GetComponent<RectTransform>().anchoredPosition.y);
+        }
+        else if (contentBox.GetComponent<RectTransform>().anchoredPosition.x < ((contentBox.transform.childCount - 1) * size) * -1)
+        {
+            contentBox.GetComponent<RectTransform>().anchoredPosition = new Vector2(((contentBox.transform.childCount - 1) * size) * -1, contentBox.GetComponent<RectTransform>().anchoredPosition.y);
+        }
+
+    }
+
+    public void Drag(Vector3 pos)
+    {
+        //Debug.Log("Dragging");
+        Vector3 dif = pos - dragStart;
+        Vector3 right = this.transform.right;
+        Vector3 difRot = new Vector3(dif.x * right.x, dif.y * right.y, dif.z * right.z);
+        contentBox.GetComponent<RectTransform>().anchoredPosition += new Vector2(difRot.magnitude * 200f * Mathf.Sign(difRot.x), 0);
+
+        if (contentBox.GetComponent<RectTransform>().anchoredPosition.x > 0)
+        {
+            contentBox.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, contentBox.GetComponent<RectTransform>().anchoredPosition.y);
+        }
+        else if (contentBox.GetComponent<RectTransform>().anchoredPosition.x < ((contentBox.transform.childCount - 1) * size) * -1)
+        {
+            contentBox.GetComponent<RectTransform>().anchoredPosition = new Vector2(((contentBox.transform.childCount - 1) * size) * -1, contentBox.GetComponent<RectTransform>().anchoredPosition.y);
+        }
+
+        //Debug.Log(contentBox.GetComponent<RectTransform>().position);
+        dragStart = pos;
+    }
+
 
 }
