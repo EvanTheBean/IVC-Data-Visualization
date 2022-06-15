@@ -44,9 +44,11 @@ public class VRInput : BaseInputModule
         data.pointerPress = newPointerPress;
         data.pointerDrag = ExecuteEvents.GetEventHandler<IDragHandler>(data.pointerPressRaycast.gameObject);
         ExecuteEvents.Execute(data.pointerDrag, data, ExecuteEvents.beginDragHandler);
-	    Debug.Log("drag hold " + data.pointerDrag); 
+	    //Debug.Log("drag hold " + data.pointerDrag); 
         data.rawPointerPress = currentObject;
         pointer.ColorLine(true);
+
+        Debug.Log("press on " + data.pointerClick.name);
     }
 
     private void ProcessRelease(PointerEventData data)

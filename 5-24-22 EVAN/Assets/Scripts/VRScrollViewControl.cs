@@ -19,9 +19,9 @@ public class VRScrollViewControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(moveAction.GetActive(targetSource))
+        if(moveAction.GetAxis(targetSource) != Vector2.zero)
         {
-            if(!moveAction.GetLastActive(targetSource))
+            if(moveAction.GetLastAxis(targetSource) == Vector2.zero)
             {
                 scrollRect.BeginDrag(moveAction.GetAxis(targetSource));
             }
@@ -32,7 +32,7 @@ public class VRScrollViewControl : MonoBehaviour
         }
         else
         {
-            if(moveAction.GetLastActive(targetSource))
+            if(moveAction.GetLastAxis(targetSource) != Vector2.zero)
             {
                 scrollRect.EndDrag();
             }
