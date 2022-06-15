@@ -49,13 +49,13 @@ public class CustomScrollRect : MonoBehaviour, IBeginDragHandler, IDragHandler, 
 
         Debug.Log(currentLoc + " " + currentPer + " " + contentBox.GetComponent<RectTransform>().anchoredPosition.x);
 
-        if (contentBox.GetComponent<RectTransform>().anchoredPosition.x < 0)
+        if(contentBox.GetComponent<RectTransform>().anchoredPosition.x > 0)
         {
             contentBox.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, contentBox.GetComponent<RectTransform>().anchoredPosition.y);
         }
-        else if (contentBox.GetComponent<RectTransform>().anchoredPosition.x > (contentBox.transform.childCount - 1) * size)
+        else if (contentBox.GetComponent<RectTransform>().anchoredPosition.x < ((contentBox.transform.childCount - 1) * size) * -1)
         {
-            contentBox.GetComponent<RectTransform>().anchoredPosition = new Vector2((contentBox.transform.childCount - 1) * size, contentBox.GetComponent<RectTransform>().anchoredPosition.y);
+            contentBox.GetComponent<RectTransform>().anchoredPosition = new Vector2(((contentBox.transform.childCount - 1) * size) * -1, contentBox.GetComponent<RectTransform>().anchoredPosition.y);
         }
 
     }
@@ -66,7 +66,7 @@ public class CustomScrollRect : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         Vector3 dif = data.pointerCurrentRaycast.worldPosition - dragStart;
         Vector3 right = this.transform.right;
         Vector3 difRot = new Vector3(dif.x * right.x, dif.y * right.y, dif.z * right.z);
-        contentBox.GetComponent<RectTransform>().anchoredPosition += new Vector2(difRot.magnitude * 100f * Mathf.Sign(difRot.x), 0);
+        contentBox.GetComponent<RectTransform>().anchoredPosition += new Vector2(difRot.magnitude * 200f * Mathf.Sign(difRot.x), 0);
 
         if(contentBox.GetComponent<RectTransform>().anchoredPosition.x > 0)
         {
