@@ -88,6 +88,7 @@ public class VRInput : BaseInputModule
         currentObject = data.pointerCurrentRaycast.gameObject;
 	
 	Debug.Log(currentObject.name);
+
 	
         m_RaycastResultCache.Clear();
 
