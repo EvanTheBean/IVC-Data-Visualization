@@ -83,7 +83,7 @@ public class CustomScrollRect : MonoBehaviour, IBeginDragHandler, IDragHandler, 
 
     public void BeginDrag(Vector3 pos)
     {
-        //Debug.Log("Begin Drag");
+        Debug.Log("Begin Drag");
         dragStart = pos;
         contentStart = contentBox.GetComponent<RectTransform>().position;
     }
@@ -91,7 +91,7 @@ public class CustomScrollRect : MonoBehaviour, IBeginDragHandler, IDragHandler, 
     public void EndDrag()
     {
 
-        //Debug.Log("End Drag");
+        Debug.Log("End Drag");
         float currentLoc = contentBox.GetComponent<RectTransform>().anchoredPosition.x * -1f;
         float currentPer = currentLoc % size;
         if (currentPer > size / 2f)
@@ -113,12 +113,11 @@ public class CustomScrollRect : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         {
             contentBox.GetComponent<RectTransform>().anchoredPosition = new Vector2(((contentBox.transform.childCount - 1) * size) * -1, contentBox.GetComponent<RectTransform>().anchoredPosition.y);
         }
-
     }
 
     public void Drag(Vector3 pos)
     {
-        //Debug.Log("Dragging");
+        Debug.Log("Dragging");
         Vector3 dif = pos - dragStart;
         Vector3 right = this.transform.right;
         Vector3 difRot = new Vector3(dif.x * right.x, dif.y * right.y, dif.z * right.z);

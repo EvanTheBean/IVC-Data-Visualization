@@ -477,7 +477,7 @@ public class Loader : EditorWindow
             }
             if (!holder.axisTypes.Contains(axisType.Size))
             {
-                temp.transform.localScale = Vector3.one;
+                temp.transform.localScale = new Vector3(0.25f,0.25f,0.25f);
             }
         }
     }

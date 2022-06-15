@@ -24,6 +24,7 @@ public TextMeshProUGUI displayBox;
 public void OnPointerDown(PointerEventData eventData)
 {
 displayBox.enabled = !displayBox.enabled;
+        Debug.Log(displayBox.enabled);
 
 displayBox.text = 
 "NAME: " + NAME.ToString() + "\n"
@@ -45,7 +46,7 @@ displayBox.enabled = false;
 }
 public void OnPointerUp(PointerEventData eventData)
 {
-displayBox.enabled = false;
+//displayBox.enabled = false;
 }
 
 }
