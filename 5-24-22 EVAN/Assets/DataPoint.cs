@@ -7,14 +7,18 @@ using TMPro;
 
  public class DataPoint : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
+
+public List<string> NAME = new List<string>();
+public List<int> x = new List<int>();
+public List<int> y = new List<int>();
+public List<int> z = new List<int>();
+public List<float> random = new List<float>();
+public List<bool> Thisisabool = new List<bool>();
 public TextMeshProUGUI displayBox;
 public int currentC;
 
-    public Dictionary<string, List<string>> variables;
-
 public void OnPointerDown(PointerEventData eventData)
 {
-        variables["Name"][currentC].ToString();
 displayBox.enabled = !displayBox.enabled;
 
 displayBox.text = 

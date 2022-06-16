@@ -127,8 +127,10 @@ public class Loader : EditorWindow
                 holder.path[0] = EditorUtility.OpenFilePanel("CSV", "", "csv");
                 if (holder.path != null)
                 {
+                    Debug.Log("Loading Rows");
                     LoadRows();
                     dataRead = true;
+                    Debug.Log("Creating All");
                     CreateAll();
                     dataLoaded = true;
                 }
@@ -140,25 +142,40 @@ public class Loader : EditorWindow
 
     void CreateAll()
     {
+        Debug.Log("going to create class");
         CreateClass();
+        Debug.Log("CreatedClass");
         CreateObjects();
         //Waiting();
     }
 
     void CreateClass()
     {
+
+        Debug.Log("starting");
+
+        AssetDatabase.Refresh();
+
         string classPath = Application.dataPath + "/DataPoint.cs";
         StreamWriter writer = new StreamWriter(classPath, false);
 
+        AssetDatabase.Refresh();
+
         writer.WriteLine("using System.Collections;\nusing System.Collections.Generic;\nusing UnityEngine;\nusing UnityEngine.UI;\nusing TMPro;\n using UnityEngine.EventSystems; \n\n public class DataPoint : MonoBehaviour, IPointerDownHandler, IPointerUpHandler\n{\n");
-        
-        for(int i =0; i < holder.rowNames.Count; i++)
+        writer.WriteLine("public Dictionary<string, List<string>> variables;");
+
+        /*
+        for (int i = 0; i < holder.rowNames.Count; i++)
         {
             writer.WriteLine("public List<" + holder.rowTypes[i].ToString().ToLower() + "> " + holder.rowNames[i].Replace(" ", "") + " = new List<" + holder.rowTypes[i].ToString().ToLower() + ">();");
         }
+        */
 
         writer.WriteLine("public TextMeshProUGUI displayBox;");
         writer.WriteLine("public int currentC;\n");
+
+        Debug.Log("variables declared");
+
         writer.WriteLine("public void OnPointerDown(PointerEventData eventData)\n{\ndisplayBox.enabled = !displayBox.enabled;\n");
         bool first = true;
         for (int i = 0; i < holder.rowNames.Count; i++)
@@ -174,10 +191,12 @@ public class Loader : EditorWindow
                     writer.WriteLine("displayBox.text = ");
                     first = false;
                 }
-                writer.WriteLine( "\"" + holder.rowNames[i] + ": \" + " + holder.rowNames[i].Replace(" ", "") + "[currentC].ToString() + \"\\n\"");
+                writer.WriteLine( "\"" + holder.rowNames[i] + ": \" + variables[" + holder.rowNames[i].Replace(" ", "") + "][currentC].ToString() + \"\\n\"");
             //}
         }
         writer.WriteLine(";\n}");
+
+        Debug.Log("function1");
 
         writer.WriteLine("public void HideDisplay()\n{\ndisplayBox.enabled = false;\n}");
         writer.WriteLine("public void OnPointerUp(PointerEventData eventData)\n{\ndisplayBox.enabled = false;\n}");
@@ -197,13 +216,17 @@ public class Loader : EditorWindow
                 writer.WriteLine("displayBox.text = ");
                 first = false;
             }
-            writer.WriteLine("\"" + holder.rowNames[i] + ": \" + " + holder.rowNames[i].Replace(" ", "") + "[currentC].ToString() + \"\\n\"");
+            writer.WriteLine("\"" + holder.rowNames[i] + ": \" + variables[" + holder.rowNames[i].Replace(" ", "") + "][currentC].ToString() + \"\\n\"");
             //}
         }
 
-        writer.WriteLine(";\n}");
+        Debug.Log("function last");
+
+        writer.WriteLine(";\n}}");
         writer.Close();
         AssetDatabase.Refresh();
+
+        Debug.Log("It should be new");
     }
 
     IEnumerator Waiting()
@@ -253,6 +276,11 @@ public class Loader : EditorWindow
             //temp.AddComponent<DataPoint>();
             DataPoint tempDP = temp.AddComponent<DataPoint>();
 
+            for (int j = 0; i < holder.rowNames.Count; i++)
+            {
+                tempDP.variables.Add(holder.rowNames[j].Replace(" ", ""), new List<string>());
+            }
+
             //temp.GetComponent<MeshFilter>().mesh = mesh;
             //temp.GetComponent<MeshRenderer>().material = material;
 
@@ -265,20 +293,24 @@ public class Loader : EditorWindow
                     case rowType.Bool:
                         bool replaceB;
                         bool.TryParse(lineData[j], out replaceB);
-                        tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "") + "[0]").SetValue(tempDP, replaceB);
+                        tempDP.variables[holder.rowNames[j].Replace(" ", "")].Add(replaceB.ToString());
+                        //tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "") + "[0]").SetValue(tempDP, replaceB);
                         break;
                     case rowType.Int:
                         int replaceI;
                         int.TryParse(lineData[j], out replaceI);
-                        tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "") + "[0]").SetValue(tempDP, replaceI);
+                        tempDP.variables[holder.rowNames[j].Replace(" ", "")].Add(replaceI.ToString());
+                        //tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "") + "[0]").SetValue(tempDP, replaceI);
                         break;
                     case rowType.Float:
                         float replaceF;
                         float.TryParse(lineData[j], out replaceF);
-                        tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "") + "[0]").SetValue(tempDP, replaceF);
+                        tempDP.variables[holder.rowNames[j].Replace(" ", "")].Add(replaceF.ToString());
+                        //tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "") + "[0]").SetValue(tempDP, replaceF);
                         break;
                     case rowType.String:
-                        tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "") + "[0]").SetValue(tempDP, lineData[j]);
+                        tempDP.variables[holder.rowNames[j].Replace(" ", "")].Add(lineData[j]);
+                        //tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "") + "[0]").SetValue(tempDP, lineData[j]);
                         break;
                 }
 
@@ -643,20 +675,24 @@ public class Loader : EditorWindow
                     case rowType.Bool:
                         bool replaceB;
                         bool.TryParse(lineData[j], out replaceB);
-                        tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "") + "[" + fileNum + "]").SetValue(tempDP, replaceB);
+                        tempDP.variables[holder.rowNames[j].Replace(" ", "")].Add(replaceB.ToString());
+                        //tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "") + "[0]").SetValue(tempDP, replaceB);
                         break;
                     case rowType.Int:
                         int replaceI;
                         int.TryParse(lineData[j], out replaceI);
-                        tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "") + "[" + fileNum + "]").SetValue(tempDP, replaceI);
+                        tempDP.variables[holder.rowNames[j].Replace(" ", "")].Add(replaceI.ToString());
+                        //tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "") + "[0]").SetValue(tempDP, replaceI);
                         break;
                     case rowType.Float:
                         float replaceF;
                         float.TryParse(lineData[j], out replaceF);
-                        tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "") + "[" + fileNum + "]").SetValue(tempDP, replaceF);
+                        tempDP.variables[holder.rowNames[j].Replace(" ", "")].Add(replaceF.ToString());
+                        //tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "") + "[0]").SetValue(tempDP, replaceF);
                         break;
                     case rowType.String:
-                        tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "") + "[" + fileNum + "]").SetValue(tempDP, lineData[j]);
+                        tempDP.variables[holder.rowNames[j].Replace(" ", "")].Add(lineData[j]);
+                        //tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "") + "[0]").SetValue(tempDP, lineData[j]);
                         break;
                 }
             }
