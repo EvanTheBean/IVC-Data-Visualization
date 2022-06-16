@@ -17,6 +17,7 @@ public enum axisType
     X,
     Y,
     Z,
+    Connected,
     Color,
     Size,
     ShowOnClick
@@ -34,7 +35,7 @@ public class Holder : MonoBehaviour
     public List<Gradient> axisGradients = new List<Gradient>();
     public List<Vector2> axisMinMax= new List<Vector2>();
 
-    public string path;
+    public List<string> path = new List<string>(1);
 
     public bool check;
 

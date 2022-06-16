@@ -83,6 +83,7 @@ public class Loader : EditorWindow
                 CreateAll();
             }
             */
+            /*
             if(holder.axisTypes.Contains(axisType.ShowOnClick))
             {
                 if(GUILayout.Button("Change What is Shown"))
@@ -90,10 +91,25 @@ public class Loader : EditorWindow
                     CreateClass();
                 }
             }
+            */
+            if(holder.axisTypes.Contains(axisType.Connected))
+            {
+                if(GUILayout.Button("Add File"))
+                {
+                    holder.path.Add(null);
+                    holder.path[holder.path.Count -1] = EditorUtility.OpenFilePanel("CSV", "", "csv");
+                    if(holder.path[holder.path.Count-1] != null)
+                    {
+                        LoadSecondFile(holder.path.Count - 1);
+                    }
+                }
+            }
+
+            /*
             if (GUILayout.Button("Load File"))
             {
-                holder.path = EditorUtility.OpenFilePanel("CSV", "", "csv");
-                if (holder.path != null)
+                holder.path[0] = EditorUtility.OpenFilePanel("CSV", "", "csv");
+                if (holder.path[0] != null)
                 {
                     LoadRows();
                     dataRead = true;
@@ -101,13 +117,14 @@ public class Loader : EditorWindow
                     dataLoaded = true;
                 }
             }
+            */
         }
         else
         {
             placeHolder = (GameObject)EditorGUILayout.ObjectField("Object", placeHolder, typeof(GameObject), false);
             if (GUILayout.Button("Load File"))
             {
-                holder.path = EditorUtility.OpenFilePanel("CSV", "", "csv");
+                holder.path[0] = EditorUtility.OpenFilePanel("CSV", "", "csv");
                 if (holder.path != null)
                 {
                     LoadRows();
@@ -137,10 +154,11 @@ public class Loader : EditorWindow
         
         for(int i =0; i < holder.rowNames.Count; i++)
         {
-            writer.WriteLine("public " + holder.rowTypes[i].ToString().ToLower() + " " + holder.rowNames[i].Replace(" ", "") + ";\n");
+            writer.WriteLine("public List<" + holder.rowTypes[i].ToString().ToLower() + "> " + holder.rowNames[i].Replace(" ", "") + " = new List<" + holder.rowTypes[i].ToString().ToLower() + ">();");
         }
 
         writer.WriteLine("public TextMeshProUGUI displayBox;");
+        writer.WriteLine("public int currentC;\n");
         writer.WriteLine("public void OnPointerDown(PointerEventData eventData)\n{\ndisplayBox.enabled = !displayBox.enabled;\n");
         bool first = true;
         for (int i = 0; i < holder.rowNames.Count; i++)
@@ -156,7 +174,7 @@ public class Loader : EditorWindow
                     writer.WriteLine("displayBox.text = ");
                     first = false;
                 }
-                writer.WriteLine( "\"" + holder.rowNames[i] + ": \" + " + holder.rowNames[i].Replace(" ", "") + ".ToString() + \"\\n\"");
+                writer.WriteLine( "\"" + holder.rowNames[i] + ": \" + " + holder.rowNames[i].Replace(" ", "") + "[currentC].ToString() + \"\\n\"");
             //}
         }
         writer.WriteLine(";\n}");
@@ -164,7 +182,26 @@ public class Loader : EditorWindow
         writer.WriteLine("public void HideDisplay()\n{\ndisplayBox.enabled = false;\n}");
         writer.WriteLine("public void OnPointerUp(PointerEventData eventData)\n{\ndisplayBox.enabled = false;\n}");
 
-        writer.WriteLine("\n}");
+        writer.WriteLine("public void OnPointerClick(PointerEventData eventData)\n{\ndisplayBox.enabled = !displayBox.enabled;\n");
+        first = true;
+        for (int i = 0; i < holder.rowNames.Count; i++)
+        {
+            //if(holder.axisTypes[i] == axisType.ShowOnClick)
+            //{
+            if (!first)
+            {
+                writer.WriteLine("+");
+            }
+            if (first)
+            {
+                writer.WriteLine("displayBox.text = ");
+                first = false;
+            }
+            writer.WriteLine("\"" + holder.rowNames[i] + ": \" + " + holder.rowNames[i].Replace(" ", "") + "[currentC].ToString() + \"\\n\"");
+            //}
+        }
+
+        writer.WriteLine(";\n}");
         writer.Close();
         AssetDatabase.Refresh();
     }
@@ -202,7 +239,7 @@ public class Loader : EditorWindow
         holder.objects.RemoveAll((o) => o == null);
 
 
-        string fileData = System.IO.File.ReadAllText(holder.path);
+        string fileData = System.IO.File.ReadAllText(holder.path[0]);
         string[] lines = fileData.Split("\n"[0]);
 
         for(int i = 1; i < lines.Length; i++)
@@ -210,6 +247,7 @@ public class Loader : EditorWindow
             GameObject temp = Instantiate(placeHolder);
             temp.name = i.ToString();
             holder.objects.Add(temp);
+            temp.transform.parent = holder.gameObject.transform;
             //temp.AddComponent<MeshRenderer>();
             //temp.AddComponent<MeshFilter>();
             //temp.AddComponent<DataPoint>();
@@ -227,20 +265,20 @@ public class Loader : EditorWindow
                     case rowType.Bool:
                         bool replaceB;
                         bool.TryParse(lineData[j], out replaceB);
-                        tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "")).SetValue(tempDP, replaceB);
+                        tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "") + "[0]").SetValue(tempDP, replaceB);
                         break;
                     case rowType.Int:
                         int replaceI;
                         int.TryParse(lineData[j], out replaceI);
-                        tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "")).SetValue(tempDP, replaceI);
+                        tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "") + "[0]").SetValue(tempDP, replaceI);
                         break;
                     case rowType.Float:
                         float replaceF;
                         float.TryParse(lineData[j], out replaceF);
-                        tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "")).SetValue(tempDP, replaceF);
+                        tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "") + "[0]").SetValue(tempDP, replaceF);
                         break;
                     case rowType.String:
-                        tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "")).SetValue(tempDP, lineData[j]);
+                        tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "") + "[0]").SetValue(tempDP, lineData[j]);
                         break;
                 }
 
@@ -300,7 +338,7 @@ public class Loader : EditorWindow
 
     void UpdateObjects()
     {
-        string fileData = System.IO.File.ReadAllText(holder.path);
+        string fileData = System.IO.File.ReadAllText(holder.path[0]);
         string[] lines = fileData.Split("\n"[0]);
 
         for (int i = 1; i < lines.Length; i++)
@@ -536,7 +574,7 @@ public class Loader : EditorWindow
         holder.axisGradients.Clear();
         holder.axisMinMax.Clear();
 
-        string fileData = System.IO.File.ReadAllText(holder.path);
+        string fileData = System.IO.File.ReadAllText(holder.path[0]);
         string[] lines = fileData.Split("\n"[0]);
 
         string[] line1 = lines[0].Trim().Split(","[0]);
@@ -569,6 +607,59 @@ public class Loader : EditorWindow
             holder.axisScales.Add(1);
             holder.axisGradients.Add(new Gradient());
             holder.axisMinMax.Add(new Vector2(100,-100));
+        }
+    }
+
+    public void LoadSecondFile(int fileNum)
+    {
+        string fileData = System.IO.File.ReadAllText(holder.path[fileNum]);
+        string[] lines = fileData.Split("\n"[0]);
+
+        for (int i = 1; i < lines.Length && i <holder.objects.Count; i++)
+        {
+            string[] lineData = lines[i].Trim().Split(","[0]);
+
+            int rowNum = 0;
+            for (int k = 0; k < holder.axisTypes.Count; k++)
+            {
+                if (holder.axisTypes[k] == axisType.Connected)
+                {
+                    rowNum = k;
+                    break;
+                }
+            }
+
+            string l = "love";
+            GameObject temp = null;
+            temp = holder.objects.Find(t => t.GetComponent<DataPoint>().GetType().GetField(holder.rowNames[rowNum].Replace(" ", "") + "[0]").GetValue(t).ToString() == lineData[rowNum]);
+            //GameObject temp = holder.objects[i];
+            DataPoint tempDP = temp.GetComponent<DataPoint>();
+
+            for (int j = 0; j < holder.rowTypes.Count && j < lineData.Length; j++)
+            {
+
+                switch (holder.rowTypes[j])
+                {
+                    case rowType.Bool:
+                        bool replaceB;
+                        bool.TryParse(lineData[j], out replaceB);
+                        tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "") + "[" + fileNum + "]").SetValue(tempDP, replaceB);
+                        break;
+                    case rowType.Int:
+                        int replaceI;
+                        int.TryParse(lineData[j], out replaceI);
+                        tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "") + "[" + fileNum + "]").SetValue(tempDP, replaceI);
+                        break;
+                    case rowType.Float:
+                        float replaceF;
+                        float.TryParse(lineData[j], out replaceF);
+                        tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "") + "[" + fileNum + "]").SetValue(tempDP, replaceF);
+                        break;
+                    case rowType.String:
+                        tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "") + "[" + fileNum + "]").SetValue(tempDP, lineData[j]);
+                        break;
+                }
+            }
         }
     }
 }
