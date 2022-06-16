@@ -8,12 +8,7 @@ using TMPro;
  public class DataPoint : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
 
-public List<string> NAME = new List<string>();
-public List<int> x = new List<int>();
-public List<int> y = new List<int>();
-public List<int> z = new List<int>();
-public List<float> random = new List<float>();
-public List<bool> Thisisabool = new List<bool>();
+public Dictionary<string, List<string>> variables = new Dictionary<string, List<string>>();
 public TextMeshProUGUI displayBox;
 public int currentC;
 
@@ -22,17 +17,17 @@ public void OnPointerDown(PointerEventData eventData)
 displayBox.enabled = !displayBox.enabled;
 
 displayBox.text = 
-"NAME: " + NAME[currentC].ToString() + "\n"
+"NAME: " + variables["NAME"][currentC].ToString() + "\n"
 +
-"x: " + x[currentC].ToString() + "\n"
+"x: " + variables["x"][currentC].ToString() + "\n"
 +
-"y: " + y[currentC].ToString() + "\n"
+"y: " + variables["y"][currentC].ToString() + "\n"
 +
-"z: " + z[currentC].ToString() + "\n"
+"z: " + variables["z"][currentC].ToString() + "\n"
 +
-"random: " + random[currentC].ToString() + "\n"
+"random: " + variables["random"][currentC].ToString() + "\n"
 +
-"This is a bool: " + Thisisabool[currentC].ToString() + "\n"
+"This is a bool: " + variables["Thisisabool"][currentC].ToString() + "\n"
 ;
 }
 public void HideDisplay()
@@ -48,16 +43,16 @@ public void OnPointerClick(PointerEventData eventData)
 displayBox.enabled = !displayBox.enabled;
 
 displayBox.text = 
-"NAME: " + NAME[currentC].ToString() + "\n"
+"NAME: " + variables["NAME"][currentC].ToString() + "\n"
 +
-"x: " + x[currentC].ToString() + "\n"
+"x: " + variables["x"][currentC].ToString() + "\n"
 +
-"y: " + y[currentC].ToString() + "\n"
+"y: " + variables["y"][currentC].ToString() + "\n"
 +
-"z: " + z[currentC].ToString() + "\n"
+"z: " + variables["z"][currentC].ToString() + "\n"
 +
-"random: " + random[currentC].ToString() + "\n"
+"random: " + variables["random"][currentC].ToString() + "\n"
 +
-"This is a bool: " + Thisisabool[currentC].ToString() + "\n"
-
-}
+"This is a bool: " + variables["Thisisabool"][currentC].ToString() + "\n"
+;
+}}

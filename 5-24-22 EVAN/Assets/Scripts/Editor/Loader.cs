@@ -44,6 +44,8 @@ public class Loader : EditorWindow
 
         window.placingText = Resources.Load("Prefabs/AxisText") as GameObject;
         window.axisText = new List<GameObject>(GameObject.FindGameObjectsWithTag("axisText"));
+
+        //Debug.Log("I am being a bitch");
     }
 
     private void OnGUI()
@@ -127,10 +129,10 @@ public class Loader : EditorWindow
                 holder.path[0] = EditorUtility.OpenFilePanel("CSV", "", "csv");
                 if (holder.path != null)
                 {
-                    Debug.Log("Loading Rows");
+                   // Debug.Log("Loading Rows");
                     LoadRows();
                     dataRead = true;
-                    Debug.Log("Creating All");
+                    //Debug.Log("Creating All");
                     CreateAll();
                     dataLoaded = true;
                 }
@@ -142,9 +144,9 @@ public class Loader : EditorWindow
 
     void CreateAll()
     {
-        Debug.Log("going to create class");
+        //Debug.Log("going to create class");
         CreateClass();
-        Debug.Log("CreatedClass");
+        //Debug.Log("CreatedClass");
         CreateObjects();
         //Waiting();
     }
@@ -152,17 +154,17 @@ public class Loader : EditorWindow
     void CreateClass()
     {
 
-        Debug.Log("starting");
+        //Debug.Log("starting");
 
-        AssetDatabase.Refresh();
+        //AssetDatabase.Refresh();
 
         string classPath = Application.dataPath + "/DataPoint.cs";
         StreamWriter writer = new StreamWriter(classPath, false);
 
-        AssetDatabase.Refresh();
+        //AssetDatabase.Refresh();
 
         writer.WriteLine("using System.Collections;\nusing System.Collections.Generic;\nusing UnityEngine;\nusing UnityEngine.UI;\nusing TMPro;\n using UnityEngine.EventSystems; \n\n public class DataPoint : MonoBehaviour, IPointerDownHandler, IPointerUpHandler\n{\n");
-        writer.WriteLine("public Dictionary<string, List<string>> variables;");
+        writer.WriteLine("public Dictionary<string, List<string>> variables = new Dictionary<string, List<string>>();");
 
         /*
         for (int i = 0; i < holder.rowNames.Count; i++)
@@ -174,7 +176,7 @@ public class Loader : EditorWindow
         writer.WriteLine("public TextMeshProUGUI displayBox;");
         writer.WriteLine("public int currentC;\n");
 
-        Debug.Log("variables declared");
+        //Debug.Log("variables declared");
 
         writer.WriteLine("public void OnPointerDown(PointerEventData eventData)\n{\ndisplayBox.enabled = !displayBox.enabled;\n");
         bool first = true;
@@ -191,12 +193,12 @@ public class Loader : EditorWindow
                     writer.WriteLine("displayBox.text = ");
                     first = false;
                 }
-                writer.WriteLine( "\"" + holder.rowNames[i] + ": \" + variables[" + holder.rowNames[i].Replace(" ", "") + "][currentC].ToString() + \"\\n\"");
+                writer.WriteLine( "\"" + holder.rowNames[i] + ": \" + variables[\"" + holder.rowNames[i].Replace(" ", "") + "\"][currentC].ToString() + \"\\n\"");
             //}
         }
         writer.WriteLine(";\n}");
 
-        Debug.Log("function1");
+        //Debug.Log("function1");
 
         writer.WriteLine("public void HideDisplay()\n{\ndisplayBox.enabled = false;\n}");
         writer.WriteLine("public void OnPointerUp(PointerEventData eventData)\n{\ndisplayBox.enabled = false;\n}");
@@ -216,28 +218,28 @@ public class Loader : EditorWindow
                 writer.WriteLine("displayBox.text = ");
                 first = false;
             }
-            writer.WriteLine("\"" + holder.rowNames[i] + ": \" + variables[" + holder.rowNames[i].Replace(" ", "") + "][currentC].ToString() + \"\\n\"");
+            writer.WriteLine("\"" + holder.rowNames[i] + ": \" + variables[\"" + holder.rowNames[i].Replace(" ", "") + "\"][currentC].ToString() + \"\\n\"");
             //}
         }
 
-        Debug.Log("function last");
+        //Debug.Log("function last");
 
         writer.WriteLine(";\n}}");
         writer.Close();
         AssetDatabase.Refresh();
 
-        Debug.Log("It should be new");
+        //Debug.Log("It should be new");
     }
 
     IEnumerator Waiting()
     {
-        Debug.Log("Started Coroutine at timestamp : " + Time.time);
+        //Debug.Log("Started Coroutine at timestamp : " + Time.time);
 
         //yield on a new YieldInstruction that waits for 5 seconds.
         yield return new WaitForSeconds(1);
 
         //After we have waited 5 seconds print the time again.
-        Debug.Log("Finished Coroutine at timestamp : " + Time.time);
+        //Debug.Log("Finished Coroutine at timestamp : " + Time.time);
 
         CreateObjects();
     }
@@ -252,7 +254,7 @@ public class Loader : EditorWindow
             holder.objects.Add(point.gameObject);
         }
 
-        Debug.Log(holder.objects.Count);
+        //Debug.Log(holder.objects.Count);
 
         foreach(GameObject @object in holder.objects)
         {
@@ -274,12 +276,21 @@ public class Loader : EditorWindow
             //temp.AddComponent<MeshRenderer>();
             //temp.AddComponent<MeshFilter>();
             //temp.AddComponent<DataPoint>();
-            DataPoint tempDP = temp.AddComponent<DataPoint>();
+            DataPoint tempDP;
+            temp.AddComponent<DataPoint>();
+            tempDP = temp.GetComponent<DataPoint>();
 
-            for (int j = 0; i < holder.rowNames.Count; i++)
+            //Debug.Log(i);
+
+            for (int j = 0; j < holder.rowNames.Count; j++)
             {
-                tempDP.variables.Add(holder.rowNames[j].Replace(" ", ""), new List<string>());
+                //Debug.Log(j + " " + holder.rowNames[j]);
+                List<string> tempList = new List<string>();
+                tempDP.variables.Add(holder.rowNames[j].Replace(" ", ""), tempList);
             }
+            tempDP.currentC = 0;
+
+            //Debug.Log(tempDP.variables.Keys);
 
             //temp.GetComponent<MeshFilter>().mesh = mesh;
             //temp.GetComponent<MeshRenderer>().material = material;
@@ -365,7 +376,7 @@ public class Loader : EditorWindow
             tempDP.displayBox = temp.GetComponentInChildren<TextMeshProUGUI>();
         }
 
-        FindObjectOfType<HeatMapShaderMath>().updatePointList();
+        //FindObjectOfType<HeatMapShaderMath>().updatePointList();
     }
 
     void UpdateObjects()
@@ -663,38 +674,45 @@ public class Loader : EditorWindow
 
             string l = "love";
             GameObject temp = null;
-            temp = holder.objects.Find(t => t.GetComponent<DataPoint>().GetType().GetField(holder.rowNames[rowNum].Replace(" ", "") + "[0]").GetValue(t).ToString() == lineData[rowNum]);
-            //GameObject temp = holder.objects[i];
-            DataPoint tempDP = temp.GetComponent<DataPoint>();
-
-            for (int j = 0; j < holder.rowTypes.Count && j < lineData.Length; j++)
+            if(holder.objects.Find(t => t.GetComponent<DataPoint>().variables[holder.rowNames[rowNum].Replace(" ", "")][0] == lineData[rowNum]))
             {
+                temp = holder.objects.Find(t => t.GetComponent<DataPoint>().variables[holder.rowNames[rowNum].Replace(" ", "")][0] == lineData[rowNum]);
+                //GameObject temp = holder.objects[i];
+                DataPoint tempDP = temp.GetComponent<DataPoint>();
 
-                switch (holder.rowTypes[j])
+                for (int j = 0; j < holder.rowTypes.Count && j < lineData.Length; j++)
                 {
-                    case rowType.Bool:
-                        bool replaceB;
-                        bool.TryParse(lineData[j], out replaceB);
-                        tempDP.variables[holder.rowNames[j].Replace(" ", "")].Add(replaceB.ToString());
-                        //tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "") + "[0]").SetValue(tempDP, replaceB);
-                        break;
-                    case rowType.Int:
-                        int replaceI;
-                        int.TryParse(lineData[j], out replaceI);
-                        tempDP.variables[holder.rowNames[j].Replace(" ", "")].Add(replaceI.ToString());
-                        //tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "") + "[0]").SetValue(tempDP, replaceI);
-                        break;
-                    case rowType.Float:
-                        float replaceF;
-                        float.TryParse(lineData[j], out replaceF);
-                        tempDP.variables[holder.rowNames[j].Replace(" ", "")].Add(replaceF.ToString());
-                        //tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "") + "[0]").SetValue(tempDP, replaceF);
-                        break;
-                    case rowType.String:
-                        tempDP.variables[holder.rowNames[j].Replace(" ", "")].Add(lineData[j]);
-                        //tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "") + "[0]").SetValue(tempDP, lineData[j]);
-                        break;
+
+                    switch (holder.rowTypes[j])
+                    {
+                        case rowType.Bool:
+                            bool replaceB;
+                            bool.TryParse(lineData[j], out replaceB);
+                            tempDP.variables[holder.rowNames[j].Replace(" ", "")].Add(replaceB.ToString());
+                            //tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "") + "[0]").SetValue(tempDP, replaceB);
+                            break;
+                        case rowType.Int:
+                            int replaceI;
+                            int.TryParse(lineData[j], out replaceI);
+                            tempDP.variables[holder.rowNames[j].Replace(" ", "")].Add(replaceI.ToString());
+                            //tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "") + "[0]").SetValue(tempDP, replaceI);
+                            break;
+                        case rowType.Float:
+                            float replaceF;
+                            float.TryParse(lineData[j], out replaceF);
+                            tempDP.variables[holder.rowNames[j].Replace(" ", "")].Add(replaceF.ToString());
+                            //tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "") + "[0]").SetValue(tempDP, replaceF);
+                            break;
+                        case rowType.String:
+                            tempDP.variables[holder.rowNames[j].Replace(" ", "")].Add(lineData[j]);
+                            //tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "") + "[0]").SetValue(tempDP, lineData[j]);
+                            break;
+                    }
                 }
+            }
+            else
+            {
+                Debug.Log("No Object Found for " + lineData[rowNum]);
             }
         }
     }

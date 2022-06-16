@@ -98,7 +98,7 @@ public class VRInput : BaseInputModule
         }
         else
         {
-            Debug.Log(currentObject.name);
+            //Debug.Log(currentObject.name);
         }
 
 	
