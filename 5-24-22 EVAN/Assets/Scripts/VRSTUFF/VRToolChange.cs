@@ -18,7 +18,7 @@ public class VRToolChange : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (moveAction.GetAxis(targetSource) != Vector2.zero)
+        if (moveAction.GetAxis(targetSource) != Vector2.zero && moveAction.GetLastAxis(targetSource) == Vector2.zero)
         {
             currentTool++;
             currentTool = currentTool % totalTools;

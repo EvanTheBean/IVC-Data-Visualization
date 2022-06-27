@@ -239,7 +239,7 @@ public class Loader : EditorWindow
         writer.WriteLine(";\n}");
 
         writer.Write("\n else if (VRToolChange.currentTool == 1) { \n");
-        writer.Write("}");
+        writer.Write("GameObject.FindObjectOfType<Holder>().HideAll(this.gameObject);}");
 
         //Debug.Log("function last");
         writer.WriteLine("\n}");
