@@ -8,7 +8,7 @@ using TMPro;
  public class DataPoint : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
 
-public Dictionary<string, List<string>> variables = new Dictionary<string, List<string>>();
+[SerializeField] public StringListDictionary variables = new StringListDictionary();
 public TextMeshProUGUI displayBox;
 public int currentC;
 

@@ -44,6 +44,7 @@ public class Loader : EditorWindow
 
         window.placingText = Resources.Load("Prefabs/AxisText") as GameObject;
         window.axisText = new List<GameObject>(GameObject.FindGameObjectsWithTag("axisText"));
+        window.placeHolder = Resources.Load("Prefabs/placeholder") as GameObject;
 
         //Debug.Log("I am being a bitch");
     }
@@ -96,6 +97,10 @@ public class Loader : EditorWindow
             */
             if(holder.axisTypes.Contains(axisType.Connected))
             {
+                foreach(string path in holder.path)
+                {
+                    EditorGUILayout.LabelField(path);
+                }
                 if(GUILayout.Button("Add File"))
                 {
                     holder.path.Add(null);
@@ -164,7 +169,7 @@ public class Loader : EditorWindow
         //AssetDatabase.Refresh();
 
         writer.WriteLine("using System.Collections;\nusing System.Collections.Generic;\nusing UnityEngine;\nusing UnityEngine.UI;\nusing TMPro;\n using UnityEngine.EventSystems; \n\n public class DataPoint : MonoBehaviour, IPointerDownHandler, IPointerUpHandler\n{\n");
-        writer.WriteLine("public Dictionary<string, List<string>> variables = new Dictionary<string, List<string>>();");
+        writer.WriteLine("[SerializeField] public StringListDictionary variables = new StringListDictionary();");
 
         /*
         for (int i = 0; i < holder.rowNames.Count; i++)
@@ -280,6 +285,8 @@ public class Loader : EditorWindow
             temp.AddComponent<DataPoint>();
             tempDP = temp.GetComponent<DataPoint>();
 
+            EditorUtility.SetDirty(tempDP);
+
             //Debug.Log(i);
 
             for (int j = 0; j < holder.rowNames.Count; j++)
@@ -287,7 +294,14 @@ public class Loader : EditorWindow
                 //Debug.Log(j + " " + holder.rowNames[j]);
                 List<string> tempList = new List<string>();
                 tempDP.variables.Add(holder.rowNames[j].Replace(" ", ""), tempList);
+                Debug.Log(holder.rowNames[j].Replace(" ", ""));
             }
+
+            foreach (string key in tempDP.variables.Keys)
+            {
+                Debug.Log(key + "Key check 1");
+            }
+
             tempDP.currentC = 0;
 
             //Debug.Log(tempDP.variables.Keys);
@@ -323,6 +337,11 @@ public class Loader : EditorWindow
                         tempDP.variables[holder.rowNames[j].Replace(" ", "")].Add(lineData[j]);
                         //tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "") + "[0]").SetValue(tempDP, lineData[j]);
                         break;
+                }
+
+                foreach (string key in tempDP.variables.Keys)
+                {
+                    Debug.Log(key + "Key check 2");
                 }
 
                 if (holder.axisTypes[j] == axisType.X)
@@ -374,6 +393,13 @@ public class Loader : EditorWindow
             }
 
             tempDP.displayBox = temp.GetComponentInChildren<TextMeshProUGUI>();
+
+            foreach (string key in tempDP.variables.Keys)
+            {
+                Debug.Log(key + "Key check 3");
+            }
+
+            EditorUtility.SetDirty(tempDP);
         }
 
         //FindObjectOfType<HeatMapShaderMath>().updatePointList();
@@ -563,6 +589,8 @@ public class Loader : EditorWindow
         }
     }
 
+
+
     void CreateAxisRows(Vector2 minMaxLabels, Vector2 minMaxPlacement, axisType correspondingAxis)
     {
         GameObject x = null, y = null, z = null;
@@ -672,13 +700,15 @@ public class Loader : EditorWindow
                 }
             }
 
-            string l = "love";
             GameObject temp = null;
             if(holder.objects.Find(t => t.GetComponent<DataPoint>().variables[holder.rowNames[rowNum].Replace(" ", "")][0] == lineData[rowNum]))
             {
+                Debug.Log("Object Found for " + lineData[rowNum]);
                 temp = holder.objects.Find(t => t.GetComponent<DataPoint>().variables[holder.rowNames[rowNum].Replace(" ", "")][0] == lineData[rowNum]);
                 //GameObject temp = holder.objects[i];
                 DataPoint tempDP = temp.GetComponent<DataPoint>();
+
+                EditorUtility.SetDirty(tempDP);
 
                 for (int j = 0; j < holder.rowTypes.Count && j < lineData.Length; j++)
                 {
@@ -709,10 +739,17 @@ public class Loader : EditorWindow
                             break;
                     }
                 }
+
+                foreach (string key in tempDP.variables.Keys)
+                {
+                    Debug.Log(key + "Key check 4");
+                }
+
+                EditorUtility.SetDirty(tempDP);
             }
             else
             {
-                Debug.Log("No Object Found for " + lineData[rowNum]);
+                Debug.LogWarning("No Object Found for " + lineData[rowNum]);
             }
         }
     }
