@@ -242,7 +242,7 @@ public class Loader : EditorWindow
         writer.Write("GameObject.FindObjectOfType<Holder>().HideAll(this.gameObject);}");
 
         //Debug.Log("function last");
-        writer.WriteLine("\n}");
+        writer.WriteLine("\n}}");
         writer.Close();
         AssetDatabase.Refresh();
 
