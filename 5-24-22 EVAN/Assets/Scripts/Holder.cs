@@ -34,6 +34,7 @@ public class Holder : MonoBehaviour
     public List<float> axisScales = new List<float>();
     public List<Gradient> axisGradients = new List<Gradient>();
     public List<Vector2> axisMinMax= new List<Vector2>();
+    public List<string> connectedTypes = new List<string>();
 
     public List<string> path = new List<string>(1);
 
@@ -53,6 +54,17 @@ public class Holder : MonoBehaviour
             foreach (string name in rowNames)
             {
                 Debug.Log(name);
+            }
+        }
+    }
+
+    public void HideAll(GameObject keep)
+    {
+        foreach(GameObject temp in objects)
+        {
+            if(temp != keep)
+            {
+                temp.SetActive(!temp.activeInHierarchy);
             }
         }
     }

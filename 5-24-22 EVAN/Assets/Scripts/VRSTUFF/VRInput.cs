@@ -94,11 +94,11 @@ public class VRInput : BaseInputModule
             //Debug.DrawRay(camera.gameObject.transform.position, camera.gameObject.transform.forward * pointer.defaultLength, Color.red);
             //Debug.Log(hit.collider);
             currentObject = hit.transform.gameObject;
-            //Debug.Log("was null " + currentObject.name);
+            Debug.Log("was null " + currentObject.name);
         }
         else
         {
-            //Debug.Log(currentObject.name);
+            Debug.Log(currentObject.name);
         }
 
 	

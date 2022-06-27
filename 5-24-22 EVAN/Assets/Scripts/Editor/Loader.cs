@@ -29,6 +29,9 @@ public class Loader : EditorWindow
     static void Init()
     {
         Loader window = EditorWindow.GetWindow<Loader>();
+
+        window.placeHolder = Resources.Load("Prefabs/placeholder") as GameObject;
+
         window.Show();
         window.dataRead = false;
         window.holder = GameObject.FindObjectOfType<Holder>();
@@ -44,7 +47,6 @@ public class Loader : EditorWindow
 
         window.placingText = Resources.Load("Prefabs/AxisText") as GameObject;
         window.axisText = new List<GameObject>(GameObject.FindGameObjectsWithTag("axisText"));
-        window.placeHolder = Resources.Load("Prefabs/placeholder") as GameObject;
 
         //Debug.Log("I am being a bitch");
     }
@@ -67,6 +69,10 @@ public class Loader : EditorWindow
                 else if(holder.axisTypes[i] == axisType.Color)
                 {
                     holder.axisGradients[i] = EditorGUILayout.GradientField(holder.axisGradients[i]);
+                }
+                else if (holder.axisTypes[i] == axisType.Connected)
+                {
+                    holder.connectedTypes[i] = EditorGUILayout.TextField(holder.connectedTypes[i]);
                 }
                 EditorGUILayout.EndHorizontal();
             }
@@ -131,6 +137,10 @@ public class Loader : EditorWindow
             placeHolder = (GameObject)EditorGUILayout.ObjectField("Object", placeHolder, typeof(GameObject), false);
             if (GUILayout.Button("Load File"))
             {
+                if(holder.path.Count <= 0)
+                {
+                    holder.path.Add(null);
+                }
                 holder.path[0] = EditorUtility.OpenFilePanel("CSV", "", "csv");
                 if (holder.path != null)
                 {
@@ -208,7 +218,7 @@ public class Loader : EditorWindow
         writer.WriteLine("public void HideDisplay()\n{\ndisplayBox.enabled = false;\n}");
         writer.WriteLine("public void OnPointerUp(PointerEventData eventData)\n{\ndisplayBox.enabled = false;\n}");
 
-        writer.WriteLine("public void OnPointerClick(PointerEventData eventData)\n{\ndisplayBox.enabled = !displayBox.enabled;\n");
+        writer.WriteLine("public void OnPointerClick(PointerEventData eventData)\n{\nif(VRToolChange.currentTool==0)\n{displayBox.enabled = !displayBox.enabled;\n");
         first = true;
         for (int i = 0; i < holder.rowNames.Count; i++)
         {
@@ -226,10 +236,13 @@ public class Loader : EditorWindow
             writer.WriteLine("\"" + holder.rowNames[i] + ": \" + variables[\"" + holder.rowNames[i].Replace(" ", "") + "\"][currentC].ToString() + \"\\n\"");
             //}
         }
+        writer.WriteLine(";\n}");
+
+        writer.Write("\n else if (VRToolChange.currentTool == 1) { \n");
+        writer.Write("}");
 
         //Debug.Log("function last");
-
-        writer.WriteLine(";\n}}");
+        writer.WriteLine("\n}");
         writer.Close();
         AssetDatabase.Refresh();
 
@@ -644,6 +657,7 @@ public class Loader : EditorWindow
         holder.axisScales.Clear();
         holder.axisGradients.Clear();
         holder.axisMinMax.Clear();
+        holder.connectedTypes.Clear();
 
         string fileData = System.IO.File.ReadAllText(holder.path[0]);
         string[] lines = fileData.Split("\n"[0]);
@@ -677,7 +691,8 @@ public class Loader : EditorWindow
             holder.axisTypes.Add(axisType.None);
             holder.axisScales.Add(1);
             holder.axisGradients.Add(new Gradient());
-            holder.axisMinMax.Add(new Vector2(100,-100));
+            holder.axisMinMax.Add(new Vector2(100,-100)); 
+            holder.connectedTypes.Add("");
         }
     }
 

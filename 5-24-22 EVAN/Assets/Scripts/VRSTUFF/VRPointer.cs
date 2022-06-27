@@ -51,9 +51,9 @@ public class VRPointer : MonoBehaviour
     {
         PointerEventData data = inputModule.GetData();
         float targetLength = data.pointerCurrentRaycast.distance == 0 ? defaultLength : data.pointerCurrentRaycast.distance;
-        RaycastHit hit = CreateRaycast(targetLength);
-
         Vector3 endPosition = transform.position + (transform.forward * targetLength);
+
+        RaycastHit hit = CreateRaycast(targetLength);
 
         if(hit.collider != null)
         {
