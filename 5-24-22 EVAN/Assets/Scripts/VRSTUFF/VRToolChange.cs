@@ -5,6 +5,7 @@ using Valve.VR;
 public class VRToolChange : MonoBehaviour
 {
     public static int currentTool;
+    public int tool4Dis;
     public int totalTools;
 
     public SteamVR_Input_Sources targetSource;
@@ -22,6 +23,7 @@ public class VRToolChange : MonoBehaviour
         {
             currentTool++;
             currentTool = currentTool % totalTools;
+            tool4Dis = currentTool;
         }
     }
 }
