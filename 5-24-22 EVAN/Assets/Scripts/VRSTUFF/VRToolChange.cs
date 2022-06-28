@@ -2,11 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Valve.VR;
+using TMPro;
 public class VRToolChange : MonoBehaviour
 {
     public static int currentTool;
     public int tool4Dis;
     public int totalTools;
+
+    public TextMeshProUGUI toolText;
 
     public SteamVR_Input_Sources targetSource;
     public SteamVR_Action_Vector2 moveAction;
@@ -24,6 +27,7 @@ public class VRToolChange : MonoBehaviour
             currentTool++;
             currentTool = currentTool % totalTools;
             tool4Dis = currentTool;
+            toolText.text = currentTool.ToString();
         }
     }
 }

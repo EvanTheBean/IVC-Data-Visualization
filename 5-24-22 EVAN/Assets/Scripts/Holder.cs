@@ -60,6 +60,7 @@ public class Holder : MonoBehaviour
 
     public void HideAll(GameObject keep)
     {
+        Debug.Log("Hiding all but " + keep.name);
         foreach(GameObject temp in objects)
         {
             if(temp != keep)
