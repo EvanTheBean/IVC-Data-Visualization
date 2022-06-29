@@ -312,7 +312,7 @@ public class Loader : EditorWindow
 
             foreach (string key in tempDP.variables.Keys)
             {
-                Debug.Log(key + "Key check 1");
+                //Debug.Log(key + "Key check 1");
             }
 
             tempDP.currentC = 0;
@@ -354,7 +354,7 @@ public class Loader : EditorWindow
 
                 foreach (string key in tempDP.variables.Keys)
                 {
-                    Debug.Log(key + "Key check 2");
+                    //Debug.Log(key + "Key check 2");
                 }
 
                 if (holder.axisTypes[j] == axisType.X)
@@ -409,7 +409,7 @@ public class Loader : EditorWindow
 
             foreach (string key in tempDP.variables.Keys)
             {
-                Debug.Log(key + "Key check 3");
+                //Debug.Log(key + "Key check 3");
             }
 
             EditorUtility.SetDirty(tempDP);
@@ -757,14 +757,105 @@ public class Loader : EditorWindow
 
                 foreach (string key in tempDP.variables.Keys)
                 {
-                    Debug.Log(key + "Key check 4");
+                    //Debug.Log(key + "Key check 4");
                 }
 
                 EditorUtility.SetDirty(tempDP);
             }
             else
             {
-                Debug.LogWarning("No Object Found for " + lineData[rowNum]);
+                Debug.Log("No Object Found for " + lineData[rowNum]);
+                temp = Instantiate(placeHolder);
+                temp.name = lineData[rowNum];
+                holder.objects.Add(temp);
+                temp.transform.parent = holder.gameObject.transform;
+                //temp.AddComponent<MeshRenderer>();
+                //temp.AddComponent<MeshFilter>();
+                //temp.AddComponent<DataPoint>();
+                DataPoint tempDP;
+                temp.AddComponent<DataPoint>();
+                tempDP = temp.GetComponent<DataPoint>();
+
+                tempDP.displayBox = temp.GetComponentInChildren<TextMeshProUGUI>();
+
+                EditorUtility.SetDirty(tempDP);
+
+                for (int j = 0; j < holder.rowNames.Count; j++)
+                {
+                    //Debug.Log(j + " " + holder.rowNames[j]);
+                    List<string> tempList = new List<string>();
+                    tempDP.variables.Add(holder.rowNames[j].Replace(" ", ""), tempList);
+                    Debug.Log("Adding Variable " + (holder.path.Count - 1));
+
+                    for (int k = 0; k < holder.path.Count - 1; k++)
+                    {
+                        if(holder.axisTypes[j] == axisType.Connected)
+                        {
+                            tempDP.variables[holder.rowNames[j].Replace(" ", "")].Add(lineData[rowNum]);
+                        }
+                        else
+                        {
+                            tempDP.variables[holder.rowNames[j].Replace(" ", "")].Add("-1");
+                        }
+                        Debug.Log("Adding Empty");
+                    }
+                }
+
+                EditorUtility.SetDirty(tempDP);
+
+                for (int j = 0; j < holder.rowTypes.Count && j < lineData.Length; j++)
+                {
+
+                    switch (holder.rowTypes[j])
+                    {
+                        case rowType.Bool:
+                            bool replaceB;
+                            bool.TryParse(lineData[j], out replaceB);
+                            tempDP.variables[holder.rowNames[j].Replace(" ", "")].Add(replaceB.ToString());
+                            //tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "") + "[0]").SetValue(tempDP, replaceB);
+                            break;
+                        case rowType.Int:
+                            int replaceI;
+                            int.TryParse(lineData[j], out replaceI);
+                            tempDP.variables[holder.rowNames[j].Replace(" ", "")].Add(replaceI.ToString());
+                            //tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "") + "[0]").SetValue(tempDP, replaceI);
+                            break;
+                        case rowType.Float:
+                            float replaceF;
+                            float.TryParse(lineData[j], out replaceF);
+                            tempDP.variables[holder.rowNames[j].Replace(" ", "")].Add(replaceF.ToString());
+                            //tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "") + "[0]").SetValue(tempDP, replaceF);
+                            break;
+                        case rowType.String:
+                            tempDP.variables[holder.rowNames[j].Replace(" ", "")].Add(lineData[j]);
+                            //tempDP.GetType().GetField(holder.rowNames[j].Replace(" ", "") + "[0]").SetValue(tempDP, lineData[j]);
+                            break;
+                    }
+                }
+
+                EditorUtility.SetDirty(tempDP);
+
+                UpdateObjects();
+            }
+        }
+
+        foreach (GameObject temp in holder.objects)
+        {
+            DataPoint tempDP = temp.GetComponent<DataPoint>();
+            if(tempDP.variables[holder.rowNames[holder.axisTypes.IndexOf(axisType.Connected)].Replace(" ", "")].Count < holder.path.Count)
+            {
+                for (int j = 0; j < holder.rowNames.Count; j++)
+                {
+                        if (holder.axisTypes[j] == axisType.Connected)
+                        {
+                            tempDP.variables[holder.rowNames[j].Replace(" ", "")].Add(tempDP.variables[holder.rowNames[j].Replace(" ", "")][0]);
+                        }
+                        else
+                        {
+                            tempDP.variables[holder.rowNames[j].Replace(" ", "")].Add("-1");
+                        }
+                        Debug.Log("Adding Empty");
+                }
             }
         }
     }
