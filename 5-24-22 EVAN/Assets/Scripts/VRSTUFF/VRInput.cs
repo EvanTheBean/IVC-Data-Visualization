@@ -93,7 +93,10 @@ public class VRInput : BaseInputModule
             Physics.Raycast(camera.gameObject.transform.position, camera.gameObject.transform.forward, out hit, pointer.defaultLength);
             //Debug.DrawRay(camera.gameObject.transform.position, camera.gameObject.transform.forward * pointer.defaultLength, Color.red);
             //Debug.Log(hit.collider);
-            currentObject = hit.transform.gameObject;
+            if(hit.transform.gameObject != null)
+            {
+                currentObject = hit.transform.gameObject;
+            }
             Debug.Log("was null " + currentObject.name);
         }
         else
