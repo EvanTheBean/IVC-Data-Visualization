@@ -28,6 +28,7 @@ public class VRToolChange : MonoBehaviour
             currentTool = currentTool % totalTools;
             tool4Dis = currentTool;
             toolText.text = currentTool.ToString();
+            Debug.Log("changing tool");
         }
     }
 }

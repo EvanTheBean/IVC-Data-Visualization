@@ -14,16 +14,30 @@ public int currentC;
 
 public void OnPointerDown(PointerEventData eventData)
 {
-displayBox.enabled = !displayBox.enabled;
+        if (VRToolChange.currentTool == 0)
+        {
+            Debug.Log("tool 0, the text");
+            displayBox.enabled = !displayBox.enabled;
 
-displayBox.text = 
-"Search Term: " + variables["SearchTerm"][currentC].ToString() + "\n"
-+
-"Percentage: " + variables["Percentage"][currentC].ToString() + "\n"
-+
-"Num: " + variables["Num"][currentC].ToString() + "\n"
-;
-}
+            displayBox.text =
+            "Search Term: " + variables["SearchTerm"][currentC].ToString() + "\n"
+            +
+            "Percentage: " + variables["Percentage"][currentC].ToString() + "\n"
+            +
+            "Num: " + variables["Num"][currentC].ToString() + "\n"
+            ;
+        }
+
+        else if (VRToolChange.currentTool == 1)
+        {
+            Debug.Log("Trying to hide objects now :)");
+            GameObject.FindObjectOfType<Holder>().HideAll(this.gameObject);
+        }
+        else
+        {
+            Debug.Log("For some reason this is not tool 1???");
+        }
+    }
 public void HideDisplay()
 {
 displayBox.enabled = false;
@@ -35,7 +49,9 @@ displayBox.enabled = false;
 public void OnPointerClick(PointerEventData eventData)
 {
 if(VRToolChange.currentTool==0)
-{displayBox.enabled = !displayBox.enabled;
+{
+            Debug.Log("tool 0, the text");
+            displayBox.enabled = !displayBox.enabled;
 
 displayBox.text = 
 "Search Term: " + variables["SearchTerm"][currentC].ToString() + "\n"
