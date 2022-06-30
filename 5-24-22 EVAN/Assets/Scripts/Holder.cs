@@ -38,11 +38,12 @@ public class Holder : MonoBehaviour
 
     public List<string> path = new List<string>(1);
 
-    public bool check;
+    public bool check, hiding;
 
     // Start is called before the first frame update
     void Start()
     {
+        hiding = false;
     }
 
     // Update is called once per frame
@@ -61,11 +62,12 @@ public class Holder : MonoBehaviour
     public void HideAll(GameObject keep)
     {
         Debug.Log("Hiding all but " + keep.name);
+        hiding = !hiding;
         foreach(GameObject temp in objects)
         {
             if(temp != keep)
             {
-                temp.SetActive(!temp.activeInHierarchy);
+                temp.SetActive(!hiding);
             }
         }
     }

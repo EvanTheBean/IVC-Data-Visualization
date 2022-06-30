@@ -46,6 +46,11 @@ displayBox.text =
 ;
 }
 
- else if (VRToolChange.currentTool == 1) { 
+ else if (VRToolChange.currentTool == 1) {
+            Debug.Log("Trying to hide objects now :)");
 GameObject.FindObjectOfType<Holder>().HideAll(this.gameObject);}
+else
+        {
+            Debug.Log("For some reason this is not tool 1???");
+        }
 }}
