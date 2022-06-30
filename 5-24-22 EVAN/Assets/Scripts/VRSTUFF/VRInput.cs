@@ -96,8 +96,8 @@ public class VRInput : BaseInputModule
             if(hit.transform.gameObject != null)
             {
                 currentObject = hit.transform.gameObject;
+                Debug.Log("was null " + currentObject.name);
             }
-            Debug.Log("was null " + currentObject.name);
         }
         else
         {
