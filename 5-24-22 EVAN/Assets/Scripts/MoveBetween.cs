@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MoveBetween : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class MoveBetween : MonoBehaviour
     void Start()
     {
         holder = GameObject.FindObjectOfType<Holder>();
+        GameObject.Find("SliderSmooth").GetComponent<Slider>().maxValue = holder.path.Count - 1;
+        GameObject.Find("SliderChunks").GetComponent<Slider>().maxValue = holder.path.Count - 1;
     }
 
     // Update is called once per frame
