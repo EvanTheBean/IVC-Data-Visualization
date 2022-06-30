@@ -3,14 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
+using UnityEngine.EventSystems;
 
 public class ARPlacementManager : MonoBehaviour
 {
     public static ARPlacementManager Instance;
 
     ARRaycastManager arRaycastManager;
-    ARAnchorManager arAnchorManager;
-
     [SerializeField] GameObject placedPrefab;
 
     GameObject placedGameObject = null;
@@ -56,7 +55,13 @@ public class ARPlacementManager : MonoBehaviour
         if (Input.touchCount > 0 )
         {
             touchPosition = Input.GetTouch(0).position;
-            return true;
+
+            PointerEventData ptrEventData = new PointerEventData(EventSystem.current);
+            ptrEventData.position = touchPosition;
+            List<RaycastResult> results = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(ptrEventData, results);
+
+            return results.Count < 1;
         }
         touchPosition = Vector2.zero;
         return false;

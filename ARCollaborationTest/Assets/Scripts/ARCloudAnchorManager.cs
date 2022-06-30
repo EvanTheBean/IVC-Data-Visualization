@@ -28,11 +28,18 @@ public class ARCloudAnchorManager : MonoBehaviour
     bool anchorHostInProgress = false;
 
     bool anchorResolveInProgress = false;
+    bool anchorResolved = false;
 
     AnchorCreatedEvent cloudAnchorCreatedEvent = null;
 
+    //string authToken = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjgzZWMwMDJjZDY4ZWZiNDQwNzU1NTkwY2RlZjVmMDM1Njk3NGFlODMifQ.eyJpc3MiOiJlbWN0ZXN0QGFyY29sbGFidGVzdC5pYW0uZ3NlcnZpY2VhY2NvdW50LmNvbSIsImF1ZCI6Imh0dHBzOi8vYXJjb3JlY2xvdWRhbmNob3IuZ29vZ2xlYXBpcy5jb20vIiwiZXhwIjoxNjU1MzE5OTI3LCJpYXQiOjE2NTUzMTYzMjcsInN1YiI6ImVtY3Rlc3RAYXJjb2xsYWJ0ZXN0LmlhbS5nc2VydmljZWFjY291bnQuY29tIn0.UgCu2kQ6QvDBjAQF5PCmNCJ23lsK5CNWwzFDZuCjzuYd8C7uZMNmVgAopUv34X831waCxJYNWnnLlN9XeY6gUL-aZDDBwN8Q-sluUSesat_IASL9godQlNqMJnD30A0OJVRQ4wCOWqEFPszoDWPx7bVEqHuCaHyFJyJYq-ffJ5I-NoO1zftUJ4zoMjzzJYcalP2cZB1mKS75BkJ7VBcmkvK2U3XWMIKbvubKTjGPhEKZBn5I_WznsekofaML_-xlOvh6W-7WIYV3QOvfJ8bP5mc3o8YxYLI4t0b-dg7dpiLS1-8ufBvJChTlhtW2ao9l7z5G5rraDwUD2n3zd1rv3Q";
+
     private void Awake()
     {
+#if UNITY_IPHONE
+        arAnchorManager.SetAuthToken(authToken);
+#endif
+
         cloudAnchorCreatedEvent = new AnchorCreatedEvent();
         cloudAnchorCreatedEvent.AddListener((t) => ARPlacementManager.Instance.ReCreatePlacement(t));
     }
@@ -86,21 +93,21 @@ public class ARCloudAnchorManager : MonoBehaviour
 
     }
 
-    public void Resolve()
+    public void Resolve(string anchorID)
     {
+        anchorIDToResolve = anchorID;
         DebugCanvas.Instance.Log("Resolve call in progress");
 
-        cloudAnchor = arAnchorManager.ResolveCloudAnchorId(anchorIDToResolve);
+        cloudAnchor = arAnchorManager.ResolveCloudAnchorId(anchorID);
 
         if (cloudAnchor == null)
         {
-            DebugCanvas.Instance.Log($"Unable to resolve cloud anchor {anchorIDToResolve}");
+            DebugCanvas.Instance.Log($"Unable to resolve cloud anchor {anchorID}");
         }
         else
         {
             anchorResolveInProgress = true;
         }
-
     }
 
     void CheckResolveProgress()
@@ -126,7 +133,9 @@ public class ARCloudAnchorManager : MonoBehaviour
         {
             anchorHostInProgress = false;
             anchorIDToResolve = cloudAnchor.cloudAnchorId;
-            DebugCanvas.Instance.Log($"Anchor hosted: {anchorIDToResolve}");
+            //SET ANCHOR ID IN LOBBY
+            GameObject.FindObjectOfType<ARLobby>().AddCloudAnchor(anchorIDToResolve);
+
 
         }
         else if (cloudAnchorState != CloudAnchorState.TaskInProgress)
