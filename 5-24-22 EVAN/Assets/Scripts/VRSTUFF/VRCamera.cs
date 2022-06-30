@@ -32,10 +32,12 @@ public class VRCamera : MonoBehaviour
 
             string filename = System.DateTime.Now.ToString();
 
-            //byte[] bytes = _screenShot.EncodeToPNG();
-            //System.IO.File.WriteAllBytes(filename, bytes);
+            byte[] bytes = _screenShot.EncodeToPNG();
+            System.IO.File.WriteAllBytes("Assets/Resources/screenshots/" + filename, bytes);
 
             Debug.Log(string.Format("Took screenshot to: {0}", filename));
+
+            ScreenCapture.CaptureScreenshot("Assets/Resources/screenshots/" + filename + "1.png");
         }
     }
 }
