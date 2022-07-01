@@ -14,7 +14,8 @@ public int currentC;
 
 public void OnPointerDown(PointerEventData eventData)
 {
-displayBox.enabled = !displayBox.enabled;
+if(VRToolChange.currentTool==0)
+{displayBox.enabled = !displayBox.enabled;
 
 displayBox.text = 
 "Search Term: " + variables["SearchTerm"][currentC].ToString() + "\n"
@@ -23,6 +24,10 @@ displayBox.text =
 +
 "Num: " + variables["Num"][currentC].ToString() + "\n"
 ;
+}
+
+ else if (VRToolChange.currentTool == 1) { 
+GameObject.FindObjectOfType<Holder>().HideAll(this.gameObject);}
 }
 public void HideDisplay()
 {

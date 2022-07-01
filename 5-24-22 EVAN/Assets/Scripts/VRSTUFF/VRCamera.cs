@@ -20,6 +20,10 @@ public class VRCamera : MonoBehaviour
         if(shutterAction.GetStateDown(targetSource))
         {
             string filename = System.DateTime.Now.ToString();
+			  filename = filename.Replace("/","-");
+  filename = filename.Replace(" ","_");
+ filename = filename.Replace(":","-");
+ Debug.Log(filename);
             /*
             RenderTexture rt = new RenderTexture(1920, 1080, 24);
             Camera.main.targetTexture = rt;
@@ -36,10 +40,10 @@ public class VRCamera : MonoBehaviour
             System.IO.File.WriteAllBytes("Assets/Resources/screenshots/" + filename, bytes);
 
             Debug.Log(string.Format("Took screenshot to: {0}", filename));
-
-            ScreenCapture.CaptureScreenshot("Assets/Resources/screenshots/" + filename + "1.png");
-            */
-            ScreenCapture.CaptureScreenshot(filename + ".png");
+			*/
+            //ScreenCapture.CaptureScreenshot(Application.dataPath + "/Resources/screenshots/" + filename + "1.png");
+            
+            ScreenCapture.CaptureScreenshot(Application.dataPath + "/Resources/screenshots/" +filename + ".png");
         }
     }
 }

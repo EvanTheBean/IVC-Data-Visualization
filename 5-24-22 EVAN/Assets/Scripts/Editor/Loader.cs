@@ -193,25 +193,31 @@ public class Loader : EditorWindow
 
         //Debug.Log("variables declared");
 
-        writer.WriteLine("public void OnPointerDown(PointerEventData eventData)\n{\ndisplayBox.enabled = !displayBox.enabled;\n");
+        writer.WriteLine("public void OnPointerDown(PointerEventData eventData)\n{\nif(VRToolChange.currentTool==0)\n{displayBox.enabled = !displayBox.enabled;\n");
         bool first = true;
         for (int i = 0; i < holder.rowNames.Count; i++)
         {
             //if(holder.axisTypes[i] == axisType.ShowOnClick)
             //{
-                if(!first)
-                {
-                    writer.WriteLine("+");
-                }
-                if(first)
-                {
-                    writer.WriteLine("displayBox.text = ");
-                    first = false;
-                }
-                writer.WriteLine( "\"" + holder.rowNames[i] + ": \" + variables[\"" + holder.rowNames[i].Replace(" ", "") + "\"][currentC].ToString() + \"\\n\"");
+            if (!first)
+            {
+                writer.WriteLine("+");
+            }
+            if (first)
+            {
+                writer.WriteLine("displayBox.text = ");
+                first = false;
+            }
+            writer.WriteLine("\"" + holder.rowNames[i] + ": \" + variables[\"" + holder.rowNames[i].Replace(" ", "") + "\"][currentC].ToString() + \"\\n\"");
             //}
         }
         writer.WriteLine(";\n}");
+
+        writer.Write("\n else if (VRToolChange.currentTool == 1) { \n");
+        writer.Write("GameObject.FindObjectOfType<Holder>().HideAll(this.gameObject);}");
+
+        //Debug.Log("function last");
+        writer.WriteLine("\n}");
 
         //Debug.Log("function1");
 
