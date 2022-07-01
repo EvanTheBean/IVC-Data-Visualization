@@ -5,6 +5,7 @@ using Unity.Netcode;
 using Unity.Collections;
 using System;
 using Google.XR.ARCoreExtensions;
+using System.Linq;
 
 public class ARLobby : NetworkBehaviour
 {
@@ -33,10 +34,10 @@ public class ARLobby : NetworkBehaviour
     {
 
         FixedString128Bytes cloudID = changeEvent.Value;
-        if (changeEvent.Type == NetworkListEvent<FixedString128Bytes>.EventType.Add && !anchoredObjects.ContainsKey(cloudID)) 
+        if (changeEvent.Type == NetworkListEvent<FixedString128Bytes>.EventType.Add && !anchoredObjects.ContainsKey(cloudID))
         {
             anchoredObjects.Add(cloudID, null);
-            ARSessionManager.Singleton.Resolve(cloudID.ToString());        
+            ARSessionManager.Singleton.Resolve(cloudID.ToString());
         }
     }
 
@@ -74,7 +75,7 @@ public class ARLobby : NetworkBehaviour
         switch (val)
         {
             case int _:
-                SendChangedValueToServerRpc(cloudID, state, (int)Convert.ChangeType(val,typeof(int)));
+                SendChangedValueToServerRpc(cloudID, state, (int)Convert.ChangeType(val, typeof(int)));
                 break;
 
             case Vector3 _:
@@ -94,15 +95,15 @@ public class ARLobby : NetworkBehaviour
                 break;
 
             case List<int> _:
-                SendChangedValueToServerRpc(cloudID, state, (List<int>)Convert.ChangeType(val, typeof(T)));
+                SendChangedValueToServerRpc(cloudID, state, new SerializableIntList((List<int>)Convert.ChangeType(val, typeof(T))));
                 break;
 
             case List<string> _:
-                SendChangedValueToServerRpc(cloudID, state, (List<string>)Convert.ChangeType(val, typeof(T)));
+                SendChangedValueToServerRpc(cloudID, state, new SerializableStringList((List<string>)Convert.ChangeType(val, typeof(T))));
                 break;
 
             case List<float> _:
-                SendChangedValueToServerRpc(cloudID, state, (List<float>)Convert.ChangeType(val, typeof(T)));
+                SendChangedValueToServerRpc(cloudID, state, new SerializableFloatList((List<float>)Convert.ChangeType(val, typeof(T))));
                 break;
 
             default:
@@ -168,40 +169,155 @@ public class ARLobby : NetworkBehaviour
 
     // LIST <INT>
     [ServerRpc(RequireOwnership = false)]
-    void SendChangedValueToServerRpc(FixedString128Bytes cloudID, string state, List<int> val)
+    void SendChangedValueToServerRpc(FixedString128Bytes cloudID, string state, SerializableIntList val)
     {
         ChangeARObjectValueClientRpc(cloudID, state, val);
     }
 
     [ClientRpc]
-    void ChangeARObjectValueClientRpc(FixedString128Bytes cloudID, string state, List<int> val)
+    void ChangeARObjectValueClientRpc(FixedString128Bytes cloudID, string state, SerializableIntList val)
     {
-        anchoredObjects[cloudID].EditObject(state, val);
+        anchoredObjects[cloudID].EditObject(state, val.ToList());
     }
 
     // LIST <String>
     [ServerRpc(RequireOwnership = false)]
-    void SendChangedValueToServerRpc(FixedString128Bytes cloudID, string state, List<string> val)
+    void SendChangedValueToServerRpc(FixedString128Bytes cloudID, string state, SerializableStringList val)
     {
         ChangeARObjectValueClientRpc(cloudID, state, val);
     }
 
     [ClientRpc]
-    void ChangeARObjectValueClientRpc(FixedString128Bytes cloudID, string state, List<string> val)
+    void ChangeARObjectValueClientRpc(FixedString128Bytes cloudID, string state, SerializableStringList val)
     {
-        anchoredObjects[cloudID].EditObject(state, val);
+        anchoredObjects[cloudID].EditObject(state, val.ToList());
     }
 
     // LIST <Float>
     [ServerRpc(RequireOwnership = false)]
-    void SendChangedValueToServerRpc(FixedString128Bytes cloudID, string state, List<float> val)
+    void SendChangedValueToServerRpc(FixedString128Bytes cloudID, string state, SerializableFloatList val)
     {
         ChangeARObjectValueClientRpc(cloudID, state, val);
     }
 
     [ClientRpc]
-    void ChangeARObjectValueClientRpc(FixedString128Bytes cloudID, string state, List<float> val)
+    void ChangeARObjectValueClientRpc(FixedString128Bytes cloudID, string state, SerializableFloatList val)
     {
-        anchoredObjects[cloudID].EditObject(state, val);
+        anchoredObjects[cloudID].EditObject(state, val.ToList());
+    }
+
+
+    struct SerializableIntList : INetworkSerializable
+    {
+        public int[] array;
+        
+        public SerializableIntList(List<int> list)
+        {
+            array = list.ToArray();
+        }
+
+        public List<int> ToList()
+        {
+            return array.ToList();
+        }
+
+        public void NetworkSerialize<X>(BufferSerializer<X> serializer) where X : IReaderWriter
+        {
+            // Length
+            int length = 0;
+            if (!serializer.IsReader)
+            {
+                length = array.Length;
+            }
+
+            serializer.SerializeValue(ref length);
+
+            // Array
+            if (serializer.IsReader)
+            {
+                array = new int[length];
+            }
+
+            for (int n = 0; n < length; ++n)
+            {
+                serializer.SerializeValue(ref array[n]);
+            }
+        }
+    }
+
+    struct SerializableStringList : INetworkSerializable
+    {
+        public string[] array;
+
+        public SerializableStringList(List<string> list)
+        {
+            array = list.ToArray();
+        }
+
+        public List<string> ToList()
+        {
+            return array.ToList();
+        }
+
+        public void NetworkSerialize<X>(BufferSerializer<X> serializer) where X : IReaderWriter
+        {
+            // Length
+            int length = 0;
+            if (!serializer.IsReader)
+            {
+                length = array.Length;
+            }
+
+            serializer.SerializeValue(ref length);
+
+            // Array
+            if (serializer.IsReader)
+            {
+                array = new string[length];
+            }
+
+            for (int n = 0; n < length; ++n)
+            {
+                serializer.SerializeValue(ref array[n]);
+            }
+        }
+    }
+
+    struct SerializableFloatList : INetworkSerializable
+    {
+        public float[] array;
+
+        public SerializableFloatList(List<float> list)
+        {
+            array = list.ToArray();
+        }
+
+        public List<float> ToList()
+        {
+            return array.ToList();
+        }
+
+        public void NetworkSerialize<X>(BufferSerializer<X> serializer) where X : IReaderWriter
+        {
+            // Length
+            int length = 0;
+            if (!serializer.IsReader)
+            {
+                length = array.Length;
+            }
+
+            serializer.SerializeValue(ref length);
+
+            // Array
+            if (serializer.IsReader)
+            {
+                array = new float[length];
+            }
+
+            for (int n = 0; n < length; ++n)
+            {
+                serializer.SerializeValue(ref array[n]);
+            }
+        }
     }
 }
