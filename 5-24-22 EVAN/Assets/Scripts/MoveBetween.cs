@@ -66,6 +66,8 @@ public class MoveBetween : MonoBehaviour
         foreach(GameObject temp in holder.objects)
         {
             DataPoint tempDP = temp.GetComponent<DataPoint>();
+            tempDP.currentC = num2;
+
 
             for (int j = 0; j < holder.axisTypes.Count; j++)
             {
