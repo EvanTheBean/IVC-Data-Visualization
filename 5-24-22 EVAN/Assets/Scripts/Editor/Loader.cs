@@ -221,8 +221,8 @@ public class Loader : EditorWindow
 
         //Debug.Log("function1");
 
-        writer.WriteLine("public void HideDisplay()\n{\ndisplayBox.enabled = false;\n}");
-        writer.WriteLine("public void OnPointerUp(PointerEventData eventData)\n{\ndisplayBox.enabled = false;\n}");
+        writer.WriteLine("public void HideDisplay()\n{\n//displayBox.enabled = false;\n}");
+        writer.WriteLine("public void OnPointerUp(PointerEventData eventData)\n{\n//displayBox.enabled = false;\n}");
 
         writer.WriteLine("public void OnPointerClick(PointerEventData eventData)\n{\nif(VRToolChange.currentTool==0)\n{displayBox.enabled = !displayBox.enabled;\n");
         first = true;

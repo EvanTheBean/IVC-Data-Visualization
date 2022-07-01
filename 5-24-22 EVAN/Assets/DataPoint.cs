@@ -18,11 +18,17 @@ if(VRToolChange.currentTool==0)
 {displayBox.enabled = !displayBox.enabled;
 
 displayBox.text = 
-"Search Term: " + variables["SearchTerm"][currentC].ToString() + "\n"
+"NAME: " + variables["NAME"][currentC].ToString() + "\n"
 +
-"Percentage: " + variables["Percentage"][currentC].ToString() + "\n"
+"x: " + variables["x"][currentC].ToString() + "\n"
 +
-"Num: " + variables["Num"][currentC].ToString() + "\n"
+"y: " + variables["y"][currentC].ToString() + "\n"
++
+"z: " + variables["z"][currentC].ToString() + "\n"
++
+"random: " + variables["random"][currentC].ToString() + "\n"
++
+"This is a bool: " + variables["Thisisabool"][currentC].ToString() + "\n"
 ;
 }
 
@@ -31,11 +37,11 @@ GameObject.FindObjectOfType<Holder>().HideAll(this.gameObject);}
 }
 public void HideDisplay()
 {
-displayBox.enabled = false;
+//displayBox.enabled = false;
 }
 public void OnPointerUp(PointerEventData eventData)
 {
-displayBox.enabled = false;
+//displayBox.enabled = false;
 }
 public void OnPointerClick(PointerEventData eventData)
 {
@@ -43,11 +49,17 @@ if(VRToolChange.currentTool==0)
 {displayBox.enabled = !displayBox.enabled;
 
 displayBox.text = 
-"Search Term: " + variables["SearchTerm"][currentC].ToString() + "\n"
+"NAME: " + variables["NAME"][currentC].ToString() + "\n"
 +
-"Percentage: " + variables["Percentage"][currentC].ToString() + "\n"
+"x: " + variables["x"][currentC].ToString() + "\n"
 +
-"Num: " + variables["Num"][currentC].ToString() + "\n"
+"y: " + variables["y"][currentC].ToString() + "\n"
++
+"z: " + variables["z"][currentC].ToString() + "\n"
++
+"random: " + variables["random"][currentC].ToString() + "\n"
++
+"This is a bool: " + variables["Thisisabool"][currentC].ToString() + "\n"
 ;
 }
 
