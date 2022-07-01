@@ -39,6 +39,7 @@ public class UIManager : MonoBehaviour
 
     public void DisplayWarning(string warning)
     {
+        DebugCanvas.Instance.Log("DisplayWarning called");
         warningPanel.SetActive(true);
         warningText.text = warning;
     }

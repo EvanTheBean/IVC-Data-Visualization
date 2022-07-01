@@ -134,7 +134,7 @@ public class ARCloudAnchorManager : MonoBehaviour
             anchorHostInProgress = false;
             anchorIDToResolve = cloudAnchor.cloudAnchorId;
             //SET ANCHOR ID IN LOBBY
-            GameObject.FindObjectOfType<ARLobby>().AddCloudAnchor(anchorIDToResolve);
+            //GameObject.FindObjectOfType<ARLobby>().AddCloudAnchor(anchorIDToResolve);
 
 
         }

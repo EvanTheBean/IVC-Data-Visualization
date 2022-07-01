@@ -11,7 +11,7 @@ public class ARLobby : NetworkBehaviour
     static public ARLobby Singleton;
 
     NetworkList<FixedString128Bytes> cloudAnchorIDs;
-    Dictionary<FixedString128Bytes, GameObject> anchoredObjects = new Dictionary<FixedString128Bytes, GameObject>();
+    Dictionary<FixedString128Bytes, ARObject> anchoredObjects = new Dictionary<FixedString128Bytes, ARObject>();
 
     private void Start()
     {
@@ -31,19 +31,31 @@ public class ARLobby : NetworkBehaviour
 
     private void OnCloudIDsChanged(NetworkListEvent<FixedString128Bytes> changeEvent)
     {
-        //IMPLEMENT ADD TO DICTIONARY
 
         FixedString128Bytes cloudID = changeEvent.Value;
         if (changeEvent.Type == NetworkListEvent<FixedString128Bytes>.EventType.Add && !anchoredObjects.ContainsKey(cloudID)) 
         {
+            anchoredObjects.Add(cloudID, null);
             ARSessionManager.Singleton.Resolve(cloudID.ToString());        
         }
     }
 
     public void AddCloudAnchor(ARCloudAnchor cloudAnchor)
     {
-        anchoredObjects.Add(cloudAnchor.cloudAnchorId, cloudAnchor.transform.GetChild(0).gameObject);
-        SetCloudAnchorServerRpc(cloudAnchor.cloudAnchorId);
+        ARObject arObj = cloudAnchor.transform.GetComponentInChildren<ARObject>();
+        if (arObj == null) DebugCanvas.Instance.Log("ERROR: ARLobby Line 45 arObj is null");
+
+        arObj.cloudID = cloudAnchor.cloudAnchorId;
+
+        if (!anchoredObjects.ContainsKey(cloudAnchor.cloudAnchorId))
+        {
+            anchoredObjects.Add(cloudAnchor.cloudAnchorId, arObj);
+            SetCloudAnchorServerRpc(cloudAnchor.cloudAnchorId);
+        }
+        else
+        {
+            anchoredObjects[cloudAnchor.cloudAnchorId] = arObj;
+        }
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -51,6 +63,145 @@ public class ARLobby : NetworkBehaviour
     {
         cloudAnchorIDs.Add(cloudID);
     }
-    
 
+
+    // USE TO SEND VALUES TO SERVER AND DISTRIBUTE TO ALL PLAYERS
+    public void SendValToServer<T>(FixedString128Bytes cloudID, string state, T val)
+    {
+        // RPC functions cannot be generic so...
+        // After adding a case scroll down to the rpc functions and copy+paste the two and change their types
+
+        switch (val)
+        {
+            case int _:
+                SendChangedValueToServerRpc(cloudID, state, (int)Convert.ChangeType(val,typeof(int)));
+                break;
+
+            case Vector3 _:
+                SendChangedValueToServerRpc(cloudID, state, (Vector3)Convert.ChangeType(val, typeof(T)));
+                break;
+
+            case string _:
+                SendChangedValueToServerRpc(cloudID, state, (string)Convert.ChangeType(val, typeof(T)));
+                break;
+
+            case float _:
+                SendChangedValueToServerRpc(cloudID, state, (float)Convert.ChangeType(val, typeof(T)));
+                break;
+
+            case Vector2 _:
+                SendChangedValueToServerRpc(cloudID, state, (Vector2)Convert.ChangeType(val, typeof(T)));
+                break;
+
+            case List<int> _:
+                SendChangedValueToServerRpc(cloudID, state, (List<int>)Convert.ChangeType(val, typeof(T)));
+                break;
+
+            case List<string> _:
+                SendChangedValueToServerRpc(cloudID, state, (List<string>)Convert.ChangeType(val, typeof(T)));
+                break;
+
+            case List<float> _:
+                SendChangedValueToServerRpc(cloudID, state, (List<float>)Convert.ChangeType(val, typeof(T)));
+                break;
+
+            default:
+                Debug.LogError($"ARLobby|73 ERROR: Type {typeof(T)} not implemented for server value send.");
+                DebugCanvas.Instance.Log($"ARLobby|73 ERROR: Type {typeof(T)} not implemented for server value send.");
+                break;
+        }
+    }
+
+    //================== RPC FUNCTIONS FOR SENDING VALUES BELOW ==================
+
+    // INT
+    [ServerRpc(RequireOwnership = false)]
+    void SendChangedValueToServerRpc(FixedString128Bytes cloudID, string state, int val)
+    {
+        ChangeARObjectValueClientRpc(cloudID, state, val);
+    }
+
+    [ClientRpc]
+    void ChangeARObjectValueClientRpc(FixedString128Bytes cloudID, string state, int val)
+    {
+        anchoredObjects[cloudID].EditObject(state, val);
+    }
+
+    // VECTOR 3
+    [ServerRpc(RequireOwnership = false)]
+    void SendChangedValueToServerRpc(FixedString128Bytes cloudID, string state, Vector3 val)
+    {
+        ChangeARObjectValueClientRpc(cloudID, state, val);
+    }
+
+    [ClientRpc]
+    void ChangeARObjectValueClientRpc(FixedString128Bytes cloudID, string state, Vector3 val)
+    {
+        anchoredObjects[cloudID].EditObject(state, val);
+    }
+
+    // FLOAT
+    [ServerRpc(RequireOwnership = false)]
+    void SendChangedValueToServerRpc(FixedString128Bytes cloudID, string state, float val)
+    {
+        ChangeARObjectValueClientRpc(cloudID, state, val);
+    }
+
+    [ClientRpc]
+    void ChangeARObjectValueClientRpc(FixedString128Bytes cloudID, string state, float val)
+    {
+        anchoredObjects[cloudID].EditObject(state, val);
+    }
+
+    // STRING
+    [ServerRpc(RequireOwnership = false)]
+    void SendChangedValueToServerRpc(FixedString128Bytes cloudID, string state, string val)
+    {
+        ChangeARObjectValueClientRpc(cloudID, state, val);
+    }
+
+    [ClientRpc]
+    void ChangeARObjectValueClientRpc(FixedString128Bytes cloudID, string state, string val)
+    {
+        anchoredObjects[cloudID].EditObject(state, val);
+    }
+
+    // LIST <INT>
+    [ServerRpc(RequireOwnership = false)]
+    void SendChangedValueToServerRpc(FixedString128Bytes cloudID, string state, List<int> val)
+    {
+        ChangeARObjectValueClientRpc(cloudID, state, val);
+    }
+
+    [ClientRpc]
+    void ChangeARObjectValueClientRpc(FixedString128Bytes cloudID, string state, List<int> val)
+    {
+        anchoredObjects[cloudID].EditObject(state, val);
+    }
+
+    // LIST <String>
+    [ServerRpc(RequireOwnership = false)]
+    void SendChangedValueToServerRpc(FixedString128Bytes cloudID, string state, List<string> val)
+    {
+        ChangeARObjectValueClientRpc(cloudID, state, val);
+    }
+
+    [ClientRpc]
+    void ChangeARObjectValueClientRpc(FixedString128Bytes cloudID, string state, List<string> val)
+    {
+        anchoredObjects[cloudID].EditObject(state, val);
+    }
+
+    // LIST <Float>
+    [ServerRpc(RequireOwnership = false)]
+    void SendChangedValueToServerRpc(FixedString128Bytes cloudID, string state, List<float> val)
+    {
+        ChangeARObjectValueClientRpc(cloudID, state, val);
+    }
+
+    [ClientRpc]
+    void ChangeARObjectValueClientRpc(FixedString128Bytes cloudID, string state, List<float> val)
+    {
+        anchoredObjects[cloudID].EditObject(state, val);
+    }
 }

@@ -166,6 +166,7 @@ public class ARSessionManager : MonoBehaviour
         if (cloudAnchorState == CloudAnchorState.Success)
         {
             RecreatePlacement(cloudAnchor.transform);
+            ARLobby.Singleton.AddCloudAnchor(cloudAnchor);
             return true;
         }
         else if (cloudAnchorState != CloudAnchorState.TaskInProgress)

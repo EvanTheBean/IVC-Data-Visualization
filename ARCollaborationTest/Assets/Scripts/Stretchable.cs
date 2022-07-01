@@ -1,18 +1,26 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Stretchable : MonoBehaviour
+public class Stretchable : ARObject
 {
-    // Start is called before the first frame update
-    void Start()
+    public void SetScale(Vector3 vector3)
     {
-        
+        transform.localScale = vector3;
+        SendToServer("scale",vector3);
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void EditObject<T>(string state, T val)
     {
-        
+        switch (state)
+        {
+            case "scale":
+                transform.localScale = (Vector3)Convert.ChangeType(val, typeof(Vector3));
+                break;
+            default:
+                DebugCanvas.Instance.Log("hello");
+                break;
+        }
     }
 }

@@ -65,7 +65,8 @@ public class StretchContoller : MonoBehaviour
 
                 float factor = currentDistance / initialDistance;
 
-                hit.transform.localScale = initialScale * factor;
+
+                hit.transform.GetComponent<Stretchable>().SetScale(initialScale * factor);
             }
 
         }
