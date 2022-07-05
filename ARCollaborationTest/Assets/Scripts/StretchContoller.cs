@@ -44,7 +44,7 @@ public class StretchContoller : MonoBehaviour
             }
             else
             {
-                DebugCanvas.Instance.Log("Ray hit stretchable");
+                //DebugCanvas.Instance.Log("Ray hit stretchable");
             }
 
             bool noneBegan = true;

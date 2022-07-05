@@ -854,8 +854,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf702359e39524bf1a5658bfc76c2be4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ARCameraManager: {fileID: 547730082}
-  Light: {fileID: 0}
 --- !u!114 &705507997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1157,7 +1155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1760703bbd54c04488a8d10600262ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_PlanePrefab: {fileID: 1853926624506517336, guid: 459729440a89d4e258099c340de9686b, type: 3}
+  m_PlanePrefab: {fileID: 0}
   m_DetectionMode: -1
 --- !u!114 &764588359
 MonoBehaviour:

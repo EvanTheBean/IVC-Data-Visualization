@@ -37,10 +37,19 @@ public class UIManager : MonoBehaviour
         lobbyPanel.SetActive(false);
     }
 
+    int warningCooldown = 0;
+
     public void DisplayWarning(string warning)
     {
-        DebugCanvas.Instance.Log("DisplayWarning called");
+        if (warningCooldown > 0)
+        {
+            warningCooldown = 0;
+            return;
+        }
+
+        DebugCanvas.Instance.Log("DisplayWarning");
         warningPanel.SetActive(true);
         warningText.text = warning;
+        warningCooldown++;
     }
 }

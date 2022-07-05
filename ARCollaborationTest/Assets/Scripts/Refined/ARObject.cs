@@ -20,8 +20,13 @@ public class ARObject : MonoBehaviour
         }
     }
 
+    float lastServerUpdateTime = 0f;
     protected void SendToServer<T>(string state, T val)
     {
-        ARLobby.Singleton.SendValToServer(cloudID, state, val);
+        if (Time.time - lastServerUpdateTime >= 0.05f)
+        {
+            ARLobby.Singleton.SendValToServer(cloudID, state, val);
+            lastServerUpdateTime = Time.time;
+        }
     }
 }

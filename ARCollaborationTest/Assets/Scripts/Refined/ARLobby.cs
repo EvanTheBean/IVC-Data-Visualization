@@ -41,10 +41,18 @@ public class ARLobby : NetworkBehaviour
         }
     }
 
-    public void AddCloudAnchor(ARCloudAnchor cloudAnchor)
+    public void AddCloudAnchor(ARCloudAnchor cloudAnchor, Transform obj = null)
     {
-        ARObject arObj = cloudAnchor.transform.GetComponentInChildren<ARObject>();
-        if (arObj == null) DebugCanvas.Instance.Log("ERROR: ARLobby Line 45 arObj is null");
+        ARObject arObj;
+        if (obj == null)
+        {
+            arObj = cloudAnchor.transform.GetComponentInChildren<ARObject>();
+            if (arObj == null) DebugCanvas.Instance.Log("ERROR: ARLobby Line 45 arObj is null");
+        }
+        else
+        {
+            arObj = obj.GetComponent<ARObject>();
+        }    
 
         arObj.cloudID = cloudAnchor.cloudAnchorId;
 

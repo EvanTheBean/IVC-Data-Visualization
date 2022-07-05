@@ -30,8 +30,17 @@ public class ARSessionManager : MonoBehaviour
     [SerializeField] GameObject objectToPlace;
     [SerializeField] ARAnchor anchorPrefab;
 
+    float placementCooldown = 10f;
+    float placementCooldownTimer = 10f;
+
     void DoPlacementRoutine()
     {
+        if (placementCooldownTimer < placementCooldown)
+        {
+            placementCooldownTimer += Time.deltaTime;
+            return;
+        }
+
         // check for touch
         if (!TryGetTouchPosition(out Vector2 touchPosition))
             return;
@@ -42,13 +51,15 @@ public class ARSessionManager : MonoBehaviour
             return;
         }
 
+
         // place object on AR plane 
         if (arRaycastManager.Raycast(touchPosition, hits, UnityEngine.XR.ARSubsystems.TrackableType.PlaneWithinBounds))
         {
             var hitPose = hits[0].pose;
 
             ARAnchor anchor = Instantiate(anchorPrefab, hitPose.position, hitPose.rotation);
-            GameObject placedGameObject = Instantiate(objectToPlace, anchor.transform);
+            Instantiate(objectToPlace, anchor.transform);
+            placementCooldownTimer = 0;
 
             HostCloudAnchor(anchor);
         }
@@ -67,7 +78,7 @@ public class ARSessionManager : MonoBehaviour
 
     private bool TryGetTouchPosition(out Vector2 touchPosition)
     {
-        if (Input.touchCount > 0)
+        if (Input.touchCount == 1)
         {
             touchPosition = Input.GetTouch(0).position;
 
@@ -99,7 +110,7 @@ public class ARSessionManager : MonoBehaviour
         return arAnchorManager.EstimateFeatureMapQualityForHosting(GetCameraPose()) != FeatureMapQuality.Insufficient;
     }
 
-    Queue<ARCloudAnchor> anchorsHosting = new Queue<ARCloudAnchor>();
+    Queue<(ARCloudAnchor,Transform)> anchorsHosting = new Queue<(ARCloudAnchor,Transform)>();
 
     public void HostCloudAnchor(ARAnchor pendingHostAnchor)
     {
@@ -119,7 +130,7 @@ public class ARSessionManager : MonoBehaviour
         }
         else
         {
-            anchorsHosting.Enqueue(cloudAnchor);
+            anchorsHosting.Enqueue((cloudAnchor, pendingHostAnchor.transform.GetChild(0)));
         }
 
     }
@@ -141,14 +152,14 @@ public class ARSessionManager : MonoBehaviour
         }
     }
 
-    bool IsHostingComplete(ARCloudAnchor cloudAnchor)
+    bool IsHostingComplete(ARCloudAnchor cloudAnchor, Transform obj)
     {
         CloudAnchorState cloudAnchorState = cloudAnchor.cloudAnchorState;
 
         if (cloudAnchorState == CloudAnchorState.Success)
         {
             //ADD ANCHOR ID IN LOBBY
-            ARLobby.Singleton.AddCloudAnchor(cloudAnchor);
+            ARLobby.Singleton.AddCloudAnchor(cloudAnchor, obj);
             return true;
 
         }
@@ -187,8 +198,8 @@ public class ARSessionManager : MonoBehaviour
         //checking for host result
         if (anchorsHosting.Count > 0)
         {
-            tempCloudAnchor = anchorsHosting.Peek();
-            if (IsHostingComplete(tempCloudAnchor))
+            tempCloudAnchor = anchorsHosting.Peek().Item1;
+            if (IsHostingComplete(tempCloudAnchor, anchorsHosting.Peek().Item2))
             {
                 anchorsHosting.Dequeue();
             }
