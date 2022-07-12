@@ -1,12 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Unity.Collections;
-using Unity.Netcode;
 
 public class PlayerInfo : MonoBehaviour
 {
-    NetworkList<FixedString128Bytes> usernames;
+    public string username;
 
     // Start is called before the first frame update
     void Start()

@@ -12,15 +12,14 @@ using TMPro;
 
 public class LogInAuthenticator : MonoBehaviour
 {
-
     private void Start()
     {
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
+        SignIn();
     }
 
     public async void SignIn() //Signs in the player with a new anonymous id
     {
-
         await UnityServices.InitializeAsync();
 
         //Add listeners
