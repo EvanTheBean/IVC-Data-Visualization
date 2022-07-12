@@ -13,7 +13,6 @@ public class LogInAuthenticator : MonoBehaviour
 {
     private void Start()
     {
-        Screen.sleepTimeout = SleepTimeout.NeverSleep;
         SignIn();    
     }
 

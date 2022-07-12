@@ -8,6 +8,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
+using UnityEngine.Events;
+
+[Serializable]
+public class LobbyEvent : UnityEvent { }
 
 public class RelayLobbyManager : MonoBehaviour
 {
@@ -16,6 +20,7 @@ public class RelayLobbyManager : MonoBehaviour
     public string tryJoinCode { set; get; } // Join code inputted by user
     string lobbyJoinCode = ""; // Join code obtained from lobby
 
+    public LobbyEvent OnLobbyStart;
 
     public void CreateLobby() 
     {
@@ -56,6 +61,7 @@ public class RelayLobbyManager : MonoBehaviour
         // The .GetComponent method returns a UTP NetworkDriver (or a proxy to it)
         NetworkManager.Singleton.GetComponent<UnityTransport>().SetHostRelayData(ipv4address, port, allocationIdBytes, key, connectionData, true);
         NetworkManager.Singleton.StartHost();
+        OnLobbyStart.Invoke();
         yield return null;
     }
 
