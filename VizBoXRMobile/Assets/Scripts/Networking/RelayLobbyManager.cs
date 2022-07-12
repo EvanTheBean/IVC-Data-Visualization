@@ -8,6 +8,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
+using UnityEngine.Events;
+
+[Serializable]
+public class LobbyEvent : UnityEvent { }
 
 public class RelayLobbyManager : MonoBehaviour
 {
@@ -16,8 +20,9 @@ public class RelayLobbyManager : MonoBehaviour
     public string tryJoinCode { set; get; } // Join code inputted by user
     string lobbyJoinCode = ""; // Join code obtained from lobby
 
+    public LobbyEvent OnLobbyJoin;
 
-    public void CreateLobby() 
+    public void CreateLobby()
     {
         StartCoroutine(ConfigureTransportAndStartNgoAsHost()); //Set up networking        
     }
@@ -77,8 +82,12 @@ public class RelayLobbyManager : MonoBehaviour
 
         var (ipv4address, port, allocationIdBytes, connectionData, hostConnectionData, key) = clientRelayUtilityTask.Result;
 
+        Debug.Log("RLManager: Joining server.");
+
         NetworkManager.Singleton.GetComponent<UnityTransport>().SetClientRelayData(ipv4address, port, allocationIdBytes, key, connectionData, hostConnectionData, true);
         NetworkManager.Singleton.StartClient();
+        Debug.Log("RLManager: Server joined.");
+        OnLobbyJoin.Invoke();
         yield return null;
     }
 
