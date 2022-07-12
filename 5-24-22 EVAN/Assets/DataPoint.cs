@@ -18,17 +18,11 @@ if(VRToolChange.currentTool==0)
 {displayBox.enabled = !displayBox.enabled;
 
 displayBox.text = 
-"NAME: " + variables["NAME"][currentC].ToString() + "\n"
+"Search Term: " + variables["SearchTerm"][currentC].ToString() + "\n"
 +
-"x: " + variables["x"][currentC].ToString() + "\n"
+"Percentage: " + variables["Percentage"][currentC].ToString() + "\n"
 +
-"y: " + variables["y"][currentC].ToString() + "\n"
-+
-"z: " + variables["z"][currentC].ToString() + "\n"
-+
-"random: " + variables["random"][currentC].ToString() + "\n"
-+
-"This is a bool: " + variables["Thisisabool"][currentC].ToString() + "\n"
+"Num: " + variables["Num"][currentC].ToString() + "\n"
 ;
 }
 
@@ -49,17 +43,11 @@ if(VRToolChange.currentTool==0)
 {displayBox.enabled = !displayBox.enabled;
 
 displayBox.text = 
-"NAME: " + variables["NAME"][currentC].ToString() + "\n"
+"Search Term: " + variables["SearchTerm"][currentC].ToString() + "\n"
 +
-"x: " + variables["x"][currentC].ToString() + "\n"
+"Percentage: " + variables["Percentage"][currentC].ToString() + "\n"
 +
-"y: " + variables["y"][currentC].ToString() + "\n"
-+
-"z: " + variables["z"][currentC].ToString() + "\n"
-+
-"random: " + variables["random"][currentC].ToString() + "\n"
-+
-"This is a bool: " + variables["Thisisabool"][currentC].ToString() + "\n"
+"Num: " + variables["Num"][currentC].ToString() + "\n"
 ;
 }
 
