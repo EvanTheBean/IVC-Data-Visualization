@@ -4,6 +4,7 @@ using UnityEngine;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using System;
+using TMPro;
 
 // ===== Log In Authenticator =====
 //  - Manages the log in process
@@ -11,14 +12,15 @@ using System;
 
 public class LogInAuthenticator : MonoBehaviour
 {
+
     private void Start()
     {
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
-        SignIn();    
     }
 
     public async void SignIn() //Signs in the player with a new anonymous id
     {
+
         await UnityServices.InitializeAsync();
 
         //Add listeners
