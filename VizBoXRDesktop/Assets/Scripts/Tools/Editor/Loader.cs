@@ -25,6 +25,8 @@ public class Loader : EditorWindow
     Holder holder;
     public List<GameObject> axisText = new List<GameObject>();
 
+    GradientUsageAttribute gua = new GradientUsageAttribute(false);
+
     [MenuItem("Tools/Loader")]
     static void Init()
     {
@@ -47,8 +49,9 @@ public class Loader : EditorWindow
 
         window.placingText = Resources.Load("Prefabs/AxisText") as GameObject;
         window.axisText = new List<GameObject>(GameObject.FindGameObjectsWithTag("axisText"));
-
         //Debug.Log("I am being a bitch");
+        Gradients g = new Gradients();
+        window.gua = new GradientUsageAttribute(false);
     }
 
     private void OnGUI()
@@ -68,6 +71,28 @@ public class Loader : EditorWindow
                 }
                 else if (holder.axisTypes[i] == axisType.Color)
                 {
+                    holder.gTypes[i] = (gradientTypes)EditorGUILayout.EnumPopup(holder.gTypes[i]);
+                    if(holder.gTypes[i] == gradientTypes.sequential)
+                    {
+                        holder.sequentialGradientsNames[i] = (sequentialGradientsNames)EditorGUILayout.EnumPopup(holder.sequentialGradientsNames[i]);
+                        Gradients g = new Gradients();
+                        g.Reset();
+                        holder.axisGradients[i] = Gradients.sequentialGradients[(int)holder.sequentialGradientsNames[i]];
+                    }
+                    else if (holder.gTypes[i] == gradientTypes.diverging)
+                    {
+                        holder.divergingGradientsNames[i] = (divergingGradientsNames)EditorGUILayout.EnumPopup(holder.divergingGradientsNames[i]);
+                        Gradients g = new Gradients();
+                        g.Reset();
+                        holder.axisGradients[i] = Gradients.divergingGradients[(int)holder.divergingGradientsNames[i]];
+                    }
+                    else if (holder.gTypes[i] == gradientTypes.catagorical)
+                    {
+                        holder.catagoricalGradientsNames[i] = (catagoricalGradientsNames)EditorGUILayout.EnumPopup(holder.catagoricalGradientsNames[i]);
+                        Gradients g = new Gradients();
+                        g.Reset();
+                        holder.axisGradients[i] = Gradients.catagoricalGradients[(int)holder.catagoricalGradientsNames[i]];
+                    }
                     holder.axisGradients[i] = EditorGUILayout.GradientField(holder.axisGradients[i]);
                 }
                 else if (holder.axisTypes[i] == axisType.Connected)
@@ -535,10 +560,10 @@ public class Loader : EditorWindow
 
                         temp.GetComponent<MeshRenderer>().material.color = holder.axisGradients[j].Evaluate(replaceF / (holder.axisMinMax[j].y - holder.axisMinMax[j].x));
 
-                        Debug.Log(holder.axisMinMax[j].y + " " + holder.axisMinMax[j].x);
+                        //Debug.Log(holder.axisMinMax[j].y + " " + holder.axisMinMax[j].x);
                         //temp.GetComponent<MeshRenderer>().material.color = holder.axisGradients[j].Evaluate(replaceF);
                         //Debug.Log(holder.axisGradients[j].Evaluate(replaceF) + " " + replaceF);
-                        Debug.Log(holder.axisGradients[j].Evaluate((replaceF - holder.axisMinMax[j].x) / (holder.axisMinMax[j].y - holder.axisMinMax[j].x)) + " " + (replaceF - holder.axisMinMax[j].x) / (holder.axisMinMax[j].y - holder.axisMinMax[j].x));
+                        //Debug.Log(holder.axisGradients[j].Evaluate((replaceF - holder.axisMinMax[j].x) / (holder.axisMinMax[j].y - holder.axisMinMax[j].x)) + " " + (replaceF - holder.axisMinMax[j].x) / (holder.axisMinMax[j].y - holder.axisMinMax[j].x));
                         //Debug.Log(replaceF);
                     }
                 }
@@ -665,6 +690,11 @@ public class Loader : EditorWindow
         holder.axisMinMax.Clear();
         holder.connectedTypes.Clear();
 
+        holder.divergingGradientsNames.Clear();
+        holder.catagoricalGradientsNames.Clear();
+        holder.sequentialGradientsNames.Clear();
+        holder.gTypes.Clear();
+
         string fileData = System.IO.File.ReadAllText(holder.path[0]);
         string[] lines = fileData.Split("\n"[0]);
 
@@ -699,6 +729,10 @@ public class Loader : EditorWindow
             holder.axisGradients.Add(new Gradient());
             holder.axisMinMax.Add(new Vector2(100, -100));
             holder.connectedTypes.Add("");
+            holder.divergingGradientsNames.Add(divergingGradientsNames.seismic);
+            holder.catagoricalGradientsNames.Add(catagoricalGradientsNames.pastels);
+            holder.sequentialGradientsNames.Add(sequentialGradientsNames.viridis);
+            holder.gTypes.Add(gradientTypes.sequential);
         }
     }
 

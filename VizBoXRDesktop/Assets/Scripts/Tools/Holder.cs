@@ -36,6 +36,15 @@ public class Holder : MonoBehaviour
     public List<Vector2> axisMinMax = new List<Vector2>();
     public List<string> connectedTypes = new List<string>();
 
+    //[HideInInspector]
+    public List<gradientTypes> gTypes = new List<gradientTypes>();
+    //[HideInInspector]
+    public List<catagoricalGradientsNames> catagoricalGradientsNames = new List<catagoricalGradientsNames>();
+    //[HideInInspector]
+    public List<sequentialGradientsNames> sequentialGradientsNames = new List<sequentialGradientsNames>();
+    //[HideInInspector]
+    public List<divergingGradientsNames> divergingGradientsNames = new List<divergingGradientsNames>();
+
     public List<string> path = new List<string>(1);
 
     public bool check, hiding;
