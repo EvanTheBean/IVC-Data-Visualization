@@ -23,6 +23,7 @@ public class Loader : EditorWindow
     //Material material;
     //string path;
     Holder holder;
+    MultiPointControll mpc;
     public List<GameObject> axisText = new List<GameObject>();
 
     GradientUsageAttribute gua = new GradientUsageAttribute(false);
@@ -37,6 +38,7 @@ public class Loader : EditorWindow
         window.Show();
         window.dataRead = false;
         window.holder = GameObject.FindObjectOfType<Holder>();
+        window.mpc = GameObject.FindObjectOfType<MultiPointControll>();
 
         if (window.holder.rowNames.Count > 0)
         {
@@ -109,12 +111,6 @@ public class Loader : EditorWindow
             //material = (Material)EditorGUILayout.ObjectField("Material (for now)", material, typeof(Material), false);
             placeHolder = (GameObject)EditorGUILayout.ObjectField("Object", placeHolder, typeof(GameObject), false);
 
-
-            if (GUI.changed)
-            {
-                ResetAxis();
-                UpdateObjects();
-            }
             /*
             if (GUILayout.Button("Place Objects"))
             {
@@ -143,6 +139,10 @@ public class Loader : EditorWindow
                     if (holder.path[holder.path.Count - 1] != null)
                     {
                         LoadSecondFile(holder.path.Count - 1);
+                    }
+                    else
+                    {
+                        holder.path.RemoveAt(holder.path.Count - 1);
                     }
                 }
             }
@@ -214,6 +214,12 @@ public class Loader : EditorWindow
                     }
                 }
             }
+        }
+
+        if (GUI.changed)
+        {
+            ResetAxis();
+            UpdateObjects();
         }
 
         //neededDifference = EditorGUILayout.FloatField(neededDifference);
@@ -641,6 +647,34 @@ public class Loader : EditorWindow
 
             //tempDP.displayBox = temp.GetComponentInChildren<TextMeshProUGUI>();
         }
+
+        for(int i = 0; i < holder.axisTypes.Count; i++)
+        {
+            if(holder.axisTypes[i] == axisType.Connected)
+            {
+                ConnectedTypes type = holder.connectedTypes[i];
+                if (type == ConnectedTypes.Time)
+                {
+                    mpc.TimeBased(true);
+                    mpc.ControlLines(false);
+                }
+                else if (type == ConnectedTypes.VisibleLines)
+                {
+                    mpc.TimeBased(false);
+                    mpc.ControlLines(true);
+                }
+                else if (type == ConnectedTypes.TimeLines)
+                {
+                    mpc.TimeBased(true);
+                    mpc.ControlLines(true);
+                }
+                else if (type == ConnectedTypes.Visible)
+                {
+                    mpc.TimeBased(false);
+                    mpc.ControlLines(true);
+                }
+            }
+        }
     }
 
     void ResetAxis()
@@ -918,6 +952,8 @@ public class Loader : EditorWindow
 
                 UpdateObjects();
             }
+
+            UpdateObjects();
         }
 
         foreach (GameObject temp in holder.objects)
