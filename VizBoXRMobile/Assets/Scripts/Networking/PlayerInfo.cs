@@ -4,19 +4,62 @@ using UnityEngine;
 using Unity.Collections;
 using Unity.Netcode;
 
-public class PlayerInfo : MonoBehaviour
+// MOBILE
+public enum Activity
 {
-    NetworkList<FixedString128Bytes> usernames;
+    Annotating,
+    AR,
+    VR
+}
 
+public class PlayerInfo : NetworkBehaviour
+{
+    public string username { get; private set; } = "";
+
+    ulong id;
+    Activity currentActivity = Activity.Annotating;
+
+    NetworkVariable<int> playerCount = new NetworkVariable<int>(0);
     // Start is called before the first frame update
     void Start()
     {
-        
+        playerCount.OnValueChanged += OnPlayerJoin;
+        DontDestroyOnLoad(this);
+        if (!IsHost)
+        {
+            id = NetworkManager.LocalClientId;
+            username = FindObjectOfType<UsernameManager>().GetUsername();
+            JoinLobbyServerRpc(id, username);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnPlayerJoin(int previousValue, int newValue)
     {
-        
     }
+
+    public void SwitchActivity(Activity activity)
+    {
+        if (activity == currentActivity) return;
+
+        currentActivity = activity;
+        ChangeDisplayedActivityServerRpc(id, activity);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    void JoinLobbyServerRpc(ulong id, string username)
+    {
+
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    void ChangeDisplayedActivityServerRpc(ulong id, Activity activity)
+    {
+
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    void LeaveLobbyServerRpc(ulong id)
+    {
+    }
+
 }

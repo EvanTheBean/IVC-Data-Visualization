@@ -4,9 +4,7 @@ using UnityEngine;
 using TMPro;
 
 // === Username Manager === //
-// Handles the username input UI
-//
-// If you are looking to access the username data of the player, go to PlayerInfo class.
+// Handles the username input and also remembers last username entered
 
 [RequireComponent(typeof(RelayLobbyManager))]
 public class UsernameManager : MonoBehaviour

@@ -66,6 +66,8 @@ public class RelayLobbyManager : MonoBehaviour
 
     IEnumerator ConfigureTransportAndStartNgoAsConnectingPlayer() // Join Lobby
     {
+        Debug.Log("Trying to join server with code " + tryJoinCode);
+
         // Populate RelayJoinCode beforehand through the UI
         var clientRelayUtilityTask = JoinRelayServerFromJoinCode(tryJoinCode);
 
@@ -77,6 +79,7 @@ public class RelayLobbyManager : MonoBehaviour
         if (clientRelayUtilityTask.IsFaulted)
         {
             Debug.Log("RLManager: Exception thrown when attempting to connect to Relay Server. Exception: " + clientRelayUtilityTask.Exception.Message);
+
             yield break;
         }
 
@@ -129,8 +132,9 @@ public class RelayLobbyManager : MonoBehaviour
         {
             allocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
         }
-        catch
+        catch (Exception e)
         {
+            Debug.Log(e);
             Debug.Log("RLManager: Relay create join code request failed");
             throw;
         }
