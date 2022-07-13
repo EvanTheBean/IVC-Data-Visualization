@@ -833,7 +833,7 @@ public class Loader : EditorWindow
             GameObject temp = null;
             if (holder.objects.Find(t => t.GetComponent<DataPoint>().variables[holder.rowNames[rowNum].Replace(" ", "")][0] == lineData[rowNum]))
             {
-                Debug.Log("Object Found for " + lineData[rowNum]);
+                //Debug.Log("Object Found for " + lineData[rowNum]);
                 temp = holder.objects.Find(t => t.GetComponent<DataPoint>().variables[holder.rowNames[rowNum].Replace(" ", "")][0] == lineData[rowNum]);
                 //GameObject temp = holder.objects[i];
                 DataPoint tempDP = temp.GetComponent<DataPoint>();
@@ -879,7 +879,7 @@ public class Loader : EditorWindow
             }
             else
             {
-                Debug.Log("No Object Found for " + lineData[rowNum]);
+                //Debug.Log("No Object Found for " + lineData[rowNum]);
                 temp = Instantiate(placeHolder);
                 temp.name = lineData[rowNum];
                 holder.objects.Add(temp);
@@ -900,7 +900,7 @@ public class Loader : EditorWindow
                     //Debug.Log(j + " " + holder.rowNames[j]);
                     List<string> tempList = new List<string>();
                     tempDP.variables.Add(holder.rowNames[j].Replace(" ", ""), tempList);
-                    Debug.Log("Adding Variable " + (holder.path.Count - 1));
+                    //Debug.Log("Adding Variable " + (holder.path.Count - 1));
 
                     for (int k = 0; k < holder.path.Count - 1; k++)
                     {
@@ -912,7 +912,7 @@ public class Loader : EditorWindow
                         {
                             tempDP.variables[holder.rowNames[j].Replace(" ", "")].Add("-1");
                         }
-                        Debug.Log("Adding Empty");
+                        //Debug.Log("Adding Empty");
                     }
                 }
 
@@ -950,10 +950,10 @@ public class Loader : EditorWindow
 
                 EditorUtility.SetDirty(tempDP);
 
-                UpdateObjects();
+                //UpdateObjects();
             }
 
-            UpdateObjects();
+            //UpdateObjects();
         }
 
         foreach (GameObject temp in holder.objects)
@@ -971,9 +971,11 @@ public class Loader : EditorWindow
                     {
                         tempDP.variables[holder.rowNames[j].Replace(" ", "")].Add("-1");
                     }
-                    Debug.Log("Adding Empty");
+                    //Debug.Log("Adding Empty");
                 }
             }
         }
+
+        UpdateObjects();
     }
 }
