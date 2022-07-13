@@ -68,6 +68,7 @@ public class Loader : EditorWindow
                 if (holder.axisTypes[i] == axisType.X || holder.axisTypes[i] == axisType.Y || holder.axisTypes[i] == axisType.Z || holder.axisTypes[i] == axisType.Size)
                 {
                     holder.axisScales[i] = EditorGUILayout.Slider(holder.axisScales[i], 0.1f, 5f);
+                    holder.offsets[i] = EditorGUILayout.FloatField(holder.offsets[i]);
                 }
                 else if (holder.axisTypes[i] == axisType.Color)
                 {
@@ -94,10 +95,12 @@ public class Loader : EditorWindow
                         holder.axisGradients[i] = Gradients.catagoricalGradients[(int)holder.catagoricalGradientsNames[i]];
                     }
                     holder.axisGradients[i] = EditorGUILayout.GradientField(holder.axisGradients[i]);
+
+                    holder.offsets[i] = EditorGUILayout.FloatField(holder.offsets[i]);
                 }
                 else if (holder.axisTypes[i] == axisType.Connected)
                 {
-                    holder.connectedTypes[i] = EditorGUILayout.TextField(holder.connectedTypes[i]);
+                    holder.connectedTypes[i] = (ConnectedTypes)EditorGUILayout.EnumPopup(holder.connectedTypes[i]);
                 }
                 EditorGUILayout.EndHorizontal();
             }
@@ -105,6 +108,7 @@ public class Loader : EditorWindow
             //mesh = (Mesh)EditorGUILayout.ObjectField("Shape (for now)", mesh, typeof(Mesh), false);
             //material = (Material)EditorGUILayout.ObjectField("Material (for now)", material, typeof(Material), false);
             placeHolder = (GameObject)EditorGUILayout.ObjectField("Object", placeHolder, typeof(GameObject), false);
+
 
             if (GUI.changed)
             {
@@ -143,6 +147,36 @@ public class Loader : EditorWindow
                 }
             }
 
+            GUILayout.Space(50);
+
+            if (GUILayout.Button("Reset Holder"))
+            {
+                holder.Reset();
+
+                DataPoint[] currentData = GameObject.FindObjectsOfType<DataPoint>();
+
+                foreach (DataPoint point in currentData)
+                {
+                    holder.objects.Add(point.gameObject);
+                }
+
+                //Debug.Log(holder.objects.Count);
+
+                foreach (GameObject @object in holder.objects)
+                {
+                    DestroyImmediate(@object);
+                }
+
+                holder.objects.RemoveAll((o) => o == null);
+
+                holder.path.Add(null);
+
+                dataLoaded = false;
+                dataRead = false;
+
+                placeHolder = Resources.Load("Prefabs/placeholder") as GameObject;
+            }
+
             /*
             if (GUILayout.Button("Load File"))
             {
@@ -160,21 +194,24 @@ public class Loader : EditorWindow
         else
         {
             placeHolder = (GameObject)EditorGUILayout.ObjectField("Object", placeHolder, typeof(GameObject), false);
-            if (GUILayout.Button("Load File"))
+            if(placeHolder != null)
             {
-                if (holder.path.Count <= 0)
+                if (GUILayout.Button("Load File"))
                 {
-                    holder.path.Add(null);
-                }
-                holder.path[0] = EditorUtility.OpenFilePanel("CSV", "", "csv");
-                if (holder.path != null)
-                {
-                    // Debug.Log("Loading Rows");
-                    LoadRows();
-                    dataRead = true;
-                    //Debug.Log("Creating All");
-                    CreateAll();
-                    dataLoaded = true;
+                    if (holder.path.Count <= 0)
+                    {
+                        holder.path.Add(null);
+                    }
+                    holder.path[0] = EditorUtility.OpenFilePanel("CSV", "", "csv");
+                    if (holder.path != null)
+                    {
+                        // Debug.Log("Loading Rows");
+                        LoadRows();
+                        dataRead = true;
+                        //Debug.Log("Creating All");
+                        CreateAll();
+                        dataLoaded = true;
+                    }
                 }
             }
         }
@@ -336,9 +373,9 @@ public class Loader : EditorWindow
             for (int j = 0; j < holder.rowNames.Count; j++)
             {
                 //Debug.Log(j + " " + holder.rowNames[j]);
-                List<string> tempList = new List<string>();
-                tempDP.variables.Add(holder.rowNames[j].Replace(" ", ""), tempList);
-                Debug.Log(holder.rowNames[j].Replace(" ", ""));
+                List<string> kList = new List<string>();
+                tempDP.variables.Add(holder.rowNames[j].Replace(" ", ""), kList);
+                //Debug.Log(holder.rowNames[j].Replace(" ", ""));
             }
 
             foreach (string key in tempDP.variables.Keys)
@@ -392,7 +429,7 @@ public class Loader : EditorWindow
                 {
                     float replaceF;
                     float.TryParse(lineData[j], out replaceF);
-                    temp.transform.position = new Vector3(replaceF * holder.axisScales[j], temp.transform.position.y, temp.transform.position.z);
+                    temp.transform.position = new Vector3(replaceF * holder.axisScales[j] + holder.offsets[j], temp.transform.position.y, temp.transform.position.z);
 
                     if (replaceF > holder.axisMinMax[j].y)
                     {
@@ -407,7 +444,7 @@ public class Loader : EditorWindow
                 {
                     float replaceF;
                     float.TryParse(lineData[j], out replaceF);
-                    temp.transform.position = new Vector3(temp.transform.position.x, replaceF * holder.axisScales[j], temp.transform.position.z);
+                    temp.transform.position = new Vector3(temp.transform.position.x, replaceF * holder.axisScales[j] + holder.offsets[j], temp.transform.position.z);
 
                     if (replaceF > holder.axisMinMax[j].y)
                     {
@@ -423,7 +460,7 @@ public class Loader : EditorWindow
                 {
                     float replaceF;
                     float.TryParse(lineData[j], out replaceF);
-                    temp.transform.position = new Vector3(temp.transform.position.x, temp.transform.position.y, replaceF * holder.axisScales[j]);
+                    temp.transform.position = new Vector3(temp.transform.position.x, temp.transform.position.y, replaceF * holder.axisScales[j] + holder.offsets[j]);
 
                     if (replaceF > holder.axisMinMax[j].y)
                     {
@@ -436,6 +473,8 @@ public class Loader : EditorWindow
                 }
             }
 
+            List<string> tempList = new List<string>();
+            tempDP.variables.Add("Annotations", tempList);
             tempDP.displayBox = temp.GetComponentInChildren<TextMeshProUGUI>();
 
             foreach (string key in tempDP.variables.Keys)
@@ -467,33 +506,31 @@ public class Loader : EditorWindow
             //temp.GetComponent<MeshFilter>().mesh = mesh;
             //temp.GetComponent<MeshRenderer>().material = material;
 
-            string[] lineData = lines[i].Trim().Split(","[0]);
-
-            for (int j = 0; j < holder.axisTypes.Count && j < lineData.Length; j++)
+            for (int j = 0; j < holder.axisTypes.Count; j++)
             {
                 if (holder.axisTypes[j] == axisType.X)
                 {
                     float replaceF;
-                    float.TryParse(lineData[j], out replaceF);
-                    temp.transform.position = new Vector3(replaceF * holder.axisScales[j], temp.transform.position.y, temp.transform.position.z);
-                    CreateAxisRows(holder.axisMinMax[j], new Vector2(holder.axisMinMax[j].x * holder.axisScales[j], holder.axisMinMax[j].y * holder.axisScales[j]), axisType.X);
+                    float.TryParse(tempDP.variables[holder.rowNames[j].Replace(" ", "")][0], out replaceF);
+                    temp.transform.position = new Vector3(replaceF * holder.axisScales[j] + holder.offsets[j], temp.transform.position.y, temp.transform.position.z);
+                    CreateAxisRows(holder.axisMinMax[j], new Vector2(holder.axisMinMax[j].x * holder.axisScales[j] + holder.offsets[j], holder.axisMinMax[j].y * holder.axisScales[j]), axisType.X);
 
                     if (replaceF > holder.axisMinMax[j].y)
                     {
                         holder.axisMinMax[j] = new Vector2(holder.axisMinMax[j].x, replaceF);
-                        CreateAxisRows(holder.axisMinMax[j], new Vector2(holder.axisMinMax[j].x * holder.axisScales[j], holder.axisMinMax[j].y * holder.axisScales[j]), axisType.X);
+                        CreateAxisRows(holder.axisMinMax[j], new Vector2(holder.axisMinMax[j].x * holder.axisScales[j] + holder.offsets[j], holder.axisMinMax[j].y * holder.axisScales[j]), axisType.X);
                     }
                     else if (temp.transform.position.y / holder.axisScales[j] < holder.axisMinMax[j].x)
                     {
                         holder.axisMinMax[j] = new Vector2(replaceF, holder.axisMinMax[j].y);
-                        CreateAxisRows(holder.axisMinMax[j], new Vector2(holder.axisMinMax[j].x * holder.axisScales[j], holder.axisMinMax[j].y * holder.axisScales[j]), axisType.X);
+                        CreateAxisRows(holder.axisMinMax[j], new Vector2(holder.axisMinMax[j].x * holder.axisScales[j] + holder.offsets[j], holder.axisMinMax[j].y * holder.axisScales[j]), axisType.X);
                     }
                 }
                 if (holder.axisTypes[j] == axisType.Y)
                 {
                     float replaceF;
-                    float.TryParse(lineData[j], out replaceF);
-                    temp.transform.position = new Vector3(temp.transform.position.x, replaceF * holder.axisScales[j], temp.transform.position.z);
+                    float.TryParse(tempDP.variables[holder.rowNames[j].Replace(" ", "")][0], out replaceF);
+                    temp.transform.position = new Vector3(temp.transform.position.x, replaceF * holder.axisScales[j] + holder.offsets[j], temp.transform.position.z);
                     CreateAxisRows(holder.axisMinMax[j], new Vector2(holder.axisMinMax[j].x * holder.axisScales[j], holder.axisMinMax[j].y * holder.axisScales[j]), axisType.Y);
 
                     if (replaceF > holder.axisMinMax[j].y)
@@ -511,8 +548,8 @@ public class Loader : EditorWindow
                 if (holder.axisTypes[j] == axisType.Z)
                 {
                     float replaceF;
-                    float.TryParse(lineData[j], out replaceF);
-                    temp.transform.position = new Vector3(temp.transform.position.x, temp.transform.position.y, replaceF * holder.axisScales[j]);
+                    float.TryParse(tempDP.variables[holder.rowNames[j].Replace(" ", "")][0], out replaceF);
+                    temp.transform.position = new Vector3(temp.transform.position.x, temp.transform.position.y, replaceF * holder.axisScales[j] + holder.offsets[j]);
                     CreateAxisRows(holder.axisMinMax[j], new Vector2(holder.axisMinMax[j].x * holder.axisScales[j], holder.axisMinMax[j].y * holder.axisScales[j]), axisType.Z);
 
                     if (replaceF > holder.axisMinMax[j].y)
@@ -531,7 +568,7 @@ public class Loader : EditorWindow
                     if (holder.rowTypes[j] == rowType.Bool)
                     {
                         bool replaceB;
-                        bool.TryParse(lineData[j], out replaceB);
+                        bool.TryParse(tempDP.variables[holder.rowNames[j].Replace(" ", "")][0], out replaceB);
                         if (Convert.ToInt16(replaceB) > holder.axisMinMax[j].y)
                         {
                             holder.axisMinMax[j] = new Vector2(holder.axisMinMax[j].x, Convert.ToInt16(replaceB));
@@ -541,12 +578,12 @@ public class Loader : EditorWindow
                             holder.axisMinMax[j] = new Vector2(Convert.ToInt16(replaceB), holder.axisMinMax[j].y);
                         }
 
-                        temp.GetComponent<MeshRenderer>().material.color = holder.axisGradients[j].Evaluate(Convert.ToInt16(replaceB) / (holder.axisMinMax[j].y - holder.axisMinMax[j].x));
+                        temp.GetComponent<MeshRenderer>().material.color = holder.axisGradients[j].Evaluate(Convert.ToInt16(replaceB) / (holder.axisMinMax[j].y - holder.axisMinMax[j].x) + holder.offsets[j]);
                     }
                     else if (holder.rowTypes[j] == rowType.Int || holder.rowTypes[j] == rowType.Float)
                     {
                         float replaceF;
-                        float.TryParse(lineData[j], out replaceF);
+                        float.TryParse(tempDP.variables[holder.rowNames[j].Replace(" ", "")][0], out replaceF);
 
                         if (replaceF > holder.axisMinMax[j].y)
                         {
@@ -558,7 +595,7 @@ public class Loader : EditorWindow
                         }
 
 
-                        temp.GetComponent<MeshRenderer>().material.color = holder.axisGradients[j].Evaluate(replaceF / (holder.axisMinMax[j].y - holder.axisMinMax[j].x));
+                        temp.GetComponent<MeshRenderer>().material.color = holder.axisGradients[j].Evaluate(replaceF + holder.offsets[j] / (holder.axisMinMax[j].y - holder.axisMinMax[j].x));
 
                         //Debug.Log(holder.axisMinMax[j].y + " " + holder.axisMinMax[j].x);
                         //temp.GetComponent<MeshRenderer>().material.color = holder.axisGradients[j].Evaluate(replaceF);
@@ -572,7 +609,7 @@ public class Loader : EditorWindow
                     if (holder.rowTypes[j] == rowType.Bool)
                     {
                         bool replaceB;
-                        bool.TryParse(lineData[j], out replaceB);
+                        bool.TryParse(tempDP.variables[holder.rowNames[j].Replace(" ", "")][0], out replaceB);
                         if (Convert.ToInt16(replaceB) > holder.axisMinMax[j].y)
                         {
                             holder.axisMinMax[j] = new Vector2(holder.axisMinMax[j].x, Convert.ToInt16(replaceB));
@@ -582,12 +619,12 @@ public class Loader : EditorWindow
                             holder.axisMinMax[j] = new Vector2(Convert.ToInt16(replaceB), holder.axisMinMax[j].y);
                         }
 
-                        temp.transform.localScale = Vector3.one * Mathf.Lerp(1, 1 * holder.axisScales[j], Convert.ToInt16(replaceB) / (holder.axisMinMax[j].y - holder.axisMinMax[j].x));
+                        temp.transform.localScale = Vector3.one * Mathf.Lerp(1, 1 * holder.axisScales[j], Convert.ToInt16(replaceB) / (holder.axisMinMax[j].y - holder.axisMinMax[j].x) + holder.offsets[j]);
                     }
                     else if (holder.rowTypes[j] == rowType.Int || holder.rowTypes[j] == rowType.Float)
                     {
                         float replaceF;
-                        float.TryParse(lineData[j], out replaceF);
+                        float.TryParse(tempDP.variables[holder.rowNames[j].Replace(" ", "")][0], out replaceF);
                         if (replaceF > holder.axisMinMax[j].y)
                         {
                             holder.axisMinMax[j] = new Vector2(holder.axisMinMax[j].x, replaceF);
@@ -597,7 +634,7 @@ public class Loader : EditorWindow
                             holder.axisMinMax[j] = new Vector2(replaceF, holder.axisMinMax[j].y);
                         }
 
-                        temp.transform.localScale = Vector3.one * Mathf.Lerp(1, 1 * holder.axisScales[j], replaceF / (holder.axisMinMax[j].y - holder.axisMinMax[j].x));
+                        temp.transform.localScale = Vector3.one * Mathf.Lerp(1, 1 * holder.axisScales[j], replaceF / (holder.axisMinMax[j].y - holder.axisMinMax[j].x) + holder.offsets[j]);
                     }
                 }
             }
@@ -694,6 +731,8 @@ public class Loader : EditorWindow
         holder.catagoricalGradientsNames.Clear();
         holder.sequentialGradientsNames.Clear();
         holder.gTypes.Clear();
+        holder.catagorical.Clear();
+        holder.offsets.Clear();
 
         string fileData = System.IO.File.ReadAllText(holder.path[0]);
         string[] lines = fileData.Split("\n"[0]);
@@ -728,11 +767,13 @@ public class Loader : EditorWindow
             holder.axisScales.Add(1);
             holder.axisGradients.Add(new Gradient());
             holder.axisMinMax.Add(new Vector2(100, -100));
-            holder.connectedTypes.Add("");
+            holder.connectedTypes.Add(ConnectedTypes.Time);
             holder.divergingGradientsNames.Add(divergingGradientsNames.seismic);
             holder.catagoricalGradientsNames.Add(catagoricalGradientsNames.pastels);
             holder.sequentialGradientsNames.Add(sequentialGradientsNames.viridis);
+            holder.catagorical.Add(false);
             holder.gTypes.Add(gradientTypes.sequential);
+            holder.offsets.Add(0f);
         }
     }
 

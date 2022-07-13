@@ -23,6 +23,14 @@ public enum axisType
     ShowOnClick
 }
 
+public enum ConnectedTypes
+{
+    Time,
+    Visible,
+    TimeLines,
+    VisibleLines
+}
+
 [ExecuteInEditMode]
 public class Holder : MonoBehaviour
 {
@@ -34,15 +42,17 @@ public class Holder : MonoBehaviour
     public List<float> axisScales = new List<float>();
     public List<Gradient> axisGradients = new List<Gradient>();
     public List<Vector2> axisMinMax = new List<Vector2>();
-    public List<string> connectedTypes = new List<string>();
+    public List<ConnectedTypes> connectedTypes = new List<ConnectedTypes>();
+    public List<bool> catagorical = new List<bool>();
+    public List<float> offsets = new List<float>();
 
-    //[HideInInspector]
+    [HideInInspector]
     public List<gradientTypes> gTypes = new List<gradientTypes>();
-    //[HideInInspector]
+    [HideInInspector]
     public List<catagoricalGradientsNames> catagoricalGradientsNames = new List<catagoricalGradientsNames>();
-    //[HideInInspector]
+    [HideInInspector]
     public List<sequentialGradientsNames> sequentialGradientsNames = new List<sequentialGradientsNames>();
-    //[HideInInspector]
+    [HideInInspector]
     public List<divergingGradientsNames> divergingGradientsNames = new List<divergingGradientsNames>();
 
     public List<string> path = new List<string>(1);
@@ -79,5 +89,27 @@ public class Holder : MonoBehaviour
                 temp.SetActive(!hiding);
             }
         }
+    }
+
+    public void Reset()
+    {
+        rowNames.Clear();
+        rowTypes.Clear();
+        axisTypes.Clear();
+        objects.Clear();
+
+        axisScales.Clear();
+        axisGradients.Clear();
+        axisMinMax.Clear();
+        connectedTypes.Clear();
+        catagorical.Clear();
+        offsets.Clear();
+
+        gTypes.Clear();
+        catagoricalGradientsNames.Clear();
+        sequentialGradientsNames.Clear();
+        divergingGradientsNames.Clear();
+
+        path.Clear();
     }
 }

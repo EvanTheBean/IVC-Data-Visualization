@@ -7,7 +7,7 @@ public class BlendShapeController : MonoBehaviour
 {
     [Range(0, 100)]
     public List<float> blendWeight = new List<float>();
-
+    public bool last;
     SkinnedMeshRenderer skinnedMeshRenderer;
     int count;
     // Start is called before the first frame update
@@ -25,6 +25,11 @@ public class BlendShapeController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (last)
+        {
+            blendWeight[0] = 100 - blendWeight[count];
+            blendWeight[count - 1] = blendWeight[count];
+        }
         for (int i = 0; i < count; i++)
         {
             skinnedMeshRenderer.SetBlendShapeWeight(i, blendWeight[i]);

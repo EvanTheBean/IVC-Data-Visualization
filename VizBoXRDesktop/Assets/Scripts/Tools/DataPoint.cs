@@ -18,7 +18,13 @@ public class DataPoint : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         string display = "";
         foreach(string var in variables.Keys)
         {
+            if(var != "Annotations")
             display += var + " " + variables[var][currentC].ToString() + "\n";
+        }
+        display += "Annotations: ";
+        for(int i = 0; i < variables["Annotations"].Count; i++)
+        {
+            display += variables["Annotations"][0].ToString() + "\n";
         }
         displayBox.text = display;
     }
