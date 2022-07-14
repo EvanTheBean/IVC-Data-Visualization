@@ -67,7 +67,17 @@ public class Loader : EditorWindow
                 EditorGUILayout.LabelField(holder.rowNames[i], new GUILayoutOption[] { GUILayout.Width(100) });
                 holder.rowTypes[i] = (rowType)EditorGUILayout.EnumPopup(holder.rowTypes[i]);
                 holder.axisTypes[i] = (axisType)EditorGUILayout.EnumPopup(holder.axisTypes[i]);
-                if (holder.axisTypes[i] == axisType.X || holder.axisTypes[i] == axisType.Y || holder.axisTypes[i] == axisType.Z || holder.axisTypes[i] == axisType.Size)
+                if (holder.axisTypes[i] == axisType.X || holder.axisTypes[i] == axisType.Y || holder.axisTypes[i] == axisType.Z)
+                {
+                    holder.axisScales[i] = EditorGUILayout.Slider(holder.axisScales[i], 0.1f, 5f);
+                    holder.offsets[i] = EditorGUILayout.FloatField(holder.offsets[i]);
+                    if(GUILayout.Button("Mean"))
+                    {
+                        GetMinMax(i);
+                        holder.offsets[i] = -Mathf.Lerp(holder.axisMinMax[i].x, holder.axisMinMax[i].y, 0.5f);
+                    }
+                }
+                else if (holder.axisTypes[i] == axisType.Size)
                 {
                     holder.axisScales[i] = EditorGUILayout.Slider(holder.axisScales[i], 0.1f, 5f);
                     holder.offsets[i] = EditorGUILayout.FloatField(holder.offsets[i]);
@@ -437,14 +447,16 @@ public class Loader : EditorWindow
                     float.TryParse(lineData[j], out replaceF);
                     temp.transform.position = new Vector3(replaceF * holder.axisScales[j] + holder.offsets[j], temp.transform.position.y, temp.transform.position.z);
 
+                    /*
                     if (replaceF > holder.axisMinMax[j].y)
                     {
                         holder.axisMinMax[j] = new Vector2(holder.axisMinMax[j].x, replaceF);
                     }
-                    else if (temp.transform.position.y / holder.axisScales[j] < holder.axisMinMax[j].x)
+                    else if (temp.transform.position.y < holder.axisMinMax[j].x)
                     {
                         holder.axisMinMax[j] = new Vector2(replaceF, holder.axisMinMax[j].y);
                     }
+                    */
                 }
                 if (holder.axisTypes[j] == axisType.Y)
                 {
@@ -452,14 +464,16 @@ public class Loader : EditorWindow
                     float.TryParse(lineData[j], out replaceF);
                     temp.transform.position = new Vector3(temp.transform.position.x, replaceF * holder.axisScales[j] + holder.offsets[j], temp.transform.position.z);
 
+                    /*
                     if (replaceF > holder.axisMinMax[j].y)
                     {
                         holder.axisMinMax[j] = new Vector2(holder.axisMinMax[j].x, replaceF);
                     }
-                    else if (temp.transform.position.y / holder.axisScales[j] < holder.axisMinMax[j].x)
+                    else if (temp.transform.position.y < holder.axisMinMax[j].x)
                     {
                         holder.axisMinMax[j] = new Vector2(replaceF, holder.axisMinMax[j].y);
                     }
+                    */
 
                 }
                 if (holder.axisTypes[j] == axisType.Z)
@@ -468,14 +482,16 @@ public class Loader : EditorWindow
                     float.TryParse(lineData[j], out replaceF);
                     temp.transform.position = new Vector3(temp.transform.position.x, temp.transform.position.y, replaceF * holder.axisScales[j] + holder.offsets[j]);
 
+                    /*
                     if (replaceF > holder.axisMinMax[j].y)
                     {
                         holder.axisMinMax[j] = new Vector2(holder.axisMinMax[j].x, replaceF);
                     }
-                    else if (temp.transform.position.y / holder.axisScales[j] < holder.axisMinMax[j].x)
+                    else if (temp.transform.position.y < holder.axisMinMax[j].x)
                     {
                         holder.axisMinMax[j] = new Vector2(replaceF, holder.axisMinMax[j].y);
                     }
+                    */
                 }
             }
 
@@ -521,16 +537,20 @@ public class Loader : EditorWindow
                     temp.transform.position = new Vector3(replaceF * holder.axisScales[j] + holder.offsets[j], temp.transform.position.y, temp.transform.position.z);
                     CreateAxisRows(holder.axisMinMax[j], new Vector2(holder.axisMinMax[j].x * holder.axisScales[j] + holder.offsets[j], holder.axisMinMax[j].y * holder.axisScales[j]), axisType.X);
 
+                    /*
                     if (replaceF > holder.axisMinMax[j].y)
                     {
+                        Debug.Log("Bigger X");
                         holder.axisMinMax[j] = new Vector2(holder.axisMinMax[j].x, replaceF);
                         CreateAxisRows(holder.axisMinMax[j], new Vector2(holder.axisMinMax[j].x * holder.axisScales[j] + holder.offsets[j], holder.axisMinMax[j].y * holder.axisScales[j]), axisType.X);
                     }
-                    else if (temp.transform.position.y / holder.axisScales[j] < holder.axisMinMax[j].x)
+                    else if (temp.transform.position.y < holder.axisMinMax[j].x)
                     {
+                        Debug.Log("SmallerX");
                         holder.axisMinMax[j] = new Vector2(replaceF, holder.axisMinMax[j].y);
                         CreateAxisRows(holder.axisMinMax[j], new Vector2(holder.axisMinMax[j].x * holder.axisScales[j] + holder.offsets[j], holder.axisMinMax[j].y * holder.axisScales[j]), axisType.X);
                     }
+                    */
                 }
                 if (holder.axisTypes[j] == axisType.Y)
                 {
@@ -539,16 +559,20 @@ public class Loader : EditorWindow
                     temp.transform.position = new Vector3(temp.transform.position.x, replaceF * holder.axisScales[j] + holder.offsets[j], temp.transform.position.z);
                     CreateAxisRows(holder.axisMinMax[j], new Vector2(holder.axisMinMax[j].x * holder.axisScales[j], holder.axisMinMax[j].y * holder.axisScales[j]), axisType.Y);
 
+                    /*
                     if (replaceF > holder.axisMinMax[j].y)
                     {
+                        Debug.Log("Bigger Y");
                         holder.axisMinMax[j] = new Vector2(holder.axisMinMax[j].x, replaceF);
                         CreateAxisRows(holder.axisMinMax[j], new Vector2(holder.axisMinMax[j].x * holder.axisScales[j], holder.axisMinMax[j].y * holder.axisScales[j]), axisType.Y);
                     }
-                    else if (temp.transform.position.y / holder.axisScales[j] < holder.axisMinMax[j].x)
+                    else if (temp.transform.position.y < holder.axisMinMax[j].x)
                     {
+                        Debug.Log("SmallerY");
                         holder.axisMinMax[j] = new Vector2(replaceF, holder.axisMinMax[j].y);
                         CreateAxisRows(holder.axisMinMax[j], new Vector2(holder.axisMinMax[j].x * holder.axisScales[j], holder.axisMinMax[j].y * holder.axisScales[j]), axisType.Y);
                     }
+                    */
 
                 }
                 if (holder.axisTypes[j] == axisType.Z)
@@ -558,16 +582,20 @@ public class Loader : EditorWindow
                     temp.transform.position = new Vector3(temp.transform.position.x, temp.transform.position.y, replaceF * holder.axisScales[j] + holder.offsets[j]);
                     CreateAxisRows(holder.axisMinMax[j], new Vector2(holder.axisMinMax[j].x * holder.axisScales[j], holder.axisMinMax[j].y * holder.axisScales[j]), axisType.Z);
 
+                    /*
                     if (replaceF > holder.axisMinMax[j].y)
                     {
+                        Debug.Log("GreaterZ");
                         holder.axisMinMax[j] = new Vector2(holder.axisMinMax[j].x, replaceF);
                         CreateAxisRows(holder.axisMinMax[j], new Vector2(holder.axisMinMax[j].x * holder.axisScales[j], holder.axisMinMax[j].y * holder.axisScales[j]), axisType.Z);
                     }
-                    else if (temp.transform.position.y / holder.axisScales[j] < holder.axisMinMax[j].x)
+                    else if (temp.transform.position.y < holder.axisMinMax[j].x)
                     {
+                        Debug.Log("SmallerZ");
                         holder.axisMinMax[j] = new Vector2(replaceF, holder.axisMinMax[j].y);
                         CreateAxisRows(holder.axisMinMax[j], new Vector2(holder.axisMinMax[j].x * holder.axisScales[j], holder.axisMinMax[j].y * holder.axisScales[j]), axisType.Z);
                     }
+                    */
                 }
                 if (holder.axisTypes[j] == axisType.Color)
                 {
@@ -612,6 +640,11 @@ public class Loader : EditorWindow
                 }
                 if (holder.axisTypes[j] == axisType.Size)
                 {
+                    if (holder.offsets[j] == 0)
+                    {
+                        holder.offsets[j] = 1f;
+                    }
+
                     if (holder.rowTypes[j] == rowType.Bool)
                     {
                         bool replaceB;
@@ -625,7 +658,7 @@ public class Loader : EditorWindow
                             holder.axisMinMax[j] = new Vector2(Convert.ToInt16(replaceB), holder.axisMinMax[j].y);
                         }
 
-                        temp.transform.localScale = Vector3.one * Mathf.Lerp(1, 1 * holder.axisScales[j], Convert.ToInt16(replaceB) / (holder.axisMinMax[j].y - holder.axisMinMax[j].x) + holder.offsets[j]);
+                        temp.transform.localScale = Vector3.one * Mathf.Lerp(1, 1 * holder.axisScales[j], Convert.ToInt16(replaceB) / (holder.axisMinMax[j].y - holder.axisMinMax[j].x)) * holder.offsets[j];
                     }
                     else if (holder.rowTypes[j] == rowType.Int || holder.rowTypes[j] == rowType.Float)
                     {
@@ -640,7 +673,7 @@ public class Loader : EditorWindow
                             holder.axisMinMax[j] = new Vector2(replaceF, holder.axisMinMax[j].y);
                         }
 
-                        temp.transform.localScale = Vector3.one * Mathf.Lerp(1, 1 * holder.axisScales[j], replaceF / (holder.axisMinMax[j].y - holder.axisMinMax[j].x) + holder.offsets[j]);
+                        temp.transform.localScale = Vector3.one * Mathf.Lerp(1, 1 * holder.axisScales[j], replaceF / (holder.axisMinMax[j].y - holder.axisMinMax[j].x)) * holder.offsets[j];
                     }
                 }
             }
@@ -977,5 +1010,65 @@ public class Loader : EditorWindow
         }
 
         UpdateObjects();
+    }
+
+    void GetMinMax(int location)
+    {
+        bool first = true;
+        foreach(GameObject temp in holder.objects)
+        {
+            if(first)
+            {
+                first = false;
+                if(holder.axisTypes[location] == axisType.X)
+                {
+                    holder.axisMinMax[location] = new Vector2(temp.transform.position.x -holder.offsets[location], temp.transform.position.x - holder.offsets[location]);
+                }
+                if (holder.axisTypes[location] == axisType.Y)
+                {
+                    holder.axisMinMax[location] = new Vector2(temp.transform.position.y - holder.offsets[location], temp.transform.position.y - holder.offsets[location]);
+                }
+                if (holder.axisTypes[location] == axisType.Z)
+                {
+                    holder.axisMinMax[location] = new Vector2(temp.transform.position.z - holder.offsets[location], temp.transform.position.z - holder.offsets[location]);
+                }
+            }
+            else
+            {
+                if (holder.axisTypes[location] == axisType.X)
+                {
+                    if(temp.transform.position.x - holder.offsets[location] > holder.axisMinMax[location].y)
+                    {
+                        holder.axisMinMax[location] = new Vector2(holder.axisMinMax[location].x, temp.transform.position.x - holder.offsets[location]);
+                    }
+                    else if(temp.transform.position.x - holder.offsets[location] < holder.axisMinMax[location].x)
+                    {
+                        holder.axisMinMax[location] = new Vector2(temp.transform.position.x - holder.offsets[location], holder.axisMinMax[location].y);
+                    }
+                }
+                if (holder.axisTypes[location] == axisType.Y)
+                {
+                    if (temp.transform.position.y - holder.offsets[location] > holder.axisMinMax[location].y)
+                    {
+                        holder.axisMinMax[location] = new Vector2(holder.axisMinMax[location].x, temp.transform.position.y - holder.offsets[location]);
+                    }
+                    else if (temp.transform.position.y - holder.offsets[location] < holder.axisMinMax[location].x)
+                    {
+                        holder.axisMinMax[location] = new Vector2(temp.transform.position.y - holder.offsets[location], holder.axisMinMax[location].y);
+                    }
+                }
+                if (holder.axisTypes[location] == axisType.Z)
+                {
+                    if (temp.transform.position.z - holder.offsets[location] > holder.axisMinMax[location].y)
+                    {
+                        holder.axisMinMax[location] = new Vector2(holder.axisMinMax[location].x, temp.transform.position.z - holder.offsets[location]);
+                    }
+                    else if (temp.transform.position.z - holder.offsets[location] < holder.axisMinMax[location].x)
+                    {
+                        holder.axisMinMax[location] = new Vector2(temp.transform.position.z - holder.offsets[location], holder.axisMinMax[location].y);
+                    }
+                }
+            }
+        }
     }
 }

@@ -45,7 +45,7 @@ public class MultiPointControll : MonoBehaviour
 
                     i = k - 1;
 
-                    Debug.Log(k + " " + i + " " + child.name);
+                    //Debug.Log(k + " " + i + " " + child.name);
 
                     if (child.GetComponent<Canvas>() == null)
                     {
@@ -82,7 +82,7 @@ public class MultiPointControll : MonoBehaviour
                     else
                     {
                         hitCanvas = true;
-                        Debug.Log("hit canvas :)");
+                        //Debug.Log("hit canvas :)");
                     }
                 }
             }
@@ -94,7 +94,7 @@ public class MultiPointControll : MonoBehaviour
                 //Debug.Log("Ugh1");
                 foreach (Transform child in p.transform.GetComponentsInChildren<Transform>())
                 {
-                    Debug.Log(child.name);
+                    //Debug.Log(child.name);
                     //Debug.Log("Ugh2");
                     if (child.GetComponent<MeshRenderer>() != null && child != p.transform)
                     {
