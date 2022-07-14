@@ -21,7 +21,6 @@ using Google.XR.Cardboard;
 using UnityEngine;
 using UnityEngine.XR;
 using UnityEngine.XR.Management;
-using Unity.Android;
 
 /// <summary>
 /// Turns VR mode on and off.
