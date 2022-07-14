@@ -13,7 +13,7 @@ public enum Activity
 }
 
 [Serializable]
-public class PlayerEvent : UnityEvent<string, Activity> { };
+public class PlayerEvent : UnityEvent<ulong, string, Activity> { };
 
 public class PlayerInfo : NetworkBehaviour
 {
@@ -35,14 +35,14 @@ public class PlayerInfo : NetworkBehaviour
         players.Add(id, (username, Activity.Annotating));
         Debug.Log(username + " joined the lobby.");
         playerCount.Value++;
-        OnPlayerJoin.Invoke(username, Activity.Annotating);
+        OnPlayerJoin.Invoke(id, username, Activity.Annotating);
     }
 
     [ServerRpc(RequireOwnership = false)]
     void LeaveLobbyServerRpc(ulong id)
     {
         Debug.Log(players[id].Item1 + " left the lobby.");
-        OnPlayerLeave.Invoke(players[id].Item1, Activity.Annotating);
+        OnPlayerLeave?.Invoke(id, players[id].Item1, Activity.Annotating);
         players.Remove(id);
         playerCount.Value--;
         
@@ -54,7 +54,7 @@ public class PlayerInfo : NetworkBehaviour
         (string, Activity) playerData = players[id];
         playerData.Item2 = activity;
         players[id] = playerData;
-        OnChangeActivity?.Invoke(playerData.Item1, activity);
+        OnChangeActivity?.Invoke(id, playerData.Item1, activity);
         Debug.Log(playerData.Item1 + " switched to activity " + activity.ToString());
     }
 
