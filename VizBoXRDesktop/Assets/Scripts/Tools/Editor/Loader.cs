@@ -671,7 +671,7 @@ public class Loader : EditorWindow
                 else if (type == ConnectedTypes.Visible)
                 {
                     mpc.TimeBased(false);
-                    mpc.ControlLines(true);
+                    mpc.ControlLines(false);
                 }
             }
         }
