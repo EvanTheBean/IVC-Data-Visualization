@@ -371,7 +371,7 @@ public class Loader : EditorWindow
 
         for (int i = 1; i < lines.Length; i++)
         {
-            GameObject temp = Instantiate(placeHolder);
+            GameObject temp = (GameObject)PrefabUtility.InstantiatePrefab(placeHolder as GameObject);
             temp.name = i.ToString();
             holder.objects.Add(temp);
             temp.transform.parent = holder.gameObject.transform;
