@@ -535,7 +535,11 @@ public class Loader : EditorWindow
                     float replaceF;
                     float.TryParse(tempDP.variables[holder.rowNames[j].Replace(" ", "")][0], out replaceF);
                     temp.transform.position = new Vector3(replaceF * holder.axisScales[j] + holder.offsets[j], temp.transform.position.y, temp.transform.position.z);
-                    CreateAxisRows(holder.axisMinMax[j], new Vector2(holder.axisMinMax[j].x * holder.axisScales[j] + holder.offsets[j], holder.axisMinMax[j].y * holder.axisScales[j]), axisType.X);
+
+                    GetMinMax(j);
+
+                    CreateAxisRows(new Vector2((holder.axisMinMax[j].x + holder.offsets[j]) / holder.axisScales[j], (holder.axisMinMax[j].y + holder.offsets[j]) / holder.axisScales[j]), new Vector2(holder.offsets[j], holder.axisMinMax[j].y), axisType.X);
+                    Debug.Log(holder.axisMinMax[j].y);
 
                     /*
                     if (replaceF > holder.axisMinMax[j].y)
@@ -557,8 +561,12 @@ public class Loader : EditorWindow
                     float replaceF;
                     float.TryParse(tempDP.variables[holder.rowNames[j].Replace(" ", "")][0], out replaceF);
                     temp.transform.position = new Vector3(temp.transform.position.x, replaceF * holder.axisScales[j] + holder.offsets[j], temp.transform.position.z);
-                    CreateAxisRows(holder.axisMinMax[j], new Vector2(holder.axisMinMax[j].x * holder.axisScales[j], holder.axisMinMax[j].y * holder.axisScales[j]), axisType.Y);
 
+                    GetMinMax(j);
+
+                    //CreateAxisRows(holder.axisMinMax[j], new Vector2(holder.offsets[j], holder.axisMinMax[j].y * holder.axisScales[j] + holder.offsets[j]), axisType.Y);
+                    CreateAxisRows(new Vector2((holder.axisMinMax[j].x + holder.offsets[j]) / holder.axisScales[j], (holder.axisMinMax[j].y + holder.offsets[j]) / holder.axisScales[j]), new Vector2(holder.offsets[j], holder.axisMinMax[j].y), axisType.Y);
+                    Debug.Log(holder.axisMinMax[j].y);
                     /*
                     if (replaceF > holder.axisMinMax[j].y)
                     {
@@ -580,8 +588,12 @@ public class Loader : EditorWindow
                     float replaceF;
                     float.TryParse(tempDP.variables[holder.rowNames[j].Replace(" ", "")][0], out replaceF);
                     temp.transform.position = new Vector3(temp.transform.position.x, temp.transform.position.y, replaceF * holder.axisScales[j] + holder.offsets[j]);
-                    CreateAxisRows(holder.axisMinMax[j], new Vector2(holder.axisMinMax[j].x * holder.axisScales[j], holder.axisMinMax[j].y * holder.axisScales[j]), axisType.Z);
 
+                    GetMinMax(j);
+
+                    //CreateAxisRows(holder.axisMinMax[j], new Vector2(holder.offsets[j], holder.axisMinMax[j].y * holder.axisScales[j] + holder.offsets[j]), axisType.Z);
+                    CreateAxisRows(new Vector2((holder.axisMinMax[j].x + holder.offsets[j]) / holder.axisScales[j], (holder.axisMinMax[j].y + holder.offsets[j]) / holder.axisScales[j]), new Vector2(holder.offsets[j], holder.axisMinMax[j].y), axisType.Z);
+                    Debug.Log(holder.axisMinMax[j].y);
                     /*
                     if (replaceF > holder.axisMinMax[j].y)
                     {
@@ -741,7 +753,7 @@ public class Loader : EditorWindow
 
     void CreateAxisRows(Vector2 minMaxLabels, Vector2 minMaxPlacement, axisType correspondingAxis)
     {
-        GameObject x = null, y = null, z = null;
+        GameObject x = null, y = null, z = null, parent = null;
         foreach (GameObject temp in axisText)
         {
             if (temp.name == "AxisText X")
@@ -758,25 +770,30 @@ public class Loader : EditorWindow
             }
         }
 
+        parent = x.transform.parent.gameObject;
+
         if (correspondingAxis == axisType.X && x != null)
         {
             x.transform.position = new Vector3(minMaxPlacement.y, 0, 0);
             x.GetComponent<TextMeshProUGUI>().text = minMaxLabels.y.ToString();
-            x.GetComponent<LineRenderer>().SetPosition(1, axisText[1].transform.position);
+            x.GetComponent<LineRenderer>().SetPosition(1,x.transform.position);
+            x.GetComponent<LineRenderer>().SetPosition(0, new Vector3(minMaxPlacement.x,0,0));
             //Debug.Log(axisText[1].gameObject + " X");
         }
         else if (correspondingAxis == axisType.Y && y != null)
         {
             y.gameObject.transform.position = new Vector3(0, minMaxPlacement.y, 0);
             y.GetComponent<TextMeshProUGUI>().text = minMaxLabels.y.ToString();
-            y.GetComponent<LineRenderer>().SetPosition(1, axisText[2].transform.position);
+            y.GetComponent<LineRenderer>().SetPosition(1, y.transform.position);
+            y.GetComponent<LineRenderer>().SetPosition(0, new Vector3(0,minMaxPlacement.x,0));
             //Debug.Log(axisText[2].gameObject + " Y");
         }
         else if (correspondingAxis == axisType.Z && z != null)
         {
             z.gameObject.GetComponent<RectTransform>().position = new Vector3(0, 0, minMaxPlacement.y);
             z.GetComponent<TextMeshProUGUI>().text = minMaxLabels.y.ToString();
-            z.GetComponent<LineRenderer>().SetPosition(1, axisText[3].transform.position);
+            z.GetComponent<LineRenderer>().SetPosition(1, z.transform.position);
+            z.GetComponent<LineRenderer>().SetPosition(0, new Vector3(0, 0, minMaxPlacement.x));
             //Debug.Log(axisText[3].gameObject + " Z");
         }
 
