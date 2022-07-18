@@ -20,7 +20,6 @@ public class UIPlayerList : MonoBehaviour
 
     private void SetUp()
     {
-        Debug.Log("setup");
         playerInfo = FindObjectOfType<PlayerInfo>();
         playerInfo.OnPlayerJoin.AddListener(OnPlayerJoin);
         playerInfo.OnPlayerLeave.AddListener(OnPlayerLeave);
@@ -28,7 +27,6 @@ public class UIPlayerList : MonoBehaviour
 
     private void OnPlayerJoin(ulong id, string user, Activity activity)
     {
-        Debug.Log("hi");
         GameObject obj = Instantiate(playerNamePrefab, playerNameParent);
         obj.GetComponentInChildren<TextMeshProUGUI>().text = user;
         nameUIObjects.Add(id, obj);

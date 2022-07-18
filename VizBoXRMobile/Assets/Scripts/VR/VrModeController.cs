@@ -35,6 +35,8 @@ public class VrModeController : MonoBehaviour
     // Main camera from the scene.
     private Camera _mainCamera;
 
+    UnityEngine.XR.Management.XRLoader vrLoader;
+
     /// <summary>
     /// Gets a value indicating whether the screen has been touched this frame.
     /// </summary>
@@ -85,10 +87,6 @@ public class VrModeController : MonoBehaviour
     {
         if (_isVrModeEnabled)
         {
-            if (Api.IsCloseButtonPressed)
-            {
-                ExitVR();
-            }
 
             if (Api.IsGearButtonPressed)
             {
@@ -136,21 +134,25 @@ public class VrModeController : MonoBehaviour
     /// </returns>
     private IEnumerator StartXR()
     {
-        Debug.Log("Initializing XR...");
+        vrLoader = XRGeneralSettings.Instance.Manager.activeLoaders[1];
+        Debug.Log("Init XR loader");
 
-        yield return XRGeneralSettings.Instance.Manager.InitializeLoader();
-
-        if (XRGeneralSettings.Instance.Manager.activeLoader == null)
+        var initSuccess = vrLoader.Initialize();
+        if (!initSuccess)
         {
-            Debug.LogError("Initializing XR Failed.");
+            Debug.LogError("Error initializing selected loader.");
         }
         else
         {
-            Debug.Log("XR initialized.");
-
-            Debug.Log("Starting XR...");
-            XRGeneralSettings.Instance.Manager.StartSubsystems();
-            Debug.Log("XR started.");
+            yield return null;
+            Debug.Log("Start XR loader");
+            var startSuccess = vrLoader.Start();
+            if (!startSuccess)
+            {
+                yield return null;
+                Debug.LogError("Error starting selected loader.");
+                vrLoader.Deinitialize();
+            }
         }
     }
 
@@ -160,13 +162,11 @@ public class VrModeController : MonoBehaviour
     /// </summary>
     private void StopXR()
     {
-        Debug.Log("Stopping XR...");
-        XRGeneralSettings.Instance.Manager.StopSubsystems();
-        Debug.Log("XR stopped.");
-
-        Debug.Log("Deinitializing XR...");
-        XRGeneralSettings.Instance.Manager.DeinitializeLoader();
-        Debug.Log("XR deinitialized.");
+        Debug.Log("Stopping XR Loader...");
+        vrLoader.Stop();
+        vrLoader.Deinitialize();
+        vrLoader = null;
+        Debug.Log("XR Loader stopped completely.");
 
         _mainCamera.ResetAspect();
         _mainCamera.fieldOfView = _defaultFieldOfView;
