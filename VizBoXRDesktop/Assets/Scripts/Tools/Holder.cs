@@ -32,7 +32,7 @@ public enum ConnectedTypes
 }
 
 [ExecuteInEditMode]
-public class Holder : NetworkBehaviour, INetworkSerializable
+public class Holder : MonoBehaviour, INetworkSerializable
 {
     public List<string> rowNames = new List<string>();
     public List<rowType> rowTypes = new List<rowType>();

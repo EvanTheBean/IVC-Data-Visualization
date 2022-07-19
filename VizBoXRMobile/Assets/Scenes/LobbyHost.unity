@@ -1288,6 +1288,7 @@ GameObject:
   m_Component:
   - component: {fileID: 758933973}
   - component: {fileID: 758933972}
+  - component: {fileID: 758933974}
   m_Layer: 0
   m_Name: Scene_Loader
   m_TagString: Untagged
@@ -1322,6 +1323,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &758933974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 758933971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a055d5c85772d4442947a80f41aef0f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  holderPrefab: {fileID: 2413362435559014647, guid: 38b9b70bdffd8de439f0f1bb04dc505a,
+    type: 3}
 --- !u!1 &893500069
 GameObject:
   m_ObjectHideFlags: 0
@@ -1963,14 +1978,6 @@ MonoBehaviour:
       SourceHashToOverride: 0
       OverridingTargetPrefab: {fileID: 0}
     - Override: 2
-      Prefab: {fileID: 2413362435559014647, guid: ec3c18d74fb33d14badd17f16987079e,
-        type: 3}
-      SourcePrefabToOverride: {fileID: 2413362435559014647, guid: ec3c18d74fb33d14badd17f16987079e,
-        type: 3}
-      SourceHashToOverride: 702822471
-      OverridingTargetPrefab: {fileID: 2413362435559014647, guid: 38b9b70bdffd8de439f0f1bb04dc505a,
-        type: 3}
-    - Override: 2
       Prefab: {fileID: 5303000421713815878, guid: 98592487d22a48346b9d1f287dc77508,
         type: 3}
       SourcePrefabToOverride: {fileID: 0}
@@ -1980,7 +1987,7 @@ MonoBehaviour:
     - Override: 2
       Prefab: {fileID: 0}
       SourcePrefabToOverride: {fileID: 0}
-      SourceHashToOverride: 3885920398
+      SourceHashToOverride: 3830959851
       OverridingTargetPrefab: {fileID: 3540544813451765698, guid: f0ae82976f089814e964484cd9b1f0ca,
         type: 3}
     TickRate: 30

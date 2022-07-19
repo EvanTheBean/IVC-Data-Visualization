@@ -495,4 +495,44 @@ public static class NetworkSerializationExtensions
         }
 
     }
+
+    public static void SerializeValue<TReaderWriter>(this BufferSerializer<TReaderWriter> serializer, ref StringListDictionary dict) where TReaderWriter : IReaderWriter
+    {
+
+        int count = 0;
+        if (serializer.IsWriter)
+        {
+            count = dict.Count;
+        }
+        serializer.SerializeValue(ref count);
+
+        string[] keys = new string[count];
+        List<string>[] values = new List<string>[count];
+        
+        if (serializer.IsWriter)
+        {
+            int i = 0;
+            foreach(KeyValuePair<string, List<string>> entry in dict)
+            {
+                keys[i] = entry.Key;
+                values[i] = entry.Value;
+                i++;
+            }
+        }
+
+        for(int i = 0; i < count; i++)
+        {
+            serializer.SerializeValue(ref keys[i]);
+            serializer.SerializeValue(ref values[i]);
+        }
+
+        if (serializer.IsReader)
+        {
+            dict = new StringListDictionary();
+            for (int i = 0; i < count; i++)
+            {
+                dict.Add(keys[i], values[i]);
+            }
+        }
+    }
 }

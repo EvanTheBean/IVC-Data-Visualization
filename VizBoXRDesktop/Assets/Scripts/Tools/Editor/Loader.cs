@@ -1278,48 +1278,48 @@ public class Loader : EditorWindow
         return false;
         }
 
-    bool FitIndexed3D()
-        {
-        // Compute the mean of the points.
-        Vector3 point1, point2, point3;
-        Vector3 mean = Vector3.zero;
-        for (int i = 0; i < holder.objects.Count; ++i)
-        {
-            mean += holder.objects[i].transform.position;
-        }
-        mean /= holder.objects.Count;
-
-        if (!float.IsInfinity(mean.x) && std::isfinite(mean[1]))
-        {
-            // Compute the covariance matrix of the points.
-            Real covar00 = (Real)0, covar01 = (Real)0, covar02 = (Real)0;
-            Real covar11 = (Real)0, covar12 = (Real)0;
-            currentIndex = indices;
-            for (size_t i = 0; i < numIndices; ++i)
-            {
-                Vector3<Real> diff = points[*currentIndex++] - mean;
-                covar00 += diff[0] * diff[0];
-                covar01 += diff[0] * diff[1];
-                covar02 += diff[0] * diff[2];
-                covar11 += diff[1] * diff[1];
-                covar12 += diff[1] * diff[2];
-            }
-
-            // Decompose the covariance matrix.
-            Real det = covar00 * covar11 - covar01 * covar01;
-            if (det != (Real)0)
-            {
-                Real invDet = (Real)1 / det;
-                mParameters.first = mean;
-                mParameters.second[0] = (covar11 * covar02 - covar01 * covar12) * invDet;
-                mParameters.second[1] = (covar00 * covar12 - covar01 * covar02) * invDet;
-                mParameters.second[2] = (Real) - 1;
-                return true;
-            }
-        }
-
-    mParameters.first = Vector3<Real>::Zero();
-            mParameters.second = Vector3<Real>::Zero();
-            return false;
-        }
+    //bool FitIndexed3D()
+    //    {
+    //    // Compute the mean of the points.
+    //    Vector3 point1, point2, point3;
+    //    Vector3 mean = Vector3.zero;
+    //    for (int i = 0; i < holder.objects.Count; ++i)
+    //    {
+    //        mean += holder.objects[i].transform.position;
+    //    }
+    //    mean /= holder.objects.Count;
+    //
+    //    if (!float.IsInfinity(mean.x) && std::isfinite(mean[1]))
+    //    {
+    //        // Compute the covariance matrix of the points.
+    //        Real covar00 = (Real)0, covar01 = (Real)0, covar02 = (Real)0;
+    //        Real covar11 = (Real)0, covar12 = (Real)0;
+    //        currentIndex = indices;
+    //        for (size_t i = 0; i < numIndices; ++i)
+    //        {
+    //            Vector3<Real> diff = points[*currentIndex++] - mean;
+    //            covar00 += diff[0] * diff[0];
+    //            covar01 += diff[0] * diff[1];
+    //            covar02 += diff[0] * diff[2];
+    //            covar11 += diff[1] * diff[1];
+    //            covar12 += diff[1] * diff[2];
+    //        }
+    //
+    //        // Decompose the covariance matrix.
+    //        Real det = covar00 * covar11 - covar01 * covar01;
+    //        if (det != (Real)0)
+    //        {
+    //            Real invDet = (Real)1 / det;
+    //            mParameters.first = mean;
+    //            mParameters.second[0] = (covar11 * covar02 - covar01 * covar12) * invDet;
+    //            mParameters.second[1] = (covar00 * covar12 - covar01 * covar02) * invDet;
+    //            mParameters.second[2] = (Real) - 1;
+    //            return true;
+    //        }
+    //    }
+    //
+    //mParameters.first = Vector3<Real>::Zero();
+    //        mParameters.second = Vector3<Real>::Zero();
+    //        return false;
+    //    }
 }

@@ -62,4 +62,9 @@ public class PlayerInfo : NetworkBehaviour
     {
     }
 
+    private void OnApplicationQuit()
+    {
+        playerCount.Dispose();
+    }
+
 }

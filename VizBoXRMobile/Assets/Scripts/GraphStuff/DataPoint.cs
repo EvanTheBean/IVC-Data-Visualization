@@ -13,6 +13,11 @@ public class DataPoint : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, 
     public TextMeshProUGUI displayBox;
     public int currentC;
 
+    private void Start()
+    {
+        Debug.Log("Hi");
+    }
+
     public void OnPointerDown(PointerEventData eventData)
     {
             displayBox.enabled = !displayBox.enabled;
@@ -40,6 +45,6 @@ public class DataPoint : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, 
 
     public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
     {
-        //serializer.SerializeValue(ref variables);
+        serializer.SerializeValue(ref variables);
     }
 }

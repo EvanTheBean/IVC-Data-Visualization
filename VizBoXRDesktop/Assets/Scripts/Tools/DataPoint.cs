@@ -40,6 +40,18 @@ public class DataPoint : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, 
 
     public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
     {
-        //serializer.SerializeValue(ref variables);
+        serializer.SerializeValue(ref variables);
+
+        Vector3 position = Vector3.zero;
+        if (serializer.IsWriter)
+        {
+            position = transform.localPosition;
+        }
+        serializer.SerializeValue(ref position);
+
+        if (serializer.IsReader)
+        {
+            transform.localPosition = position;
+        }
     }
 }
