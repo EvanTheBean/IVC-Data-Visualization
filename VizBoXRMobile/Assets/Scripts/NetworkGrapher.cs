@@ -9,8 +9,6 @@ public class NetworkGrapher : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GetComponent<NetworkObject>().Spawn();
-
         DataPoint[] dataPoints = FindObjectsOfType<DataPoint>();
         foreach (DataPoint dataPoint in dataPoints)
         {

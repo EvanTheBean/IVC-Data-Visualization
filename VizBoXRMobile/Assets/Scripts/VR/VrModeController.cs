@@ -37,6 +37,7 @@ public class VrModeController : MonoBehaviour
 
     UnityEngine.XR.Management.XRLoader vrLoader;
 
+    [SerializeField] Material heatmapMaterial;
     /// <summary>
     /// Gets a value indicating whether the screen has been touched this frame.
     /// </summary>
@@ -153,6 +154,15 @@ public class VrModeController : MonoBehaviour
                 Debug.LogError("Error starting selected loader.");
                 vrLoader.Deinitialize();
             }
+            if (startSuccess)
+            {
+                //DebugCanvas.Instance.Log(Camera.main.name);
+                //DebugCanvas.Instance.Log("Number of cams in scene: " + FindObjectsOfType<Camera>().Length.ToString());
+                //Camera.main.GetComponent<UnityEngine.Rendering.Universal.UniversalAdditionalCameraData>().SetRenderer(1);
+                //Camera.main.gameObject.AddComponent<HeatMapShaderMath>();
+                //Camera.main.gameObject.GetComponent<HeatMapShaderMath>().heatMapMaterial = heatmapMaterial;
+            }
+
         }
     }
 
