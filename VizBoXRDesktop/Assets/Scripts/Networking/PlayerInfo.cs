@@ -26,6 +26,7 @@ public class PlayerInfo : NetworkBehaviour
 
     private void Start()
     {
+        DontDestroyOnLoad(this);
         NetworkManager.OnClientDisconnectCallback += LeaveLobbyServerRpc;
     }
 
@@ -56,6 +57,17 @@ public class PlayerInfo : NetworkBehaviour
         players[id] = playerData;
         OnChangeActivity?.Invoke(id, playerData.Item1, activity);
         Debug.Log(playerData.Item1 + " switched to activity " + activity.ToString());
+    }
+
+    private new void OnDestroy()
+    {
+        playerCount.Dispose();
+        base.OnDestroy();
+    }
+
+    private void OnApplicationQuit()
+    {
+        playerCount.Dispose();
     }
 
 }

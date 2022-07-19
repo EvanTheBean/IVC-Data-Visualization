@@ -32,7 +32,7 @@ public enum ConnectedTypes
 }
 
 [ExecuteInEditMode]
-public class Holder : NetworkBehaviour
+public class Holder : NetworkBehaviour, INetworkSerializable
 {
     public List<string> rowNames = new List<string>();
     public List<rowType> rowTypes = new List<rowType>();
@@ -111,5 +111,23 @@ public class Holder : NetworkBehaviour
         divergingGradientsNames.Clear();
 
         path.Clear();
+    }
+
+    public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+    {
+        serializer.SerializeValue(ref rowNames);
+        serializer.SerializeValue(ref rowTypes);
+        serializer.SerializeValue(ref axisTypes);
+        serializer.SerializeValue(ref axisScales);
+        serializer.SerializeValue(ref axisGradients);
+        serializer.SerializeValue(ref axisMinMax);
+        serializer.SerializeValue(ref connectedTypes);
+        serializer.SerializeValue(ref catagorical);
+        serializer.SerializeValue(ref offsets);
+        serializer.SerializeValue(ref gTypes);
+        serializer.SerializeValue(ref catagoricalGradientsNames);
+        serializer.SerializeValue(ref sequentialGradientsNames);
+        serializer.SerializeValue(ref divergingGradientsNames);
+        serializer.SerializeValue(ref path);
     }
 }

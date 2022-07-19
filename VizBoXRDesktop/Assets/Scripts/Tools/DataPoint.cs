@@ -4,8 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
+using Unity.Netcode;
 
-public class DataPoint : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public class DataPoint : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, INetworkSerializable
 {
 
     [SerializeField] public StringListDictionary variables = new StringListDictionary();
@@ -14,7 +15,7 @@ public class DataPoint : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-            displayBox.enabled = !displayBox.enabled;
+        displayBox.enabled = !displayBox.enabled;
         string display = "";
         foreach(string var in variables.Keys)
         {
@@ -35,5 +36,10 @@ public class DataPoint : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public void OnPointerUp(PointerEventData eventData)
     {
         //displayBox.enabled = false;
+    }
+
+    public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+    {
+        //serializer.SerializeValue(ref variables);
     }
 }

@@ -148,7 +148,7 @@ GameObject:
   - component: {fileID: 5537836398615426097}
   - component: {fileID: 2633256696239092003}
   - component: {fileID: 8618257537163113452}
-  - component: {fileID: 6708685480875652840}
+  - component: {fileID: 2518862950839325453}
   m_Layer: 0
   m_Name: placeholder
   m_TagString: point
@@ -334,7 +334,7 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
---- !u!114 &6708685480875652840
+--- !u!114 &2518862950839325453
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

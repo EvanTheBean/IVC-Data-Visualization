@@ -1962,18 +1962,27 @@ MonoBehaviour:
       SourcePrefabToOverride: {fileID: 0}
       SourceHashToOverride: 0
       OverridingTargetPrefab: {fileID: 0}
-    - Override: 0
+    - Override: 2
       Prefab: {fileID: 2413362435559014647, guid: ec3c18d74fb33d14badd17f16987079e,
         type: 3}
-      SourcePrefabToOverride: {fileID: 0}
-      SourceHashToOverride: 0
-      OverridingTargetPrefab: {fileID: 0}
-    - Override: 0
+      SourcePrefabToOverride: {fileID: 2413362435559014647, guid: ec3c18d74fb33d14badd17f16987079e,
+        type: 3}
+      SourceHashToOverride: 702822471
+      OverridingTargetPrefab: {fileID: 2413362435559014647, guid: 38b9b70bdffd8de439f0f1bb04dc505a,
+        type: 3}
+    - Override: 2
       Prefab: {fileID: 5303000421713815878, guid: 98592487d22a48346b9d1f287dc77508,
         type: 3}
       SourcePrefabToOverride: {fileID: 0}
-      SourceHashToOverride: 0
-      OverridingTargetPrefab: {fileID: 0}
+      SourceHashToOverride: 2181467627
+      OverridingTargetPrefab: {fileID: 5303000421713815878, guid: 98592487d22a48346b9d1f287dc77508,
+        type: 3}
+    - Override: 2
+      Prefab: {fileID: 0}
+      SourcePrefabToOverride: {fileID: 0}
+      SourceHashToOverride: 3885920398
+      OverridingTargetPrefab: {fileID: 3540544813451765698, guid: f0ae82976f089814e964484cd9b1f0ca,
+        type: 3}
     TickRate: 30
     ClientConnectionBufferTimeout: 10
     ConnectionApproval: 0
@@ -1982,7 +1991,7 @@ MonoBehaviour:
     TimeResyncInterval: 30
     EnsureNetworkVariableLengthSafety: 0
     EnableSceneManagement: 1
-    ForceSamePrefabs: 1
+    ForceSamePrefabs: 0
     RecycleNetworkIds: 1
     NetworkIdRecycleDelay: 120
     RpcHashSize: 0
