@@ -146,23 +146,28 @@ public class Loader : EditorWindow
             {
                 if(holder.axisTypes.Contains(axisType.X) && holder.axisTypes.Contains(axisType.Y) && holder.axisTypes.Contains(axisType.Z))
                 {
-                    //PLANE
+                    FitIndexed3D();
+                    holder.GetComponent<LineRenderer>().enabled = false;
+                    holder.plane.GetComponent<MeshRenderer>().enabled = true;
                 }
                 else if(holder.axisTypes.Contains(axisType.X) && holder.axisTypes.Contains(axisType.Y))
                 {
                     //XY line
                     holder.GetComponent<LineRenderer>().enabled = true;
+                    holder.plane.GetComponent<MeshRenderer>().enabled = false;
                     FitIndexed(true, true, false);
                 }
                 else if (holder.axisTypes.Contains(axisType.Z) && holder.axisTypes.Contains(axisType.Y))
                 {
                     holder.GetComponent<LineRenderer>().enabled = true;
+                    holder.plane.GetComponent<MeshRenderer>().enabled = false;
                     FitIndexed(false, true, true);
                     //YZ line
                 }
                 else if (holder.axisTypes.Contains(axisType.Z) && holder.axisTypes.Contains(axisType.X))
                 {
                     holder.GetComponent<LineRenderer>().enabled = true;
+                    holder.plane.GetComponent<MeshRenderer>().enabled = false;
                     FitIndexed(true, false, true);
                     //XZ line
                 }
@@ -170,6 +175,7 @@ public class Loader : EditorWindow
             else
             {
                 holder.GetComponent<LineRenderer>().enabled = false;
+                holder.plane.GetComponent<MeshRenderer>().enabled = false;
             }
 
 
@@ -638,7 +644,7 @@ public class Loader : EditorWindow
                     GetMinMax(j);
 
                     CreateAxisRows(new Vector2((holder.axisMinMax[j].x + holder.offsets[j]) / holder.axisScales[j], (holder.axisMinMax[j].y + holder.offsets[j]) / holder.axisScales[j]), new Vector2(holder.offsets[j], holder.axisMinMax[j].y), axisType.X);
-                    Debug.Log(holder.axisMinMax[j].y);
+                    //Debug.Log(holder.axisMinMax[j].y);
 
                     /*
                     if (replaceF > holder.axisMinMax[j].y)
@@ -665,7 +671,7 @@ public class Loader : EditorWindow
 
                     //CreateAxisRows(holder.axisMinMax[j], new Vector2(holder.offsets[j], holder.axisMinMax[j].y * holder.axisScales[j] + holder.offsets[j]), axisType.Y);
                     CreateAxisRows(new Vector2((holder.axisMinMax[j].x + holder.offsets[j]) / holder.axisScales[j], (holder.axisMinMax[j].y + holder.offsets[j]) / holder.axisScales[j]), new Vector2(holder.offsets[j], holder.axisMinMax[j].y), axisType.Y);
-                    Debug.Log(holder.axisMinMax[j].y);
+                    //Debug.Log(holder.axisMinMax[j].y);
                     /*
                     if (replaceF > holder.axisMinMax[j].y)
                     {
@@ -692,7 +698,7 @@ public class Loader : EditorWindow
 
                     //CreateAxisRows(holder.axisMinMax[j], new Vector2(holder.offsets[j], holder.axisMinMax[j].y * holder.axisScales[j] + holder.offsets[j]), axisType.Z);
                     CreateAxisRows(new Vector2((holder.axisMinMax[j].x + holder.offsets[j]) / holder.axisScales[j], (holder.axisMinMax[j].y + holder.offsets[j]) / holder.axisScales[j]), new Vector2(holder.offsets[j], holder.axisMinMax[j].y), axisType.Z);
-                    Debug.Log(holder.axisMinMax[j].y);
+                    //Debug.Log(holder.axisMinMax[j].y);
                     /*
                     if (replaceF > holder.axisMinMax[j].y)
                     {
@@ -1245,27 +1251,28 @@ public class Loader : EditorWindow
             // Decompose the covariance matrix.
             if (covar00 > 0)
             {
+                float a = covar01 / covar00;
                 if (x && y)
                 {
-                    Vector3 pos = new Vector3(mean.x * 2, mean.y * 2, 0);
+                    Vector3 pos = new Vector3(0, a *(-mean.x) + mean.y, 0);
                     lr.SetPosition(0, pos);
-                    pos = new Vector3(covar01 / covar00, 0, 0);
+                    pos = new Vector3(mean.x * 2, a * (mean.x) + mean.y, 0);
                     lr.SetPosition(1, pos);
                     return true;
                 }
                 if (x && z)
                 {
-                    Vector3 pos = new Vector3(mean.x * 2, 0, mean.y * 2);
+                    Vector3 pos = new Vector3(0, 0, a * (-mean.x) + mean.y);
                     lr.SetPosition(0, pos);
-                    pos = new Vector3(covar01 / covar00, 0, 0);
+                    pos = new Vector3(mean.x * 2, 0, a * (mean.x) + mean.y);
                     lr.SetPosition(1, pos);
                     return true;
                 }
                 if (y && z)
                 {
-                    Vector3 pos = new Vector3(0, mean.x*2, mean.y*2);
+                    Vector3 pos = new Vector3(0, 0, a * (-mean.x) + mean.y);
                     lr.SetPosition(0, pos);
-                    pos = new Vector3(0,covar01 / covar00, 0);
+                    pos = new Vector3(0,mean.x * 2, a * (mean.x) + mean.y);
                     lr.SetPosition(1, pos);
                     return true;
                 }
@@ -1278,48 +1285,69 @@ public class Loader : EditorWindow
         return false;
         }
 
-    //bool FitIndexed3D()
-    //    {
-    //    // Compute the mean of the points.
-    //    Vector3 point1, point2, point3;
-    //    Vector3 mean = Vector3.zero;
-    //    for (int i = 0; i < holder.objects.Count; ++i)
-    //    {
-    //        mean += holder.objects[i].transform.position;
-    //    }
-    //    mean /= holder.objects.Count;
-    //
-    //    if (!float.IsInfinity(mean.x) && std::isfinite(mean[1]))
-    //    {
-    //        // Compute the covariance matrix of the points.
-    //        Real covar00 = (Real)0, covar01 = (Real)0, covar02 = (Real)0;
-    //        Real covar11 = (Real)0, covar12 = (Real)0;
-    //        currentIndex = indices;
-    //        for (size_t i = 0; i < numIndices; ++i)
-    //        {
-    //            Vector3<Real> diff = points[*currentIndex++] - mean;
-    //            covar00 += diff[0] * diff[0];
-    //            covar01 += diff[0] * diff[1];
-    //            covar02 += diff[0] * diff[2];
-    //            covar11 += diff[1] * diff[1];
-    //            covar12 += diff[1] * diff[2];
-    //        }
-    //
-    //        // Decompose the covariance matrix.
-    //        Real det = covar00 * covar11 - covar01 * covar01;
-    //        if (det != (Real)0)
-    //        {
-    //            Real invDet = (Real)1 / det;
-    //            mParameters.first = mean;
-    //            mParameters.second[0] = (covar11 * covar02 - covar01 * covar12) * invDet;
-    //            mParameters.second[1] = (covar00 * covar12 - covar01 * covar02) * invDet;
-    //            mParameters.second[2] = (Real) - 1;
-    //            return true;
-    //        }
-    //    }
-    //
-    //mParameters.first = Vector3<Real>::Zero();
-    //        mParameters.second = Vector3<Real>::Zero();
-    //        return false;
-    //    }
+    bool FitIndexed3D()
+        {
+        // Compute the mean of the points.
+        Vector3 point1, point2, point3;
+        Vector3 mean = Vector3.zero;
+        for (int i = 0; i < holder.objects.Count; ++i)
+        {
+            mean += holder.objects[i].transform.position;
+        }
+        mean /= holder.objects.Count;
+
+        if (!float.IsInfinity(mean.x) && !float.IsInfinity(mean.y))
+        {
+            // Compute the covariance matrix of the points.
+            float covar00 = (float)0, covar01 = (float)0, covar02 = (float)0;
+            float covar11 = (float)0, covar12 = (float)0;
+            int currentIndex = holder.objects.Count;
+            for (int i = 0; i < holder.objects.Count; ++i)
+            {
+                Vector3 diff = holder.objects[i].transform.position - mean;
+                covar00 += diff[0] * diff[0];
+                covar01 += diff[0] * diff[1];
+                covar02 += diff[0] * diff[2];
+                covar11 += diff[1] * diff[1];
+                covar12 += diff[1] * diff[2];
+            }
+
+            // Decompose the covariance matrix.
+            float det = covar00 * covar11 - covar01 * covar01;
+            if (det != 0)
+            {
+                float invDet = (float)1 / det;
+                //point1 = mean;
+                //point2.x = (covar11 * covar02 - covar01 * covar12) * invDet;
+                //point2.y = (covar00 * covar12 - covar01 * covar02) * invDet;
+                //point2.z = 0;
+
+                float a = (covar11 * covar02 - covar01 * covar12) * invDet;
+                float b = (covar00 * covar12 - covar01 * covar02) * invDet;
+
+                point1 = new Vector3(0,0,a*(-mean.x) + b*(-mean.y) + mean.z);
+                point2 = new Vector3(0, ((-mean.z) - a*(-mean.x))/b + mean.y, 0);
+                point3 = new Vector3(((-mean.z) - b*(-mean.y))/a + mean.x, 0, 0);
+
+
+                Vector3 sideA = point1 - point2;
+                Vector3 sideB = point3 - point2;
+                Vector3 planenormal = (Vector3.Cross(sideA, sideB));
+
+                holder.plane.transform.rotation = Quaternion.LookRotation( planenormal);
+                holder.plane.transform.position = mean;
+
+                //Debug.Log(planenormal + " " + holder.plane.transform.rotation.eulerAngles + " " + sideB + " " + mean);
+
+                holder.plane.transform.localScale = mean / 4f;
+
+                return true;
+            }
+        }
+
+        point1 = Vector3.zero;
+        point2 = Vector3.zero;
+        point3 = Vector3.zero;
+        return false;
+        }
 }

@@ -43,8 +43,8 @@ Material:
     - _QueueOffset: 0
     - _Stars: 100
     m_Colors:
-    - _Horizon_Color: {r: 0.1529412, g: 0.48235294, b: 0.45157433, a: 0}
-    - _Sky_Color: {r: 0.34069067, g: 0.61234474, b: 0.8301887, a: 0}
+    - _Horizon_Color: {r: 0.16264686, g: 0.4056604, b: 0.38251626, a: 0}
+    - _Sky_Color: {r: 0.30891773, g: 0.54458386, b: 0.735849, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &740117432853096710
 MonoBehaviour:

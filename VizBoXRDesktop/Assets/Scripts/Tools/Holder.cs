@@ -57,6 +57,8 @@ public class Holder : MonoBehaviour, INetworkSerializable
 
     public List<string> path = new List<string>(1);
 
+    public GameObject plane;
+
     public bool check, hiding,dataRead,dataLoaded, bestFit;
 
     // Start is called before the first frame update
