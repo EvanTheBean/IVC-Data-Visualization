@@ -58,6 +58,7 @@ public class Loader : EditorWindow
 
     private void OnGUI()
     {
+        EditorUtility.SetDirty(holder);
         if (dataRead)
         {
             GUI.changed = false;
@@ -233,6 +234,8 @@ public class Loader : EditorWindow
         }
 
         //neededDifference = EditorGUILayout.FloatField(neededDifference);
+
+        UnityEditor.PrefabUtility.RecordPrefabInstancePropertyModifications(holder);
     }
 
     void CreateAll()
@@ -505,6 +508,7 @@ public class Loader : EditorWindow
             }
 
             EditorUtility.SetDirty(tempDP);
+            //UnityEditor.PrefabUtility.RecordPrefabInstancePropertyModifications(tempDP);
         }
 
         //FindObjectOfType<HeatMapShaderMath>().updatePointList();
