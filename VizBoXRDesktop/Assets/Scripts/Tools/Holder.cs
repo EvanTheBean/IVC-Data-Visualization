@@ -57,7 +57,7 @@ public class Holder : NetworkBehaviour
 
     public List<string> path = new List<string>(1);
 
-    public bool check, hiding,dataRead,dataLoaded;
+    public bool check, hiding,dataRead,dataLoaded, bestFit;
 
     // Start is called before the first frame update
     void Start()

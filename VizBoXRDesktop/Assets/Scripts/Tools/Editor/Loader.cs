@@ -140,6 +140,39 @@ public class Loader : EditorWindow
                 }
             }
             */
+
+            holder.bestFit = EditorGUILayout.Toggle("add line of best fit: ", holder.bestFit);
+            if(holder.bestFit)
+            {
+                if(holder.axisTypes.Contains(axisType.X) && holder.axisTypes.Contains(axisType.Y) && holder.axisTypes.Contains(axisType.Z))
+                {
+                    //PLANE
+                }
+                else if(holder.axisTypes.Contains(axisType.X) && holder.axisTypes.Contains(axisType.Y))
+                {
+                    //XY line
+                    holder.GetComponent<LineRenderer>().enabled = true;
+                    FitIndexed(true, true, false);
+                }
+                else if (holder.axisTypes.Contains(axisType.Z) && holder.axisTypes.Contains(axisType.Y))
+                {
+                    holder.GetComponent<LineRenderer>().enabled = true;
+                    FitIndexed(false, true, true);
+                    //YZ line
+                }
+                else if (holder.axisTypes.Contains(axisType.Z) && holder.axisTypes.Contains(axisType.X))
+                {
+                    holder.GetComponent<LineRenderer>().enabled = true;
+                    FitIndexed(true, false, true);
+                    //XZ line
+                }
+            }
+            else
+            {
+                holder.GetComponent<LineRenderer>().enabled = false;
+            }
+
+
             if (holder.axisTypes.Contains(axisType.Connected))
             {
                 foreach (string path in holder.path)
@@ -1154,4 +1187,94 @@ public class Loader : EditorWindow
             }
         }
     }
+    // Basic fitting algorithm. See ApprQuery.h for the various Fit(...)
+    // functions that you can call.
+    bool FitIndexed(bool x, bool y, bool z)
+        {
+        LineRenderer lr = holder.GetComponent<LineRenderer>();
+        lr.positionCount = 2;
+        lr.SetPosition(0, Vector3.zero);
+        lr.SetPosition(1, Vector3.zero);
+        // Compute the mean of the points.
+        Vector2 mean = Vector2.zero;
+        
+        for (int i = 0; i < holder.objects.Count; i++)
+        {
+            if(x && y)
+            {
+                mean.x += holder.objects[i].transform.position.x;
+                mean.y += holder.objects[i].transform.position.y;
+            }
+            if (x && z)
+            {
+                mean.x += holder.objects[i].transform.position.x;
+                mean.y += holder.objects[i].transform.position.z;
+            }
+            if (y && z)
+            {
+                mean.x += holder.objects[i].transform.position.y;
+                mean.y += holder.objects[i].transform.position.z;
+            }
+        }
+        mean /= holder.objects.Count;
+
+        if (!float.IsInfinity(mean.x) && !float.IsInfinity(mean.y))
+        {
+            // Compute the covariance matrix of the points.
+            float covar00 = (float)0, covar01 = (float)0;
+            int currentIndex = holder.objects.Count;
+            for (int i = 0; i < holder.objects.Count; ++i)
+            {
+                Vector2 diff = Vector2.zero;
+                if (x && y)
+                {
+                    diff = new Vector2(holder.objects[i].transform.position.x, holder.objects[i].transform.position.y) - mean;
+                }
+                if (x && z)
+                {
+                    diff = new Vector2(holder.objects[i].transform.position.x, holder.objects[i].transform.position.z) - mean;
+                }
+                if (y && z)
+                {
+                    diff = new Vector2(holder.objects[i].transform.position.y, holder.objects[i].transform.position.z) - mean;
+                }
+                covar00 += diff[0] * diff[0];
+                covar01 += diff[0] * diff[1];
+            }
+
+            // Decompose the covariance matrix.
+            if (covar00 > 0)
+            {
+                if (x && y)
+                {
+                    Vector3 pos = new Vector3(mean.x * 2, mean.y * 2, 0);
+                    lr.SetPosition(0, pos);
+                    pos = new Vector3(covar01 / covar00, 0, 0);
+                    lr.SetPosition(1, pos);
+                    return true;
+                }
+                if (x && z)
+                {
+                    Vector3 pos = new Vector3(mean.x * 2, 0, mean.y * 2);
+                    lr.SetPosition(0, pos);
+                    pos = new Vector3(covar01 / covar00, 0, 0);
+                    lr.SetPosition(1, pos);
+                    return true;
+                }
+                if (y && z)
+                {
+                    Vector3 pos = new Vector3(0, mean.x*2, mean.y*2);
+                    lr.SetPosition(0, pos);
+                    pos = new Vector3(0,covar01 / covar00, 0);
+                    lr.SetPosition(1, pos);
+                    return true;
+                }
+            }
+        }
+
+
+        lr.SetPosition(0, Vector2.zero);
+        lr.SetPosition(1, Vector2.zero);
+        return false;
+        }
 }
