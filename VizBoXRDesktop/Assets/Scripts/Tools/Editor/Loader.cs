@@ -26,6 +26,9 @@ public class Loader : EditorWindow
     MultiPointControll mpc;
     public List<GameObject> axisText = new List<GameObject>();
 
+    int holderNum;
+    Holder[] allHolders;
+
     GradientUsageAttribute gua = new GradientUsageAttribute(false);
 
     [MenuItem("Tools/Loader")]
@@ -59,7 +62,7 @@ public class Loader : EditorWindow
     private void OnGUI()
     {
         EditorUtility.SetDirty(holder);
-        if (dataRead)
+        if (holder.dataRead)
         {
             GUI.changed = false;
             for (int i = 0; i < holder.rowNames.Count; i++)
@@ -158,36 +161,6 @@ public class Loader : EditorWindow
                 }
             }
 
-            GUILayout.Space(50);
-
-            if (GUILayout.Button("Reset Holder"))
-            {
-                holder.Reset();
-
-                DataPoint[] currentData = GameObject.FindObjectsOfType<DataPoint>();
-
-                foreach (DataPoint point in currentData)
-                {
-                    holder.objects.Add(point.gameObject);
-                }
-
-                //Debug.Log(holder.objects.Count);
-
-                foreach (GameObject @object in holder.objects)
-                {
-                    DestroyImmediate(@object);
-                }
-
-                holder.objects.RemoveAll((o) => o == null);
-
-                holder.path.Add(null);
-
-                dataLoaded = false;
-                dataRead = false;
-
-                placeHolder = Resources.Load("Prefabs/placeholder") as GameObject;
-            }
-
             /*
             if (GUILayout.Button("Load File"))
             {
@@ -218,13 +191,98 @@ public class Loader : EditorWindow
                     {
                         // Debug.Log("Loading Rows");
                         LoadRows();
-                        dataRead = true;
+                        holder.dataRead = true;
                         //Debug.Log("Creating All");
                         CreateAll();
-                        dataLoaded = true;
+                        holder.dataLoaded = true;
                     }
                 }
             }
+        }
+
+
+        GUILayout.Space(50);
+
+        allHolders = GameObject.FindObjectsOfType<Holder>();
+        EditorGUILayout.BeginHorizontal();
+        if (GUILayout.Button("<"))
+        {
+            UnityEditor.PrefabUtility.RecordPrefabInstancePropertyModifications(holder);
+            holderNum--;
+            if (holderNum < 0)
+            {
+                holderNum = allHolders.Length - 1;
+            }
+            else if (holderNum > allHolders.Length - 1)
+            {
+                holderNum = 0;
+            }
+            holder = allHolders[holderNum];
+            Selection.activeGameObject = holder.gameObject;
+        }
+        GUILayout.Label(holder.name);
+        if (GUILayout.Button(">"))
+        {
+            UnityEditor.PrefabUtility.RecordPrefabInstancePropertyModifications(holder);
+            holderNum++;
+            if (holderNum < 0)
+            {
+                holderNum = allHolders.Length - 1;
+            }
+            else if (holderNum > allHolders.Length - 1)
+            {
+                holderNum = 0;
+            }
+            holder = allHolders[holderNum];
+            Selection.activeGameObject = holder.gameObject;
+        }
+
+        GUILayout.Space(10);
+
+        if (allHolders.Length > 1)
+        {
+            if (GUILayout.Button("-"))
+            {
+                DestroyImmediate(holder.gameObject);
+                holderNum--;
+                if (holderNum < 0)
+                {
+                    holderNum = 0;
+                }
+                holder = allHolders[holderNum];
+                Selection.activeGameObject = holder.gameObject;
+            }
+        }
+        if (GUILayout.Button("+"))
+        {
+            UnityEditor.PrefabUtility.RecordPrefabInstancePropertyModifications(holder);
+            GameObject temp = PrefabUtility.InstantiatePrefab(Resources.Load("Prefabs/HOLDER")) as GameObject;
+            temp.name = "HOLDER " + (allHolders.Length + 1);
+            holder = temp.GetComponent<Holder>();
+            allHolders = GameObject.FindObjectsOfType<Holder>();
+            Selection.activeGameObject = holder.gameObject;
+        }
+
+        GUILayout.EndHorizontal();
+
+
+        if (GUILayout.Button("Reset Holder"))
+        {
+            foreach (GameObject @object in holder.objects)
+            {
+                DestroyImmediate(@object);
+            }
+
+            holder.objects.RemoveAll((o) => o == null);
+
+            holder.path.Add(null);
+
+            holder.dataLoaded = false;
+            holder.dataRead = false;
+
+            holder.Reset();
+
+            placeHolder = Resources.Load("Prefabs/placeholder") as GameObject;
         }
 
         if (GUI.changed)
@@ -236,6 +294,10 @@ public class Loader : EditorWindow
         //neededDifference = EditorGUILayout.FloatField(neededDifference);
 
         UnityEditor.PrefabUtility.RecordPrefabInstancePropertyModifications(holder);
+        if(Selection.activeGameObject.GetComponent<Holder>() != null)
+        {
+            holder = Selection.activeGameObject.GetComponent<Holder>();
+        }
     }
 
     void CreateAll()
@@ -351,13 +413,13 @@ public class Loader : EditorWindow
 
     void CreateObjects()
     {
-        holder.objects.Clear();
-        DataPoint[] currentData = GameObject.FindObjectsOfType<DataPoint>();
+        //holder.objects.Clear();
+        //DataPoint[] currentData = GameObject.FindObjectsOfType<DataPoint>();
 
-        foreach (DataPoint point in currentData)
-        {
-            holder.objects.Add(point.gameObject);
-        }
+        //foreach (DataPoint point in currentData)
+        //{
+        //    holder.objects.Add(point.gameObject);
+        //}
 
         //Debug.Log(holder.objects.Count);
 
