@@ -58,6 +58,7 @@ public class Loader : EditorWindow
 
     private void OnGUI()
     {
+        EditorUtility.SetDirty(holder);
         if (dataRead)
         {
             GUI.changed = false;
@@ -233,6 +234,8 @@ public class Loader : EditorWindow
         }
 
         //neededDifference = EditorGUILayout.FloatField(neededDifference);
+
+        UnityEditor.PrefabUtility.RecordPrefabInstancePropertyModifications(holder);
     }
 
     void CreateAll()
@@ -371,7 +374,7 @@ public class Loader : EditorWindow
 
         for (int i = 1; i < lines.Length; i++)
         {
-            GameObject temp = Instantiate(placeHolder);
+            GameObject temp = (GameObject)PrefabUtility.InstantiatePrefab(placeHolder as GameObject);
             temp.name = i.ToString();
             holder.objects.Add(temp);
             temp.transform.parent = holder.gameObject.transform;
@@ -505,6 +508,7 @@ public class Loader : EditorWindow
             }
 
             EditorUtility.SetDirty(tempDP);
+            //UnityEditor.PrefabUtility.RecordPrefabInstancePropertyModifications(tempDP);
         }
 
         //FindObjectOfType<HeatMapShaderMath>().updatePointList();
