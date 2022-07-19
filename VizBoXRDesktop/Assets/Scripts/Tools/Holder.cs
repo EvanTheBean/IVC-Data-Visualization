@@ -57,7 +57,7 @@ public class Holder : NetworkBehaviour, INetworkSerializable
 
     public List<string> path = new List<string>(1);
 
-    public bool check, hiding;
+    public bool check, hiding,dataRead,dataLoaded;
 
     // Start is called before the first frame update
     void Start()
