@@ -80,8 +80,10 @@ public class Loader : EditorWindow
                 if (holder.axisTypes[i] == axisType.X || holder.axisTypes[i] == axisType.Y || holder.axisTypes[i] == axisType.Z)
                 {
                     holder.axisScales[i] = EditorGUILayout.Slider(holder.axisScales[i], 0.1f, 5f);
-                    holder.offsets[i] = EditorGUILayout.FloatField(holder.offsets[i]);
-                    if(GUILayout.Button("Mean"))
+                    EditorGUIUtility.labelWidth = 40;
+                    holder.offsets[i] = EditorGUILayout.FloatField("Offset: ",holder.offsets[i]);
+                    EditorGUIUtility.labelWidth = 0;
+                    if (GUILayout.Button("Mean"))
                     {
                         GetMinMax(i);
                         holder.offsets[i] = -Mathf.Lerp(holder.axisMinMax[i].x, holder.axisMinMax[i].y, 0.5f);
@@ -223,20 +225,20 @@ public class Loader : EditorWindow
                 lr.positionCount = 3;
                 if(holder.axisTypes.Contains(axisType.Y))
                 {
-                    lr.SetPosition(0, new Vector3(holder.Xn * holder.axisScales[pos], holder.axisMinMax[holder.axisTypes.IndexOf(axisType.Y)].y, 0));
+                    lr.SetPosition(0, new Vector3(holder.Xn * holder.axisScales[pos] + holder.offsets[pos], holder.axisMinMax[holder.axisTypes.IndexOf(axisType.Y)].y, 0));
                 }
                 else
                 {
                     lr.SetPosition(0, new Vector3(holder.Xn * holder.axisScales[pos], 0, 0));
                 }
-                lr.SetPosition(1, new Vector3(holder.Xn * holder.axisScales[pos], 0, 0));
+                lr.SetPosition(1, new Vector3(holder.Xn * holder.axisScales[pos] + holder.offsets[pos], 0, 0));
                 if (holder.axisTypes.Contains(axisType.Z))
                 {
-                    lr.SetPosition(2, new Vector3(holder.Xn * holder.axisScales[pos], 0,holder.axisMinMax[holder.axisTypes.IndexOf(axisType.Z)].y));
+                    lr.SetPosition(2, new Vector3(holder.Xn * holder.axisScales[pos] + holder.offsets[pos], 0,holder.axisMinMax[holder.axisTypes.IndexOf(axisType.Z)].y));
                 }
                 else
                 {
-                    lr.SetPosition(2, new Vector3(holder.Xn * holder.axisScales[pos], 0, 0));
+                    lr.SetPosition(2, new Vector3(holder.Xn * holder.axisScales[pos] + holder.offsets[pos], 0, 0));
                 }
                 lr.enabled = true;
             }
@@ -254,20 +256,20 @@ public class Loader : EditorWindow
                 lr.positionCount = 3;
                 if (holder.axisTypes.Contains(axisType.X))
                 {
-                    lr.SetPosition(0, new Vector3(holder.axisMinMax[holder.axisTypes.IndexOf(axisType.X)].y,holder.Yn * holder.axisScales[pos], 0));
+                    lr.SetPosition(0, new Vector3(holder.axisMinMax[holder.axisTypes.IndexOf(axisType.X)].y,holder.Yn * holder.axisScales[pos] + holder.offsets[pos], 0));
                 }
                 else
                 {
-                    lr.SetPosition(0, new Vector3(0,holder.Yn * holder.axisScales[pos], 0));
+                    lr.SetPosition(0, new Vector3(0,holder.Yn * holder.axisScales[pos] + holder.offsets[pos], 0));
                 }
-                lr.SetPosition(1, new Vector3(0,holder.Yn * holder.axisScales[pos], 0));
+                lr.SetPosition(1, new Vector3(0,holder.Yn * holder.axisScales[pos] + holder.offsets[pos], 0));
                 if (holder.axisTypes.Contains(axisType.Z))
                 {
-                    lr.SetPosition(2, new Vector3(0,holder.Yn * holder.axisScales[pos], holder.axisMinMax[holder.axisTypes.IndexOf(axisType.Z)].y));
+                    lr.SetPosition(2, new Vector3(0,holder.Yn * holder.axisScales[pos] + holder.offsets[pos], holder.axisMinMax[holder.axisTypes.IndexOf(axisType.Z)].y));
                 }
                 else
                 {
-                    lr.SetPosition(2, new Vector3(0,holder.Yn * holder.axisScales[pos],0));
+                    lr.SetPosition(2, new Vector3(0,holder.Yn * holder.axisScales[pos] + holder.offsets[pos], 0));
                 }
                 lr.enabled = true;
             }
@@ -285,20 +287,20 @@ public class Loader : EditorWindow
                 lr.positionCount = 3;
                 if (holder.axisTypes.Contains(axisType.X))
                 {
-                    lr.SetPosition(0, new Vector3(holder.axisMinMax[holder.axisTypes.IndexOf(axisType.X)].y,0, holder.Zn * holder.axisScales[pos]));
+                    lr.SetPosition(0, new Vector3(holder.axisMinMax[holder.axisTypes.IndexOf(axisType.X)].y,0, holder.Zn * holder.axisScales[pos] + holder.offsets[pos]));
                 }
                 else
                 {
-                    lr.SetPosition(0, new Vector3(0, 0,holder.Zn * holder.axisScales[pos]));
+                    lr.SetPosition(0, new Vector3(0, 0,holder.Zn * holder.axisScales[pos] + holder.offsets[pos]));
                 }
-                lr.SetPosition(1, new Vector3(0,0,holder.Zn * holder.axisScales[pos]));
+                lr.SetPosition(1, new Vector3(0,0,holder.Zn * holder.axisScales[pos] + holder.offsets[pos]));
                 if (holder.axisTypes.Contains(axisType.Y))
                 {
-                    lr.SetPosition(2, new Vector3(0, holder.axisMinMax[holder.axisTypes.IndexOf(axisType.Y)].y, holder.Zn * holder.axisScales[pos]));
+                    lr.SetPosition(2, new Vector3(0, holder.axisMinMax[holder.axisTypes.IndexOf(axisType.Y)].y, holder.Zn * holder.axisScales[pos] + holder.offsets[pos]));
                 }
                 else
                 {
-                    lr.SetPosition(2, new Vector3(0,0, holder.Zn * holder.axisScales[pos]));
+                    lr.SetPosition(2, new Vector3(0,0, holder.Zn * holder.axisScales[pos] + holder.offsets[pos]));
                 }
                 lr.enabled = true;
             }
