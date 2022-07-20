@@ -68,9 +68,10 @@ public class Holder : MonoBehaviour, INetworkSerializable
 
     public List<string> path = new List<string>(1);
 
-    public GameObject plane, lineGraph, xyzN;
+    public GameObject plane, lineGraph, XN, YN, ZN;
 
-    public bool check, hiding,dataRead,dataLoaded, bestFit;
+    public bool check, hiding,dataRead,dataLoaded, bestFit,xN, yN, zN, xLines, yLines, zLines;
+    public float Xn, Yn, Zn;
 
     public ChartType chartType = 0;
 

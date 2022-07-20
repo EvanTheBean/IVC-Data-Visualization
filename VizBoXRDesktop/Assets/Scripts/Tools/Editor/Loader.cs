@@ -86,6 +86,32 @@ public class Loader : EditorWindow
                         GetMinMax(i);
                         holder.offsets[i] = -Mathf.Lerp(holder.axisMinMax[i].x, holder.axisMinMax[i].y, 0.5f);
                     }
+                    if(holder.chartType == ChartType.Line)
+                    {
+                        EditorGUIUtility.labelWidth = 40;
+                        if (holder.axisTypes[i] == axisType.X)
+                        {
+                            holder.xLines = EditorGUILayout.Toggle("Lines: ", holder.xLines);
+                            if (holder.xLines)
+                            {
+                                holder.zLines = false;
+                                holder.yLines = false;
+                            }
+                        }
+                        if (holder.axisTypes[i] == axisType.Y)
+                        {
+                            holder.yLines = EditorGUILayout.Toggle("Lines: ", holder.yLines);
+                            if(holder.yLines)
+                            {
+                                holder.zLines = false;
+                            }
+                        }
+                        if (holder.axisTypes[i] == axisType.Z)
+                        {
+                            holder.zLines = EditorGUILayout.Toggle("Lines: ", holder.zLines);
+                        }
+                        EditorGUIUtility.labelWidth = 0;
+                    }
                 }
                 else if (holder.axisTypes[i] == axisType.Size)
                 {
@@ -146,7 +172,8 @@ public class Loader : EditorWindow
                 }
             }
             */
-
+            EditorGUILayout.BeginHorizontal();
+            EditorGUIUtility.labelWidth = 110;
             holder.bestFit = EditorGUILayout.Toggle("add line of best fit: ", holder.bestFit);
             if(holder.bestFit)
             {
@@ -183,7 +210,105 @@ public class Loader : EditorWindow
                 holder.GetComponent<LineRenderer>().enabled = false;
                 holder.plane.GetComponent<MeshRenderer>().enabled = false;
             }
-
+            EditorGUILayout.Space(15);
+            EditorGUIUtility.labelWidth = 40;
+            EditorGUILayout.LabelField("Add line at = n : ");
+            EditorGUIUtility.labelWidth = 15;
+            holder.xN = EditorGUILayout.Toggle("x: ", holder.xN);
+            if(holder.xN)
+            {
+                holder.Xn = EditorGUILayout.FloatField(holder.Xn);
+                LineRenderer lr = holder.XN.GetComponent<LineRenderer>();
+                int pos = holder.axisTypes.IndexOf(axisType.X);
+                lr.positionCount = 3;
+                if(holder.axisTypes.Contains(axisType.Y))
+                {
+                    lr.SetPosition(0, new Vector3(holder.Xn * holder.axisScales[pos], holder.axisMinMax[holder.axisTypes.IndexOf(axisType.Y)].y, 0));
+                }
+                else
+                {
+                    lr.SetPosition(0, new Vector3(holder.Xn * holder.axisScales[pos], 0, 0));
+                }
+                lr.SetPosition(1, new Vector3(holder.Xn * holder.axisScales[pos], 0, 0));
+                if (holder.axisTypes.Contains(axisType.Z))
+                {
+                    lr.SetPosition(2, new Vector3(holder.Xn * holder.axisScales[pos], 0,holder.axisMinMax[holder.axisTypes.IndexOf(axisType.Z)].y));
+                }
+                else
+                {
+                    lr.SetPosition(2, new Vector3(holder.Xn * holder.axisScales[pos], 0, 0));
+                }
+                lr.enabled = true;
+            }
+            else
+            {
+                LineRenderer lr = holder.XN.GetComponent<LineRenderer>();
+                lr.enabled = false;
+            }
+            holder.yN = EditorGUILayout.Toggle("y: ", holder.yN);
+            if (holder.yN)
+            {
+                holder.Yn = EditorGUILayout.FloatField(holder.Yn);
+                LineRenderer lr = holder.YN.GetComponent<LineRenderer>();
+                int pos = holder.axisTypes.IndexOf(axisType.Y);
+                lr.positionCount = 3;
+                if (holder.axisTypes.Contains(axisType.X))
+                {
+                    lr.SetPosition(0, new Vector3(holder.axisMinMax[holder.axisTypes.IndexOf(axisType.X)].y,holder.Yn * holder.axisScales[pos], 0));
+                }
+                else
+                {
+                    lr.SetPosition(0, new Vector3(0,holder.Yn * holder.axisScales[pos], 0));
+                }
+                lr.SetPosition(1, new Vector3(0,holder.Yn * holder.axisScales[pos], 0));
+                if (holder.axisTypes.Contains(axisType.Z))
+                {
+                    lr.SetPosition(2, new Vector3(0,holder.Yn * holder.axisScales[pos], holder.axisMinMax[holder.axisTypes.IndexOf(axisType.Z)].y));
+                }
+                else
+                {
+                    lr.SetPosition(2, new Vector3(0,holder.Yn * holder.axisScales[pos],0));
+                }
+                lr.enabled = true;
+            }
+            else
+            {
+                LineRenderer lr = holder.YN.GetComponent<LineRenderer>();
+                lr.enabled = false;
+            }
+            holder.zN = EditorGUILayout.Toggle("z: ", holder.zN);
+            if (holder.zN)
+            {
+                LineRenderer lr = holder.ZN.GetComponent<LineRenderer>();
+                holder.Zn = EditorGUILayout.FloatField(holder.Zn);
+                int pos = holder.axisTypes.IndexOf(axisType.Z);
+                lr.positionCount = 3;
+                if (holder.axisTypes.Contains(axisType.X))
+                {
+                    lr.SetPosition(0, new Vector3(holder.axisMinMax[holder.axisTypes.IndexOf(axisType.X)].y,0, holder.Zn * holder.axisScales[pos]));
+                }
+                else
+                {
+                    lr.SetPosition(0, new Vector3(0, 0,holder.Zn * holder.axisScales[pos]));
+                }
+                lr.SetPosition(1, new Vector3(0,0,holder.Zn * holder.axisScales[pos]));
+                if (holder.axisTypes.Contains(axisType.Y))
+                {
+                    lr.SetPosition(2, new Vector3(0, holder.axisMinMax[holder.axisTypes.IndexOf(axisType.Y)].y, holder.Zn * holder.axisScales[pos]));
+                }
+                else
+                {
+                    lr.SetPosition(2, new Vector3(0,0, holder.Zn * holder.axisScales[pos]));
+                }
+                lr.enabled = true;
+            }
+            else
+            {
+                LineRenderer lr = holder.ZN.GetComponent<LineRenderer>();
+                lr.enabled = false;
+            }
+            GUILayout.FlexibleSpace();
+            EditorGUILayout.EndHorizontal();
 
             if (holder.axisTypes.Contains(axisType.Connected))
             {
@@ -290,6 +415,7 @@ public class Loader : EditorWindow
             {
                 DestroyImmediate(holder.gameObject);
                 holderNum--;
+                allHolders = GameObject.FindObjectsOfType<Holder>();
                 if (holderNum < 0)
                 {
                     holderNum = 0;
@@ -339,10 +465,12 @@ public class Loader : EditorWindow
         //neededDifference = EditorGUILayout.FloatField(neededDifference);
 
         UnityEditor.PrefabUtility.RecordPrefabInstancePropertyModifications(holder);
+        /*
         if(Selection.activeGameObject.GetComponent<Holder>() != null)
         {
             holder = Selection.activeGameObject.GetComponent<Holder>();
         }
+        */
     }
 
     void CreateAll()
@@ -844,13 +972,28 @@ public class Loader : EditorWindow
             if (!holder.axisTypes.Contains(axisType.Lines) && holder.chartType == ChartType.Line)
             {
                 List<GameObject> connected = new List<GameObject>(holder.objects);
-                connected = connected.OrderBy(x => x.transform.position.magnitude).ToList();
+                if(!holder.xLines && !holder.yLines && !holder.zLines)
+                {
+                    connected = connected.OrderBy(x => x.transform.position.magnitude).ToList();
+                }
+                else if(holder.yLines)
+                {
+                    connected = connected.OrderBy(x => x.transform.position.y).ToList();
+                }
+                else if (holder.xLines)
+                {
+                    connected = connected.OrderBy(x => x.transform.position.x).ToList();
+                }
+                else if (holder.zLines)
+                {
+                    connected = connected.OrderBy(x => x.transform.position.z).ToList();
+                }
                 LineRenderer lr = holder.lineGraph.GetComponent<LineRenderer>();
                 lr.positionCount = connected.Count;
                 for (int j = 0; j < lr.positionCount; j++)
                 {
                     lr.SetPosition(j, connected[j].transform.position);
-                    Debug.Log(connected[j].transform.position.magnitude + " " + connected[j].name);
+                    //Debug.Log(connected[j].transform.position.magnitude + " " + connected[j].name);
                 }
             }
         }
@@ -1367,17 +1510,29 @@ public class Loader : EditorWindow
                 point2 = new Vector3(0, ((-mean.z) - a*(-mean.x))/b + mean.y, 0);
                 point3 = new Vector3(((-mean.z) - b*(-mean.y))/a + mean.x, 0, 0);
 
+                /*
+                Debug.Log(point1 + " " + point2 + " " + point3);
+                Debug.DrawLine(point1, point2,Color.white, 3);
+                Debug.DrawLine(point1, point3, Color.white, 3);
+                Debug.DrawLine(point3, point2, Color.white, 3);
+                */
+
+                Plane temp = new Plane();
+                temp.Set3Points(point1, point2, point3);
 
                 Vector3 sideA = point1 - point2;
                 Vector3 sideB = point3 - point2;
                 Vector3 planenormal = (Vector3.Cross(sideA, sideB));
 
-                holder.plane.transform.rotation = Quaternion.LookRotation( planenormal);
+                holder.plane.transform.up = planenormal;
+                //holder.plane.transform.rotation = Quaternion.LookRotation(temp.normal);
                 holder.plane.transform.position = mean;
+                //holder.plane.transform.position = point2;
 
                 //Debug.Log(planenormal + " " + holder.plane.transform.rotation.eulerAngles + " " + sideB + " " + mean);
 
                 holder.plane.transform.localScale = mean / 4f;
+                //holder.plane.transform.localScale = Vector3.one * 5;
 
                 return true;
             }
