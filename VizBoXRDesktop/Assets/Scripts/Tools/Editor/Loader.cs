@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using System.IO;
 using System;
+using System.Linq;
 using UnityEditorInternal;
 using TMPro;
 using UnityEngine.UI;
@@ -65,12 +66,17 @@ public class Loader : EditorWindow
         if (holder.dataRead)
         {
             GUI.changed = false;
+
+            holder.chartType = (ChartType)EditorGUILayout.EnumPopup("Chart Type: ", holder.chartType);
+            GUILayout.Space(10);
+
             for (int i = 0; i < holder.rowNames.Count; i++)
             {
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField(holder.rowNames[i], new GUILayoutOption[] { GUILayout.Width(100) });
                 holder.rowTypes[i] = (rowType)EditorGUILayout.EnumPopup(holder.rowTypes[i]);
-                holder.axisTypes[i] = (axisType)EditorGUILayout.EnumPopup(holder.axisTypes[i]);
+                GUIContent label = new GUIContent("");
+                holder.axisTypes[i] = (axisType)EditorGUILayout.EnumPopup(label, holder.axisTypes[i], ShowAxisType, true);
                 if (holder.axisTypes[i] == axisType.X || holder.axisTypes[i] == axisType.Y || holder.axisTypes[i] == axisType.Z)
                 {
                     holder.axisScales[i] = EditorGUILayout.Slider(holder.axisScales[i], 0.1f, 5f);
@@ -620,9 +626,9 @@ public class Loader : EditorWindow
         string fileData = System.IO.File.ReadAllText(holder.path[0]);
         string[] lines = fileData.Split("\n"[0]);
 
-        for (int i = 1; i < lines.Length; i++)
+        for (int i = 0; i < holder.objects.Count; i++)
         {
-            GameObject temp = holder.objects[i - 1];
+            GameObject temp = holder.objects[i];
             //temp.name = i.ToString();
             //holder.objects.Add(temp);
             //temp.AddComponent<MeshRenderer>();
@@ -824,6 +830,38 @@ public class Loader : EditorWindow
                     mpc.ControlLines(false);
                 }
             }
+            if (holder.axisTypes[i] == axisType.Lines)
+            {
+                List<GameObject> connected = new List<GameObject>(holder.objects);
+                connected = connected.OrderBy(x => x.GetComponent<DataPoint>().variables[holder.rowNames[i].Replace(" ", "")][x.GetComponent<DataPoint>().currentC]).ToList();
+                LineRenderer lr = holder.lineGraph.GetComponent<LineRenderer>();
+                lr.positionCount = connected.Count;
+                for (int j = 0; j < lr.positionCount; j ++)
+                {
+                    lr.SetPosition(j, connected[j].transform.position);
+                }
+            }
+            if (!holder.axisTypes.Contains(axisType.Lines) && holder.chartType == ChartType.Line)
+            {
+                List<GameObject> connected = new List<GameObject>(holder.objects);
+                connected = connected.OrderBy(x => x.transform.position.magnitude).ToList();
+                LineRenderer lr = holder.lineGraph.GetComponent<LineRenderer>();
+                lr.positionCount = connected.Count;
+                for (int j = 0; j < lr.positionCount; j++)
+                {
+                    lr.SetPosition(j, connected[j].transform.position);
+                    Debug.Log(connected[j].transform.position.magnitude + " " + connected[j].name);
+                }
+            }
+        }
+
+        if(holder.chartType == ChartType.Line)
+        {
+            holder.lineGraph.GetComponent<LineRenderer>().enabled = true;
+        }
+        else
+        {
+            holder.lineGraph.GetComponent<LineRenderer>().enabled = false;
         }
     }
 
@@ -1349,5 +1387,49 @@ public class Loader : EditorWindow
         point2 = Vector3.zero;
         point3 = Vector3.zero;
         return false;
+     }
+
+    bool ShowAxisType(Enum value)
+     {
+        if(holder.chartType == ChartType.Scatter)
+        {
+            switch(value)
+            {
+                case axisType.Lines:
+                case axisType.Width:
+                case axisType.Height:
+                case axisType.Length:
+                case axisType.ShowOnClick:
+                    return false;
+                default:
+                    return true;
+            }
         }
+        if (holder.chartType == ChartType.Line)
+{
+    switch (value)
+    {
+        case axisType.Width:
+        case axisType.Height:
+        case axisType.Length:
+        case axisType.ShowOnClick:
+            return false;
+        default:
+            return true;
+    }
+}
+if (holder.chartType == ChartType.Bar)
+{
+    switch (value)
+    {
+        case axisType.Lines:
+        case axisType.ShowOnClick:
+            return false;
+        default:
+            return true;
+    }
+}
+
+return true;
+    }
 }

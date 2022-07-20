@@ -20,6 +20,10 @@ public enum axisType
     Connected,
     Color,
     Size,
+    Lines,
+    Width,
+    Height,
+    Length,
     ShowOnClick
 }
 
@@ -29,6 +33,13 @@ public enum ConnectedTypes
     Visible,
     TimeLines,
     VisibleLines
+}
+
+public enum ChartType
+{
+    Scatter,
+    Line,
+    Bar
 }
 
 [ExecuteInEditMode]
@@ -57,9 +68,11 @@ public class Holder : MonoBehaviour, INetworkSerializable
 
     public List<string> path = new List<string>(1);
 
-    public GameObject plane;
+    public GameObject plane, lineGraph, xyzN;
 
     public bool check, hiding,dataRead,dataLoaded, bestFit;
+
+    public ChartType chartType = 0;
 
     // Start is called before the first frame update
     void Start()
