@@ -75,6 +75,7 @@ public class Loader : EditorWindow
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField(holder.rowNames[i], new GUILayoutOption[] { GUILayout.Width(100) });
                 holder.rowTypes[i] = (rowType)EditorGUILayout.EnumPopup(holder.rowTypes[i]);
+                holder.catagorical[i] = EditorGUILayout.Toggle(holder.catagorical[i]);
                 GUIContent label = new GUIContent("");
                 holder.axisTypes[i] = (axisType)EditorGUILayout.EnumPopup(label, holder.axisTypes[i], ShowAxisType, true);
                 if (holder.axisTypes[i] == axisType.X || holder.axisTypes[i] == axisType.Y || holder.axisTypes[i] == axisType.Z)
@@ -753,8 +754,8 @@ public class Loader : EditorWindow
 
     void UpdateObjects()
     {
-        string fileData = System.IO.File.ReadAllText(holder.path[0]);
-        string[] lines = fileData.Split("\n"[0]);
+        //string fileData = System.IO.File.ReadAllText(holder.path[0]);
+        //string[] lines = fileData.Split("\n"[0]);
 
         for (int i = 0; i < holder.objects.Count; i++)
         {
@@ -865,7 +866,7 @@ public class Loader : EditorWindow
                             holder.axisMinMax[j] = new Vector2(Convert.ToInt16(replaceB), holder.axisMinMax[j].y);
                         }
 
-                        temp.GetComponent<MeshRenderer>().material.color = holder.axisGradients[j].Evaluate(Convert.ToInt16(replaceB) / (holder.axisMinMax[j].y - holder.axisMinMax[j].x) + holder.offsets[j]);
+                        temp.GetComponent<MeshRenderer>().material.color = holder.axisGradients[j].Evaluate((Convert.ToInt16(replaceB) - holder.axisMinMax[j].x) + holder.offsets[j] / (holder.axisMinMax[j].y - holder.axisMinMax[j].x));
                     }
                     else if (holder.rowTypes[j] == rowType.Int || holder.rowTypes[j] == rowType.Float)
                     {
@@ -882,7 +883,7 @@ public class Loader : EditorWindow
                         }
 
 
-                        temp.GetComponent<MeshRenderer>().material.color = holder.axisGradients[j].Evaluate(replaceF + holder.offsets[j] / (holder.axisMinMax[j].y - holder.axisMinMax[j].x));
+                        temp.GetComponent<MeshRenderer>().material.color = holder.axisGradients[j].Evaluate(((replaceF - holder.axisMinMax[j].x) + holder.offsets[j]) / (holder.axisMinMax[j].y - holder.axisMinMax[j].x));
 
                         //Debug.Log(holder.axisMinMax[j].y + " " + holder.axisMinMax[j].x);
                         //temp.GetComponent<MeshRenderer>().material.color = holder.axisGradients[j].Evaluate(replaceF);
@@ -1337,6 +1338,17 @@ public class Loader : EditorWindow
                 {
                     holder.axisMinMax[location] = new Vector2(temp.transform.position.z - holder.offsets[location], temp.transform.position.z - holder.offsets[location]);
                 }
+                if (holder.axisTypes[location] == axisType.Color)
+                {
+                    if (holder.rowTypes[location] == rowType.Bool)
+                    {
+                        holder.axisMinMax[location] = new Vector2(bool.Parse(temp.GetComponent<DataPoint>().variables[holder.rowNames[location].Replace(" ", "")][0]) ? 1 : 0, bool.Parse(temp.GetComponent<DataPoint>().variables[holder.rowNames[location].Replace(" ", "")][0]) ? 1 : 0);
+                    }
+                    else
+                    {
+                        holder.axisMinMax[location] = new Vector2(float.Parse(temp.GetComponent<DataPoint>().variables[holder.rowNames[location].Replace(" ", "")][0]), float.Parse(temp.GetComponent<DataPoint>().variables[holder.rowNames[location].Replace(" ", "")][0]));
+                    }
+                }
             }
             else
             {
@@ -1371,6 +1383,26 @@ public class Loader : EditorWindow
                     else if (temp.transform.position.z - holder.offsets[location] < holder.axisMinMax[location].x)
                     {
                         holder.axisMinMax[location] = new Vector2(temp.transform.position.z - holder.offsets[location], holder.axisMinMax[location].y);
+                    }
+                }
+                if (holder.axisTypes[location] == axisType.Color)
+                {
+                    float num = 0;
+                    if (holder.rowTypes[location] == rowType.Bool)
+                    {
+                        num = bool.Parse(temp.GetComponent<DataPoint>().variables[holder.rowNames[location].Replace(" ", "")][0]) ? 1f : 0f;
+                    }
+                    else
+                    {
+                        num = float.Parse(temp.GetComponent<DataPoint>().variables[holder.rowNames[location].Replace(" ", "")][0]);
+                    }
+                    if (num > holder.axisMinMax[location].y)
+                    {
+                        holder.axisMinMax[location] = new Vector2(holder.axisMinMax[location].x, num);
+                    }
+                    else if (num < holder.axisMinMax[location].x)
+                    {
+                        holder.axisMinMax[location] = new Vector2(num, holder.axisMinMax[location].y);
                     }
                 }
             }

@@ -56,6 +56,8 @@ public class Holder : MonoBehaviour, INetworkSerializable
     public List<ConnectedTypes> connectedTypes = new List<ConnectedTypes>();
     public List<bool> catagorical = new List<bool>();
     public List<float> offsets = new List<float>();
+    public List<bool> isCatagorical = new List<bool>();
+    public List<List<string>> catagories = new List<List<string>>();
 
     [HideInInspector]
     public List<gradientTypes> gTypes = new List<gradientTypes>();
