@@ -161,6 +161,7 @@ public class Holder : NetworkBehaviour, INetworkSerializable
         serializer.SerializeValue(ref sequentialGradientsNames);
         serializer.SerializeValue(ref divergingGradientsNames);
         serializer.SerializeValue(ref path);
+        serializer.SerializeValue(ref catagories);
     }
 }
 

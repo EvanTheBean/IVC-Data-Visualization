@@ -535,4 +535,52 @@ public static class NetworkSerializationExtensions
             }
         }
     }
+
+    public static void SerializeValue<TReaderWriter>(this BufferSerializer<TReaderWriter> serializer, ref List<ListWrapper> list) where TReaderWriter : IReaderWriter
+    {
+        int count = 0;
+        if (!serializer.IsReader)
+        {
+            count = list.Count;
+        }
+        serializer.SerializeValue(ref count);
+
+
+        ListWrapper[] array;
+        if (serializer.IsReader)
+        {
+            array = new ListWrapper[count];
+        }
+        else
+        {
+            array = list.ToArray();
+        }
+
+        for (int i = 0; i < count; i++)
+        {
+            serializer.SerializeValue(ref array[i]);
+        }
+
+        if (serializer.IsReader)
+        {
+            list = new List<ListWrapper>(array);
+        }
+    }
+
+    public static void SerializeValue<TReaderWriter>(this BufferSerializer<TReaderWriter> serializer, ref ListWrapper list) where TReaderWriter : IReaderWriter
+    {
+
+        List<string> innerList = new List<string>();
+        if (serializer.IsWriter)
+        {
+            innerList = list.myList;
+        }
+
+        serializer.SerializeValue(ref innerList);
+
+        if (serializer.IsReader)
+        {
+            list = new ListWrapper(innerList);
+        }
+    }
 }
