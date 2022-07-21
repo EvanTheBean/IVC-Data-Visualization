@@ -31,6 +31,13 @@ public enum ConnectedTypes
     VisibleLines
 }
 
+public enum ChartType
+{
+    Scatter,
+    Line,
+    Bar
+}
+
 [ExecuteInEditMode]
 public class Holder : NetworkBehaviour, INetworkSerializable
 {
@@ -45,6 +52,8 @@ public class Holder : NetworkBehaviour, INetworkSerializable
     public List<ConnectedTypes> connectedTypes = new List<ConnectedTypes>();
     public List<bool> catagorical = new List<bool>();
     public List<float> offsets = new List<float>();
+    public List<bool> isCatagorical = new List<bool>();
+    public List<ListWrapper> catagories = new List<ListWrapper>();
 
     [HideInInspector]
     public List<gradientTypes> gTypes = new List<gradientTypes>();
@@ -57,8 +66,12 @@ public class Holder : NetworkBehaviour, INetworkSerializable
 
     public List<string> path = new List<string>(1);
 
-    public bool check, hiding;
+    public GameObject plane, lineGraph, XN, YN, ZN;
 
+    public bool check, hiding, dataRead, dataLoaded, bestFit, xN, yN, zN, xLines, yLines, zLines;
+    public float Xn, Yn, Zn;
+
+    public ChartType chartType = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -110,6 +123,9 @@ public class Holder : NetworkBehaviour, INetworkSerializable
         sequentialGradientsNames.Clear();
         divergingGradientsNames.Clear();
 
+        isCatagorical.Clear();
+        catagories.Clear();
+
         path.Clear();
     }
 
@@ -129,12 +145,85 @@ public class Holder : NetworkBehaviour, INetworkSerializable
         serializer.SerializeValue(ref sequentialGradientsNames);
         serializer.SerializeValue(ref divergingGradientsNames);
         serializer.SerializeValue(ref path);
+        serializer.SerializeValue(ref isCatagorical);
+        serializer.SerializeValue(ref catagories);
+        serializer.SerializeValue(ref chartType);
     }
 
     [ClientRpc]
-    void SendHolderClientRpc(Holder holder)
+    void SendHolderClientRpc(Holder holder, bool lineEnabled, Vector3[] linePositions)
     {
         var json = JsonUtility.ToJson(holder);
         JsonUtility.FromJsonOverwrite(json, this);
+
+        if (lineEnabled)
+        {
+            GetComponent<LineRenderer>().SetPositions(linePositions);
+        }
+    }
+
+    void CopyComponentOnto<T>(T original, GameObject destination) where T : Component
+    {
+        if (destination.GetComponent<T>() == null) destination.AddComponent<T>();
+        System.Type type = original.GetType();
+        Component copy = destination.GetComponent<T>();
+
+        System.Reflection.FieldInfo[] fields = type.GetFields();
+        foreach (System.Reflection.FieldInfo field in fields)
+        {
+            field.SetValue(copy, field.GetValue(original));
+        }
+
+    }
+}
+
+
+[System.Serializable]
+public class ListWrapper
+{
+    public List<string> myList;
+    public ListWrapper(List<string> temp)
+    {
+        myList = temp;
+    }
+    public ListWrapper()
+    {
+        myList = new List<string>();
+    }
+
+    public void ClearList()
+    {
+        myList.Clear();
+    }
+
+    public int getCount()
+    {
+        return myList.Count;
+    }
+
+    public int IndexOf(string temp)
+    {
+        for (int i = 0; i < myList.Count; i++)
+        {
+            if (myList[i] == temp)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public bool Contains(string temp)
+    {
+        if (IndexOf(temp) == -1)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    public void Add(string temp)
+    {
+        myList.Add(temp);
     }
 }

@@ -535,4 +535,73 @@ public static class NetworkSerializationExtensions
             }
         }
     }
+
+    public static void SerializeValue<TReaderWriter>(this BufferSerializer<TReaderWriter> serializer, ref List<ListWrapper> list) where TReaderWriter : IReaderWriter
+    {
+        int count = 0;
+        if (!serializer.IsReader)
+        {
+            count = list.Count;
+        }
+        serializer.SerializeValue(ref count);
+
+
+        ListWrapper[] array;
+        if (serializer.IsReader)
+        {
+            array = new ListWrapper[count];
+        }
+        else
+        {
+            array = list.ToArray();
+        }
+
+        for (int i = 0; i < count; i++)
+        {
+            serializer.SerializeValue(ref array[i]);
+        }
+
+        if (serializer.IsReader)
+        {
+            list = new List<ListWrapper>(array);
+        }
+    }
+
+    public static void SerializeValue<TReaderWriter>(this BufferSerializer<TReaderWriter> serializer, ref ListWrapper list) where TReaderWriter : IReaderWriter
+    {
+
+        List<string> innerList = new List<string>();
+        if (serializer.IsWriter)
+        {
+            innerList = list.myList;
+        }
+
+        serializer.SerializeValue(ref innerList);
+
+        if (serializer.IsReader)
+        {
+            list = new ListWrapper(innerList);
+        }
+    }
+
+    public static void ReadValueSafe(this FastBufferReader reader, out LineRenderer value)
+    {
+        reader.ReadValueSafe(out int val);
+        reader.ReadValueSafe(out string val1);
+        reader.ReadValueSafe(out string val2);
+        reader.ReadValueSafe(out float val3);
+        Debug.Log(val);
+        Debug.Log(val1);
+        Debug.Log(val2);
+        Debug.Log(val3);
+        value = new LineRenderer();
+    }
+
+    public static void WriteValueSafe(this FastBufferWriter writer, in LineRenderer value)
+    {
+        writer.WriteValueSafe(0);
+        writer.WriteValueSafe("hi");
+        writer.WriteValueSafe("hello");
+        writer.WriteValueSafe(0.2);
+    }
 }

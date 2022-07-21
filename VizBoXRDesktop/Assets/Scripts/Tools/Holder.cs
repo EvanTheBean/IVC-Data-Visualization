@@ -131,18 +131,22 @@ public class Holder : NetworkBehaviour, INetworkSerializable
         isCatagorical.Clear();
         catagories.Clear();
 
-    path.Clear();
+        path.Clear();
     }
 
     public override void OnNetworkSpawn()
     {
-        SendHolderClientRpc(this);
+        LineRenderer line = GetComponent<LineRenderer>();
+
+        Vector3[] linePositions = new Vector3[line.positionCount];
+        line.GetPositions(linePositions);
+        SendHolderClientRpc(this, line.enabled, linePositions);
     }
 
     [ClientRpc]
-    void SendHolderClientRpc(Holder holder)
+    void SendHolderClientRpc(Holder holder, bool lineEnabled, Vector3[] linePositions)
     {
-
+        
     }
 
     public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
@@ -161,7 +165,10 @@ public class Holder : NetworkBehaviour, INetworkSerializable
         serializer.SerializeValue(ref sequentialGradientsNames);
         serializer.SerializeValue(ref divergingGradientsNames);
         serializer.SerializeValue(ref path);
+        serializer.SerializeValue(ref isCatagorical);
         serializer.SerializeValue(ref catagories);
+        serializer.SerializeValue(ref chartType);
+
     }
 }
 

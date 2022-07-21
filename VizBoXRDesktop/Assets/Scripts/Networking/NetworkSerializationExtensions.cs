@@ -583,4 +583,40 @@ public static class NetworkSerializationExtensions
             list = new ListWrapper(innerList);
         }
     }
+
+    //public static void ReadValueSafe(this FastBufferReader reader, out LineRenderer value)
+    //{
+    //    reader.ReadValueSafe(out int count);
+    //}
+    //
+    //public static void WriteValueSafe(this FastBufferWriter writer, in Vectovalue)
+    //{
+    //    Vector3[]
+    //
+    //    int count = value.
+    //
+    //    serializer.SerializeValue(ref count);
+    //
+    //
+    //    Vector2[] array;
+    //    if (serializer.IsReader)
+    //    {
+    //        array = new Vector2[count];
+    //    }
+    //    else
+    //    {
+    //        array = value.ToArray();
+    //    }
+    //
+    //    for (int i = 0; i < count; i++)
+    //    {
+    //        serializer.SerializeValue(ref array[i]);
+    //    }
+    //
+    //    if (serializer.IsReader)
+    //    {
+    //        value = new List<Vector2>(array);
+    //    }
+    //
+    //}
 }
