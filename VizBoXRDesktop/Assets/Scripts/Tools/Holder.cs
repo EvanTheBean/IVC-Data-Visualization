@@ -17,13 +17,14 @@ public enum axisType
     X,
     Y,
     Z,
-    Connected,
     Color,
     Size,
     Lines,
     Width,
     Height,
     Length,
+    Connected,
+    Positional,
     ShowOnClick
 }
 
@@ -57,6 +58,7 @@ public class Holder : NetworkBehaviour, INetworkSerializable
     public List<bool> catagorical = new List<bool>();
     public List<float> offsets = new List<float>();
     public List<bool> isCatagorical = new List<bool>();
+    public List<float> randomness = new List<float>();
     public List<ListWrapper> catagories = new List<ListWrapper> ();
 
     [HideInInspector]
@@ -130,6 +132,7 @@ public class Holder : NetworkBehaviour, INetworkSerializable
 
         isCatagorical.Clear();
         catagories.Clear();
+        randomness.Clear();
 
         path.Clear();
     }
