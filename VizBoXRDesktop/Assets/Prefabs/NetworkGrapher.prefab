@@ -44,5 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e895ce45912299243808e8cbce533f61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dataPointPrefab: {fileID: 0}
-  holderPrefab: {fileID: 0}
+  dataPointPrefab: {fileID: 5303000421713815878, guid: fb6449e23beadc641a227717073b2692,
+    type: 3}
+  holderPrefab: {fileID: 2413362435559014647, guid: cb34accd002a8604485ed78155f948df,
+    type: 3}
