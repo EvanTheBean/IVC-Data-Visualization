@@ -83,7 +83,7 @@ public class Loader : EditorWindow
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField(holder.rowNames[i], new GUILayoutOption[] { GUILayout.Width(100) });
                 holder.rowTypes[i] = (rowType)EditorGUILayout.EnumPopup(holder.rowTypes[i]);
-                if(holder.rowTypes[i] == rowType.String || holder.rowTypes[i] == rowType.Int)
+                if(holder.rowTypes[i] == rowType.String)
                 {
                     EditorGUIUtility.labelWidth = 80;
                     holder.catagorical[i] = EditorGUILayout.Toggle("Catagorical: ", holder.catagorical[i], GUILayout.ExpandWidth(false));
@@ -176,6 +176,16 @@ public class Loader : EditorWindow
                 else if (holder.axisTypes[i] == axisType.Connected)
                 {
                     holder.connectedTypes[i] = (ConnectedTypes)EditorGUILayout.EnumPopup(holder.connectedTypes[i]);
+                }
+                else if (holder.axisTypes[i] == axisType.Positional)
+                {
+                    EditorGUIUtility.labelWidth = 40;
+                    holder.axisScales[i] = EditorGUILayout.Slider("Scale", holder.axisScales[i], 0.1f, 5f);
+                    EditorGUIUtility.labelWidth = 60;
+                    holder.randomness[i] = EditorGUILayout.Slider("Randomness", holder.randomness[i], 0.1f, 5f);
+                    EditorGUIUtility.labelWidth = 40;
+                    holder.offsets[i] = EditorGUILayout.FloatField("Offset: ", holder.offsets[i]);
+                    EditorGUIUtility.labelWidth = 0;
                 }
                 EditorGUILayout.EndHorizontal();
             }
@@ -967,6 +977,37 @@ public class Loader : EditorWindow
                         temp.transform.localScale = Vector3.one * Mathf.Lerp(1, 1 * holder.axisScales[j], replaceF / (holder.axisMinMax[j].y - holder.axisMinMax[j].x)) * holder.offsets[j];
                     }
                 }
+                if (holder.axisTypes[j] == axisType.Positional)
+                {
+                    float num = holder.catagories[j].IndexOf(tempDP.variables[holder.rowNames[j].Replace(" ", "")][0]) * holder.axisScales[j] + holder.offsets[j];
+                    if (!holder.axisTypes.Contains(axisType.X))
+                    {
+                        temp.transform.position = new Vector3(num + UnityEngine.Random.Range(0, 0.5f) * holder.randomness[j], temp.transform.position.y, temp.transform.position.z);
+                    }
+                    if (!holder.axisTypes.Contains(axisType.Y))
+                    {
+                        if (holder.axisTypes.Contains(axisType.X) && holder.axisTypes.Contains(axisType.Z))
+                        {
+                            temp.transform.position = new Vector3(temp.transform.position.x, num + UnityEngine.Random.Range(0, 0.5f) * holder.randomness[j], temp.transform.position.z);
+                        }
+                        else
+                        {
+                            temp.transform.position = new Vector3(temp.transform.position.x, UnityEngine.Random.Range(0, 0.5f) * holder.randomness[j], temp.transform.position.z);
+                        }
+                    }
+                    if (!holder.axisTypes.Contains(axisType.Z))
+                    {
+                        if(holder.axisTypes.Contains(axisType.X))
+                        {
+                            temp.transform.position = new Vector3(temp.transform.position.x, temp.transform.position.y, num + UnityEngine.Random.Range(0, 0.5f) * holder.randomness[j]);
+                        }
+                        else
+                        {
+                            temp.transform.position = new Vector3(temp.transform.position.x, temp.transform.position.y, UnityEngine.Random.Range(0, 0.5f) * holder.randomness[j]);
+                        }
+                    }
+
+                }
             }
 
 
@@ -1188,7 +1229,8 @@ public class Loader : EditorWindow
             holder.isCatagorical.Add(false);
             ListWrapper temp = new ListWrapper();
             holder.catagories.Add(temp);
-            Debug.Log("Adding " + temp);
+            holder.randomness.Add(1);
+            //Debug.Log("Adding " + temp);
         }
     }
 
@@ -1652,6 +1694,17 @@ public class Loader : EditorWindow
             }
         }
 
+        if(holder.catagorical[AxisShowNum] && holder.rowTypes[AxisShowNum] == rowType.String)
+        {
+            switch(value)
+            {
+                case axisType.Positional:
+                    return true;
+                default:
+                    break;
+            }
+        }
+
 
 
         if(holder.chartType == ChartType.Scatter)
@@ -1663,6 +1716,7 @@ public class Loader : EditorWindow
                 case axisType.Height:
                 case axisType.Length:
                 case axisType.ShowOnClick:
+                case axisType.Positional:
                     return false;
                 default:
                     return true;
@@ -1676,6 +1730,7 @@ public class Loader : EditorWindow
         case axisType.Height:
         case axisType.Length:
         case axisType.ShowOnClick:
+        case axisType.Positional:
             return false;
         default:
             return true;
@@ -1687,6 +1742,7 @@ if (holder.chartType == ChartType.Bar)
     {
         case axisType.Lines:
         case axisType.ShowOnClick:
+        case axisType.Positional:
             return false;
         default:
             return true;
