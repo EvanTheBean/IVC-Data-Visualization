@@ -30,6 +30,8 @@ public class Loader : EditorWindow
     int holderNum;
     Holder[] allHolders;
 
+    int AxisShowNum;
+
     GradientUsageAttribute gua = new GradientUsageAttribute(false);
 
     [MenuItem("Tools/Loader")]
@@ -43,6 +45,12 @@ public class Loader : EditorWindow
         window.dataRead = false;
         window.holder = GameObject.FindObjectOfType<Holder>();
         window.mpc = GameObject.FindObjectOfType<MultiPointControll>();
+
+        if(window.holder == null)
+        {
+            window.dataRead = false;
+            window.dataLoaded = false;
+        }
 
         if (window.holder.rowNames.Count > 0)
         {
@@ -75,8 +83,20 @@ public class Loader : EditorWindow
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField(holder.rowNames[i], new GUILayoutOption[] { GUILayout.Width(100) });
                 holder.rowTypes[i] = (rowType)EditorGUILayout.EnumPopup(holder.rowTypes[i]);
-                holder.catagorical[i] = EditorGUILayout.Toggle(holder.catagorical[i]);
+                if(holder.rowTypes[i] == rowType.String || holder.rowTypes[i] == rowType.Int)
+                {
+                    EditorGUIUtility.labelWidth = 80;
+                    holder.catagorical[i] = EditorGUILayout.Toggle("Catagorical: ", holder.catagorical[i], GUILayout.ExpandWidth(false));
+                    if(holder.catagorical[i])
+                    {
+                        GetCatagories(i);
+                        EditorGUIUtility.labelWidth = 5;
+                        EditorGUILayout.LabelField(holder.catagories[i].getCount().ToString(),GUILayout.ExpandWidth(false));
+                    }
+                }
+                EditorGUIUtility.labelWidth = 0;
                 GUIContent label = new GUIContent("");
+                AxisShowNum = i;
                 holder.axisTypes[i] = (axisType)EditorGUILayout.EnumPopup(label, holder.axisTypes[i], ShowAxisType, true);
                 if (holder.axisTypes[i] == axisType.X || holder.axisTypes[i] == axisType.Y || holder.axisTypes[i] == axisType.Z)
                 {
@@ -119,7 +139,9 @@ public class Loader : EditorWindow
                 else if (holder.axisTypes[i] == axisType.Size)
                 {
                     holder.axisScales[i] = EditorGUILayout.Slider(holder.axisScales[i], 0.1f, 5f);
-                    holder.offsets[i] = EditorGUILayout.FloatField(holder.offsets[i]);
+                    EditorGUIUtility.labelWidth = 40;
+                    holder.offsets[i] = EditorGUILayout.FloatField("Offset: ", holder.offsets[i]);
+                    EditorGUIUtility.labelWidth = 0;
                 }
                 else if (holder.axisTypes[i] == axisType.Color)
                 {
@@ -147,7 +169,9 @@ public class Loader : EditorWindow
                     }
                     holder.axisGradients[i] = EditorGUILayout.GradientField(holder.axisGradients[i]);
 
-                    holder.offsets[i] = EditorGUILayout.FloatField(holder.offsets[i]);
+                    EditorGUIUtility.labelWidth = 40;
+                    holder.offsets[i] = EditorGUILayout.FloatField("Offset: ", holder.offsets[i]);
+                    EditorGUIUtility.labelWidth = 0;
                 }
                 else if (holder.axisTypes[i] == axisType.Connected)
                 {
@@ -610,7 +634,7 @@ public class Loader : EditorWindow
         string fileData = System.IO.File.ReadAllText(holder.path[0]);
         string[] lines = fileData.Split("\n"[0]);
 
-        for (int i = 1; i < lines.Length; i++)
+        for (int i = 1; i < lines.Length - 1; i++)
         {
             GameObject temp = (GameObject)PrefabUtility.InstantiatePrefab(placeHolder as GameObject);
             temp.name = i.ToString();
@@ -775,8 +799,14 @@ public class Loader : EditorWindow
                 if (holder.axisTypes[j] == axisType.X)
                 {
                     float replaceF;
-                    float.TryParse(tempDP.variables[holder.rowNames[j].Replace(" ", "")][0], out replaceF);
-                    temp.transform.position = new Vector3(replaceF * holder.axisScales[j] + holder.offsets[j], temp.transform.position.y, temp.transform.position.z);
+                    if(float.TryParse(tempDP.variables[holder.rowNames[j].Replace(" ", "")][0], out replaceF))
+                    {
+                        temp.transform.position = new Vector3(replaceF * holder.axisScales[j] + holder.offsets[j], temp.transform.position.y, temp.transform.position.z);
+                    }
+                    else if(holder.catagorical[j])
+                    {
+                        temp.transform.position = new Vector3(holder.catagories[j].IndexOf(tempDP.variables[holder.rowNames[j].Replace(" ", "")][0]) * holder.axisScales[j] + holder.offsets[j], temp.transform.position.y, temp.transform.position.z);
+                    }
 
                     GetMinMax(j);
 
@@ -801,8 +831,14 @@ public class Loader : EditorWindow
                 if (holder.axisTypes[j] == axisType.Y)
                 {
                     float replaceF;
-                    float.TryParse(tempDP.variables[holder.rowNames[j].Replace(" ", "")][0], out replaceF);
-                    temp.transform.position = new Vector3(temp.transform.position.x, replaceF * holder.axisScales[j] + holder.offsets[j], temp.transform.position.z);
+                    if (float.TryParse(tempDP.variables[holder.rowNames[j].Replace(" ", "")][0], out replaceF))
+                    {
+                        temp.transform.position = new Vector3(temp.transform.position.x, replaceF * holder.axisScales[j] + holder.offsets[j], temp.transform.position.z);
+                    }
+                    else if (holder.catagorical[j])
+                    {
+                        temp.transform.position = new Vector3(temp.transform.position.x, holder.catagories[j].IndexOf(tempDP.variables[holder.rowNames[j].Replace(" ", "")][0]) * holder.axisScales[j] + holder.offsets[j], temp.transform.position.z);
+                    }
 
                     GetMinMax(j);
 
@@ -828,8 +864,14 @@ public class Loader : EditorWindow
                 if (holder.axisTypes[j] == axisType.Z)
                 {
                     float replaceF;
-                    float.TryParse(tempDP.variables[holder.rowNames[j].Replace(" ", "")][0], out replaceF);
-                    temp.transform.position = new Vector3(temp.transform.position.x, temp.transform.position.y, replaceF * holder.axisScales[j] + holder.offsets[j]);
+                    if (float.TryParse(tempDP.variables[holder.rowNames[j].Replace(" ", "")][0], out replaceF))
+                    {
+                        temp.transform.position = new Vector3(temp.transform.position.x, temp.transform.position.y, replaceF * holder.axisScales[j] + holder.offsets[j]);
+                    }
+                    else if (holder.catagorical[j])
+                    {
+                        temp.transform.position = new Vector3(temp.transform.position.x, temp.transform.position.y, holder.catagories[j].IndexOf(tempDP.variables[holder.rowNames[j].Replace(" ", "")][0]) * holder.axisScales[j] + holder.offsets[j]);
+                    }
 
                     GetMinMax(j);
 
@@ -853,18 +895,17 @@ public class Loader : EditorWindow
                 }
                 if (holder.axisTypes[j] == axisType.Color)
                 {
-                    if (holder.rowTypes[j] == rowType.Bool)
+                    if(holder.catagorical[j])
+                    {
+                        float num = holder.catagories[j].IndexOf(tempDP.variables[holder.rowNames[j].Replace(" ", "")][0]);
+                        float count = holder.catagories[j].getCount();
+                        temp.GetComponent<MeshRenderer>().material.color = holder.axisGradients[j].Evaluate((num + holder.offsets[j] )/ count);
+                        Debug.Log((num + (float)holder.offsets[j]) / count);
+                    }
+                    else if (holder.rowTypes[j] == rowType.Bool)
                     {
                         bool replaceB;
                         bool.TryParse(tempDP.variables[holder.rowNames[j].Replace(" ", "")][0], out replaceB);
-                        if (Convert.ToInt16(replaceB) > holder.axisMinMax[j].y)
-                        {
-                            holder.axisMinMax[j] = new Vector2(holder.axisMinMax[j].x, Convert.ToInt16(replaceB));
-                        }
-                        else if (Convert.ToInt16(replaceB) < holder.axisMinMax[j].x)
-                        {
-                            holder.axisMinMax[j] = new Vector2(Convert.ToInt16(replaceB), holder.axisMinMax[j].y);
-                        }
 
                         temp.GetComponent<MeshRenderer>().material.color = holder.axisGradients[j].Evaluate((Convert.ToInt16(replaceB) - holder.axisMinMax[j].x) + holder.offsets[j] / (holder.axisMinMax[j].y - holder.axisMinMax[j].x));
                     }
@@ -872,15 +913,6 @@ public class Loader : EditorWindow
                     {
                         float replaceF;
                         float.TryParse(tempDP.variables[holder.rowNames[j].Replace(" ", "")][0], out replaceF);
-
-                        if (replaceF > holder.axisMinMax[j].y)
-                        {
-                            holder.axisMinMax[j] = new Vector2(holder.axisMinMax[j].x, replaceF);
-                        }
-                        else if (replaceF < holder.axisMinMax[j].x)
-                        {
-                            holder.axisMinMax[j] = new Vector2(replaceF, holder.axisMinMax[j].y);
-                        }
 
 
                         temp.GetComponent<MeshRenderer>().material.color = holder.axisGradients[j].Evaluate(((replaceF - holder.axisMinMax[j].x) + holder.offsets[j]) / (holder.axisMinMax[j].y - holder.axisMinMax[j].x));
@@ -898,8 +930,13 @@ public class Loader : EditorWindow
                     {
                         holder.offsets[j] = 1f;
                     }
-
-                    if (holder.rowTypes[j] == rowType.Bool)
+                    if(holder.catagorical[j])
+                    {
+                        float num = holder.catagories[j].IndexOf(tempDP.variables[holder.rowNames[j].Replace(" ", "")][0]);
+                        float count = holder.catagories[j].getCount();
+                        temp.transform.localScale = Vector3.one * (Mathf.Lerp(1, holder.axisScales[j], (num) / count) + holder.offsets[j]);
+                    }
+                    else  if (holder.rowTypes[j] == rowType.Bool)
                     {
                         bool replaceB;
                         bool.TryParse(tempDP.variables[holder.rowNames[j].Replace(" ", "")][0], out replaceB);
@@ -932,10 +969,11 @@ public class Loader : EditorWindow
                 }
             }
 
+
             //tempDP.displayBox = temp.GetComponentInChildren<TextMeshProUGUI>();
         }
 
-        for(int i = 0; i < holder.axisTypes.Count; i++)
+        for (int i = 0; i < holder.axisTypes.Count; i++)
         {
             if(holder.axisTypes[i] == axisType.Connected)
             {
@@ -1029,11 +1067,11 @@ public class Loader : EditorWindow
             }
             if (!holder.axisTypes.Contains(axisType.Color))
             {
-                //temp.GetComponent<MeshRenderer>().material.color = Color.white;
+                temp.GetComponent<MeshRenderer>().material.color = Color.white;
             }
             if (!holder.axisTypes.Contains(axisType.Size))
             {
-                temp.transform.localScale = new Vector3(0.25f, 0.25f, 0.25f);
+                temp.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
             }
         }
     }
@@ -1147,6 +1185,10 @@ public class Loader : EditorWindow
             holder.catagorical.Add(false);
             holder.gTypes.Add(gradientTypes.sequential);
             holder.offsets.Add(0f);
+            holder.isCatagorical.Add(false);
+            ListWrapper temp = new ListWrapper();
+            holder.catagories.Add(temp);
+            Debug.Log("Adding " + temp);
         }
     }
 
@@ -1408,6 +1450,24 @@ public class Loader : EditorWindow
             }
         }
     }
+
+    void GetCatagories(int location)
+    {
+        //Debug.Log(holder.catagories.Count);
+        foreach (GameObject temp in holder.objects)
+        {
+            DataPoint tempDp = temp.GetComponent<DataPoint>();
+            //for(int i = 0; i < tempDp.variables[holder.rowNames[location].Replace(" ", "")].Count; i ++)
+            //{
+            //Debug.Log(holder.catagories[location]);
+                if (!holder.catagories[location].Contains(tempDp.variables[holder.rowNames[location].Replace(" ", "")][0]))
+                {
+                    holder.catagories[location].Add(tempDp.variables[holder.rowNames[location].Replace(" ", "")][0]);
+                }
+            //}
+        }
+    }
+
     // Basic fitting algorithm. See ApprQuery.h for the various Fit(...)
     // functions that you can call.
     bool FitIndexed(bool x, bool y, bool z)
@@ -1580,6 +1640,20 @@ public class Loader : EditorWindow
 
     bool ShowAxisType(Enum value)
      {
+        if(holder.rowTypes[AxisShowNum] == rowType.String && !holder.catagorical[AxisShowNum])
+        {
+            switch(value)
+            {
+                case axisType.Connected:
+                case axisType.None:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+
+
         if(holder.chartType == ChartType.Scatter)
         {
             switch(value)

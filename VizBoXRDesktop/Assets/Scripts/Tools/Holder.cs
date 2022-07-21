@@ -57,7 +57,7 @@ public class Holder : MonoBehaviour, INetworkSerializable
     public List<bool> catagorical = new List<bool>();
     public List<float> offsets = new List<float>();
     public List<bool> isCatagorical = new List<bool>();
-    public List<List<string>> catagories = new List<List<string>>();
+    public List<ListWrapper> catagories = new List<ListWrapper> ();
 
     [HideInInspector]
     public List<gradientTypes> gTypes = new List<gradientTypes>();
@@ -128,7 +128,10 @@ public class Holder : MonoBehaviour, INetworkSerializable
         sequentialGradientsNames.Clear();
         divergingGradientsNames.Clear();
 
-        path.Clear();
+        isCatagorical.Clear();
+        catagories.Clear();
+
+    path.Clear();
     }
 
     public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
@@ -147,5 +150,55 @@ public class Holder : MonoBehaviour, INetworkSerializable
         serializer.SerializeValue(ref sequentialGradientsNames);
         serializer.SerializeValue(ref divergingGradientsNames);
         serializer.SerializeValue(ref path);
+    }
+}
+
+[System.Serializable]
+public class ListWrapper
+{
+    public List<string> myList;
+    public ListWrapper(List<string> temp)
+    {
+        myList = temp;
+    }
+    public ListWrapper()
+    {
+        myList = new List<string>();
+    }
+
+    public void ClearList()
+    { 
+        myList.Clear();
+    }
+
+    public int getCount()
+    {
+        return myList.Count;
+    }
+
+    public int IndexOf(string temp)
+    {
+        for (int i = 0; i < myList.Count; i++)
+        {
+            if (myList[i] == temp)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public bool Contains(string temp)
+    {
+        if(IndexOf(temp) == -1)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    public void Add(string temp)
+    {
+        myList.Add(temp);
     }
 }
