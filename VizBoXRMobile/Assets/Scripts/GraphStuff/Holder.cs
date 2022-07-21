@@ -32,7 +32,7 @@ public enum ConnectedTypes
 }
 
 [ExecuteInEditMode]
-public class Holder : MonoBehaviour, INetworkSerializable
+public class Holder : NetworkBehaviour, INetworkSerializable
 {
     public List<string> rowNames = new List<string>();
     public List<rowType> rowTypes = new List<rowType>();
@@ -129,5 +129,12 @@ public class Holder : MonoBehaviour, INetworkSerializable
         serializer.SerializeValue(ref sequentialGradientsNames);
         serializer.SerializeValue(ref divergingGradientsNames);
         serializer.SerializeValue(ref path);
+    }
+
+    [ClientRpc]
+    void SendHolderClientRpc(Holder holder)
+    {
+        var json = JsonUtility.ToJson(holder);
+        JsonUtility.FromJsonOverwrite(json, this);
     }
 }
