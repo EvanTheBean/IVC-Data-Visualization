@@ -3,20 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 
-public class NetworkGrapher : NetworkBehaviour
+public class NetworkGrapher : MonoBehaviour
 {
-    GameObject holderPrefab;
-    List<GameObject> latestPoints = new List<GameObject>();
-
-    [ClientRpc]
-    void InstantiateHolderClientRpc(Holder holder)
+    int x = 0;
+    //TEST
+    public void OnButtonPress()
     {
-        if (holderPrefab == null) holderPrefab = PrefabManager.Instance.holderPrefab;
-
-        GameObject spawnHolder = Instantiate(holderPrefab);
-        var json = JsonUtility.ToJson(holder);
-        JsonUtility.FromJsonOverwrite(json, spawnHolder.GetComponent<Holder>());
-
-
+        x += 10;
+        GameObject.Find("HOLDER(Clone)").transform.position = new Vector3(x, 0, 0);
     }
 }

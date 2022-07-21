@@ -44,7 +44,7 @@ public enum ChartType
 }
 
 [ExecuteInEditMode]
-public class Holder : MonoBehaviour, INetworkSerializable
+public class Holder : NetworkBehaviour, INetworkSerializable
 {
     public List<string> rowNames = new List<string>();
     public List<rowType> rowTypes = new List<rowType>();
@@ -137,6 +137,17 @@ public class Holder : MonoBehaviour, INetworkSerializable
     path.Clear();
     }
 
+    public override void OnNetworkSpawn()
+    {
+        SendHolderClientRpc(this);
+    }
+
+    [ClientRpc]
+    void SendHolderClientRpc(Holder holder)
+    {
+
+    }
+
     public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
     {
         serializer.SerializeValue(ref rowNames);
@@ -153,6 +164,7 @@ public class Holder : MonoBehaviour, INetworkSerializable
         serializer.SerializeValue(ref sequentialGradientsNames);
         serializer.SerializeValue(ref divergingGradientsNames);
         serializer.SerializeValue(ref path);
+        serializer.SerializeValue(ref catagories);
     }
 }
 

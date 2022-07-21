@@ -6,17 +6,12 @@ using TMPro;
 using UnityEngine.EventSystems;
 using Unity.Netcode;
 
-public class DataPoint : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, INetworkSerializable
+public class DataPoint : NetworkBehaviour, IPointerDownHandler, IPointerUpHandler, INetworkSerializable
 {
 
     [SerializeField] public StringListDictionary variables = new StringListDictionary();
     public TextMeshProUGUI displayBox;
     public int currentC;
-
-    private void Start()
-    {
-        Debug.Log("Hi");
-    }
 
     public void OnPointerDown(PointerEventData eventData)
     {
@@ -41,6 +36,17 @@ public class DataPoint : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, 
     public void OnPointerUp(PointerEventData eventData)
     {
         //displayBox.enabled = false;
+    }
+
+    [ClientRpc]
+    void SendDataPointDataClientRpc(DataPoint dataPoint, Vector3 scale, Color meshColor)
+    {
+        var json = JsonUtility.ToJson(dataPoint);
+        JsonUtility.FromJsonOverwrite(json, this);
+
+        transform.localScale = scale;
+        GetComponent<MeshRenderer>().material.color = meshColor;
+
     }
 
     public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter

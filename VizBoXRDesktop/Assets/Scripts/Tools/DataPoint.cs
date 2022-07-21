@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine.EventSystems;
 using Unity.Netcode;
 
-public class DataPoint : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, INetworkSerializable
+public class DataPoint : NetworkBehaviour, IPointerDownHandler, IPointerUpHandler, INetworkSerializable
 {
 
     [SerializeField] public StringListDictionary variables = new StringListDictionary();
@@ -38,20 +38,20 @@ public class DataPoint : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, 
         //displayBox.enabled = false;
     }
 
+    public override void OnNetworkSpawn()
+    {
+        SendDataPointDataClientRpc(this, transform.localScale, GetComponent<MeshRenderer>().material.color);
+    }
+
+    [ClientRpc]
+    void SendDataPointDataClientRpc(DataPoint dataPoint, Vector3 scale, Color meshColor)
+    {
+
+    }
+
     public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
     {
         serializer.SerializeValue(ref variables);
-
-        Vector3 position = Vector3.zero;
-        if (serializer.IsWriter)
-        {
-            position = transform.localPosition;
-        }
-        serializer.SerializeValue(ref position);
-
-        if (serializer.IsReader)
-        {
-            transform.localPosition = position;
-        }
     }
+
 }
