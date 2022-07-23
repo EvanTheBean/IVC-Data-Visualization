@@ -1013,7 +1013,7 @@ public class Loader : EditorWindow
                         float num = holder.catagories[j].IndexOf(tempDP.variables[holder.rowNames[j].Replace(" ", "")][0]);
                         float count = holder.catagories[j].getCount();
                         temp.GetComponent<MeshRenderer>().material.color = holder.axisGradients[j].Evaluate((num + holder.offsets[j] )/ count);
-                        Debug.Log((num + (float)holder.offsets[j]) / count);
+                        //Debug.Log((num + (float)holder.offsets[j]) / count);
                     }
                     else if (holder.rowTypes[j] == rowType.Bool)
                     {
@@ -1525,13 +1525,16 @@ public class Loader : EditorWindow
                 }
                 if (holder.axisTypes[location] == axisType.Color)
                 {
-                    if (holder.rowTypes[location] == rowType.Bool)
+                    if(holder.rowTypes[location]!= rowType.String)
                     {
-                        holder.axisMinMax[location] = new Vector2(bool.Parse(temp.GetComponent<DataPoint>().variables[holder.rowNames[location].Replace(" ", "")][0]) ? 1 : 0, bool.Parse(temp.GetComponent<DataPoint>().variables[holder.rowNames[location].Replace(" ", "")][0]) ? 1 : 0);
-                    }
-                    else
-                    {
-                        holder.axisMinMax[location] = new Vector2(float.Parse(temp.GetComponent<DataPoint>().variables[holder.rowNames[location].Replace(" ", "")][0]), float.Parse(temp.GetComponent<DataPoint>().variables[holder.rowNames[location].Replace(" ", "")][0]));
+                        if (holder.rowTypes[location] == rowType.Bool)
+                        {
+                            holder.axisMinMax[location] = new Vector2(bool.Parse(temp.GetComponent<DataPoint>().variables[holder.rowNames[location].Replace(" ", "")][0]) ? 1 : 0, bool.Parse(temp.GetComponent<DataPoint>().variables[holder.rowNames[location].Replace(" ", "")][0]) ? 1 : 0);
+                        }
+                        else
+                        {
+                            holder.axisMinMax[location] = new Vector2(float.Parse(temp.GetComponent<DataPoint>().variables[holder.rowNames[location].Replace(" ", "")][0]), float.Parse(temp.GetComponent<DataPoint>().variables[holder.rowNames[location].Replace(" ", "")][0]));
+                        }
                     }
                 }
             }
@@ -1572,22 +1575,25 @@ public class Loader : EditorWindow
                 }
                 if (holder.axisTypes[location] == axisType.Color)
                 {
-                    float num = 0;
-                    if (holder.rowTypes[location] == rowType.Bool)
+                    if (holder.rowTypes[location] != rowType.String)
                     {
-                        num = bool.Parse(temp.GetComponent<DataPoint>().variables[holder.rowNames[location].Replace(" ", "")][0]) ? 1f : 0f;
-                    }
-                    else
-                    {
-                        num = float.Parse(temp.GetComponent<DataPoint>().variables[holder.rowNames[location].Replace(" ", "")][0]);
-                    }
-                    if (num > holder.axisMinMax[location].y)
-                    {
-                        holder.axisMinMax[location] = new Vector2(holder.axisMinMax[location].x, num);
-                    }
-                    else if (num < holder.axisMinMax[location].x)
-                    {
-                        holder.axisMinMax[location] = new Vector2(num, holder.axisMinMax[location].y);
+                        float num = 0;
+                        if (holder.rowTypes[location] == rowType.Bool)
+                        {
+                            num = bool.Parse(temp.GetComponent<DataPoint>().variables[holder.rowNames[location].Replace(" ", "")][0]) ? 1f : 0f;
+                        }
+                        else
+                        {
+                            num = float.Parse(temp.GetComponent<DataPoint>().variables[holder.rowNames[location].Replace(" ", "")][0]);
+                        }
+                        if (num > holder.axisMinMax[location].y)
+                        {
+                            holder.axisMinMax[location] = new Vector2(holder.axisMinMax[location].x, num);
+                        }
+                        else if (num < holder.axisMinMax[location].x)
+                        {
+                            holder.axisMinMax[location] = new Vector2(num, holder.axisMinMax[location].y);
+                        }
                     }
                 }
             }
