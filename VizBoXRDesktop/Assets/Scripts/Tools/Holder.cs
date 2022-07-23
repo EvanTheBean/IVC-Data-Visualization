@@ -60,6 +60,7 @@ public class Holder : NetworkBehaviour, INetworkSerializable
     public List<bool> isCatagorical = new List<bool>();
     public List<float> randomness = new List<float>();
     public List<ListWrapper> catagories = new List<ListWrapper> ();
+    public List<bool> centered = new List<bool>();
 
     [HideInInspector]
     public List<gradientTypes> gTypes = new List<gradientTypes>();
@@ -76,6 +77,7 @@ public class Holder : NetworkBehaviour, INetworkSerializable
 
     public bool check, hiding,dataRead,dataLoaded, bestFit,xN, yN, zN, xLines, yLines, zLines;
     public float Xn, Yn, Zn;
+    public float overScale;
 
     public ChartType chartType = 0;
 
@@ -133,6 +135,8 @@ public class Holder : NetworkBehaviour, INetworkSerializable
         isCatagorical.Clear();
         catagories.Clear();
         randomness.Clear();
+
+        centered.Clear();
 
         path.Clear();
     }
