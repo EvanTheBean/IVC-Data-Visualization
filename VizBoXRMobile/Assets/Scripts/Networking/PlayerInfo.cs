@@ -62,6 +62,13 @@ public class PlayerInfo : NetworkBehaviour
     {
     }
 
+
+    [ClientRpc]
+    void StartLobbyClientRpc()
+    {
+        FindObjectOfType<RelayLobbyManager>().OnLobbyStart.Invoke();
+    }
+
     private void OnApplicationQuit()
     {
         playerCount.Dispose();

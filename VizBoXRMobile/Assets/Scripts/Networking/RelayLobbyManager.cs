@@ -22,6 +22,7 @@ public class RelayLobbyManager : MonoBehaviour
 
     public LobbyEvent OnLobbyJoin;
 
+    public LobbyEvent OnLobbyStart;
     public void CreateLobby()
     {
         StartCoroutine(ConfigureTransportAndStartNgoAsHost()); //Set up networking        

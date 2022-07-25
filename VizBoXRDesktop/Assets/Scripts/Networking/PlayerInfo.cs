@@ -59,6 +59,16 @@ public class PlayerInfo : NetworkBehaviour
         Debug.Log(playerData.Item1 + " switched to activity " + activity.ToString());
     }
 
+    public void StartLobby()
+    {
+        StartLobbyClientRpc();
+    }
+
+    [ClientRpc]
+    void StartLobbyClientRpc()
+    {
+    }
+
     private new void OnDestroy()
     {
         playerCount.Dispose();
