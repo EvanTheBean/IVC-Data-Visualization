@@ -220,15 +220,28 @@ public class Loader : EditorWindow
                 }
             }
             */
-            EditorGUIUtility.labelWidth = 100;
-            holder.overScale = EditorGUILayout.FloatField("Overall Scale: ", holder.overScale);
-            if(holder.overScale < 0)
+            if(!holder.axisTypes.Contains(axisType.Size))
             {
-                holder.overScale = -holder.overScale;
+                EditorGUIUtility.labelWidth = 100;
+                holder.overScale = EditorGUILayout.FloatField("Overall Scale: ", holder.overScale);
+                if (holder.overScale < 0)
+                {
+                    holder.overScale = -holder.overScale;
+                }
             }
             EditorGUILayout.BeginHorizontal();
-            EditorGUIUtility.labelWidth = 110;
-            holder.bestFit = EditorGUILayout.Toggle("add line of best fit: ", holder.bestFit);
+            string label2;
+            if (holder.axisTypes.Contains(axisType.X) && holder.axisTypes.Contains(axisType.Y) && holder.axisTypes.Contains(axisType.Z))
+            {
+                EditorGUIUtility.labelWidth = 120;
+                label2 = "add plane of best fit: ";
+            }
+            else
+            {
+                EditorGUIUtility.labelWidth = 110;
+                label2 = "add line of best fit: ";
+            }
+            holder.bestFit = EditorGUILayout.Toggle(label2, holder.bestFit);
             if(holder.bestFit)
             {
                 if(holder.axisTypes.Contains(axisType.X) && holder.axisTypes.Contains(axisType.Y) && holder.axisTypes.Contains(axisType.Z))
