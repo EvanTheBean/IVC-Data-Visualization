@@ -37,8 +37,6 @@ public enum ChartType
     Line,
     Bar
 }
-
-[ExecuteInEditMode]
 public class Holder : NetworkBehaviour, INetworkSerializable
 {
     public List<string> rowNames = new List<string>();
@@ -75,6 +73,8 @@ public class Holder : NetworkBehaviour, INetworkSerializable
     // Start is called before the first frame update
     void Start()
     {
+        DontDestroyOnLoad(this);
+        transform.localScale = 0.01f * transform.localScale;
         hiding = false;
     }
 

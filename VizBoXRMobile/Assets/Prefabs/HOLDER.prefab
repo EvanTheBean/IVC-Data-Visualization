@@ -232,7 +232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d305fdd28d8d98f40bcf421dffb2cad5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  holder: {fileID: 2413362435559014646}
+  holder: {fileID: 0}
 --- !u!120 &1062065862408167720
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -240,7 +240,7 @@ LineRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2413362435559014647}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
