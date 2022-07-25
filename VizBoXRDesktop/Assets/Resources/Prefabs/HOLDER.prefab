@@ -143,6 +143,7 @@ GameObject:
   - component: {fileID: 2413362435559014646}
   - component: {fileID: 2413362435559014640}
   - component: {fileID: 1062065862408167720}
+  - component: {fileID: 2337301058960355922}
   - component: {fileID: -1930970284762367714}
   m_Layer: 0
   m_Name: HOLDER
@@ -194,7 +195,9 @@ MonoBehaviour:
   catagorical: 
   offsets: []
   isCatagorical: 
+  randomness: []
   catagories: []
+  centered: 
   gTypes: 000000000000000000000000000000000000000000000000
   catagoricalGradientsNames: 020000000200000002000000020000000200000002000000
   sequentialGradientsNames: 000000000000000000000000000000000000000000000000
@@ -219,6 +222,7 @@ MonoBehaviour:
   Xn: 0
   Yn: 0
   Zn: 0
+  overScale: 0
   chartType: 0
 --- !u!114 &2413362435559014640
 MonoBehaviour:
@@ -332,6 +336,23 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+--- !u!114 &2337301058960355922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2413362435559014647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cc7addeb920b404f8fd614c62d9c706, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  holder: {fileID: 0}
+  num1: 0
+  num2: 0
+  fullBar: 0
+  singleChunks: 0
 --- !u!114 &-1930970284762367714
 MonoBehaviour:
   m_ObjectHideFlags: 0
