@@ -52,6 +52,7 @@ public class MoveBetween : MonoBehaviour
 
     public void PosLerp(float percent)
     {
+        //Debug.Log(percent);
         if (fullBar)
         {
             num1 = Mathf.FloorToInt(percent);
@@ -74,6 +75,7 @@ public class MoveBetween : MonoBehaviour
 
             for (int j = 0; j < holder.axisTypes.Count; j++)
             {
+                //Debug.Log(temp.name + " " + j);
                 if (holder.axisTypes[j] == axisType.X)
                 {
                     float x = 0;
@@ -83,6 +85,7 @@ public class MoveBetween : MonoBehaviour
                         replaceF = float.Parse(tempDP.variables[holder.rowNames[j].Replace(" ", "")][num1]);
                         float replaceF2 = float.Parse(tempDP.variables[holder.rowNames[j].Replace(" ", "")][num2]);
                         x = Mathf.Lerp(replaceF, replaceF2, percent);
+                        //Debug.Log(x + " " + replaceF  + " " + num1 + " " + replaceF2 + " " + num2 + " " + percent);
                     }
                     if (holder.catagorical[j])
                     {
@@ -350,6 +353,38 @@ public class MoveBetween : MonoBehaviour
                         }
                     }
 
+                }
+
+                if (holder.bestFit)
+                {
+                    BestFit best = new BestFit();
+                    if (holder.axisTypes.Contains(axisType.X) && holder.axisTypes.Contains(axisType.Y) && holder.axisTypes.Contains(axisType.Z))
+                    {
+                        //best.FitIndexed3D(holder);
+                        //holder.GetComponent<LineRenderer>().enabled = false;
+                        holder.plane.GetComponent<MeshRenderer>().enabled = true;
+                    }
+                    else if (holder.axisTypes.Contains(axisType.X) && holder.axisTypes.Contains(axisType.Y))
+                    {
+                        //XY line
+                        //holder.GetComponent<LineRenderer>().enabled = true;
+                        //holder.plane.GetComponent<MeshRenderer>().enabled = false;
+                        best.FitIndexed(true, true, false, holder);
+                    }
+                    else if (holder.axisTypes.Contains(axisType.Z) && holder.axisTypes.Contains(axisType.Y))
+                    {
+                        //holder.GetComponent<LineRenderer>().enabled = true;
+                        //holder.plane.GetComponent<MeshRenderer>().enabled = false;
+                        best.FitIndexed(false, true, true, holder);
+                        //YZ line
+                    }
+                    else if (holder.axisTypes.Contains(axisType.Z) && holder.axisTypes.Contains(axisType.X))
+                    {
+                        //holder.GetComponent<LineRenderer>().enabled = true;
+                        //holder.plane.GetComponent<MeshRenderer>().enabled = false;
+                        best.FitIndexed(true, false, true, holder);
+                        //XZ line
+                    }
                 }
             }
 
