@@ -77,7 +77,7 @@ public class Holder : NetworkBehaviour, INetworkSerializable
 
     public bool check, hiding,dataRead,dataLoaded, bestFit,xN, yN, zN, xLines, yLines, zLines;
     public float Xn, Yn, Zn;
-    public float overScale;
+    public float overScale = 1f;
 
     public ChartType chartType = 0;
 

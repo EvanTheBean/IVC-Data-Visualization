@@ -15,6 +15,8 @@ public class Annotator : EditorWindow
     public SerializedObject _objectSO = null;
     public ReorderableList _listRE = null;
 
+    public GameObject lastSelected;
+
     [MenuItem("Tools/Annotation")]
     static void Init()
     {
@@ -24,30 +26,52 @@ public class Annotator : EditorWindow
 
     private void OnGUI()
     {
-        if(Selection.activeGameObject.GetComponent<DataPoint>() != null && Selection.objects.Length == 1)
+        if(Selection.count >= 1)
         {
-            DataPoint point = Selection.activeGameObject.GetComponent<DataPoint>();
-            _objectSO = new SerializedObject(point);
-            _listRE = new ReorderableList(_objectSO, _objectSO.FindProperty("annotations"), true, true, true, true);
-
-            _listRE.drawHeaderCallback = (rect) => EditorGUI.LabelField(rect, "Annotations for " + point.name);
-            _listRE.drawElementCallback = (Rect rect, int index, bool isActive, bool isFocused) =>
+            if (Selection.activeGameObject.GetComponent<DataPoint>() != null && Selection.objects.Length == 1)
             {
-                rect.y += 2f;
-                rect.height = EditorGUIUtility.singleLineHeight;
-                GUIContent label = new GUIContent($"Annotation {index + 1}");
-                EditorGUI.PropertyField(rect, _listRE.serializedProperty.GetArrayElementAtIndex(index), label);
+                DataPoint point = Selection.activeGameObject.GetComponent<DataPoint>();
+                _objectSO = new SerializedObject(point);
+                _listRE = new ReorderableList(_objectSO, _objectSO.FindProperty("annotations"), true, true, true, true);
 
-            };
-            _listRE.onAddCallback = (rect) =>
+                _listRE.drawHeaderCallback = (rect) => EditorGUI.LabelField(rect, "Annotations for " + point.name);
+                _listRE.drawElementCallback = (Rect rect, int index, bool isActive, bool isFocused) =>
+                {
+                    rect.y += 2f;
+                    rect.height = EditorGUIUtility.singleLineHeight;
+                    GUIContent label = new GUIContent($"Annotation {index + 1}");
+                    EditorGUI.PropertyField(rect, _listRE.serializedProperty.GetArrayElementAtIndex(index), label);
+
+                };
+                _listRE.onAddCallback = (rect) =>
+                {
+                    _listRE.serializedProperty.arraySize++;
+                    var newElement = _listRE.serializedProperty.GetArrayElementAtIndex(_listRE.serializedProperty.arraySize - 1);
+                    newElement.stringValue = "";
+                };
+
+                //GUILayout.Label("Annotations", EditorStyles.boldLabel);
+                _objectSO.Update();
+                _listRE.DoList(new Rect(new Vector2(10, 10), Vector2.one * 500f));
+                _objectSO.ApplyModifiedProperties();
+            }
+            else
             {
-               _listRE.list.Add("");
-            };
-
-            GUILayout.Label("Annotations", EditorStyles.boldLabel);
-            _objectSO.Update();
-            _listRE.DoList(new Rect(new Vector2(0, 50), Vector2.one * 500f));
-            _objectSO.ApplyModifiedProperties();
+                EditorGUILayout.LabelField("Please select ONE data point");
+            }
         }
+        else
+        {
+            EditorGUILayout.LabelField("Nothing selected");
+        }
+    }
+
+    private void Update()
+    {
+        if(lastSelected != Selection.activeGameObject)
+        {
+            Repaint();
+        }
+        lastSelected = Selection.activeGameObject;
     }
 }

@@ -495,7 +495,11 @@ MonoBehaviour:
     - data:
       - 52.34941
     - data: []
-  annotations: []
+  annotations:
+  - 
+  - okay
+  - 
+  - 
   displayBox: {fileID: 61431368}
   currentC: 0
 --- !u!21 &81432290
@@ -1279,7 +1283,15 @@ MonoBehaviour:
     - data:
       - 50.40982
     - data: []
-  annotations: []
+  annotations:
+  - 
+  - aghhh
+  - aghhh
+  - 
+  - 
+  - 
+  - 
+  - 
   displayBox: {fileID: 201913055}
   currentC: 0
 --- !u!21 &203447023
@@ -5355,7 +5367,10 @@ MonoBehaviour:
     - data:
       - 49.9221
     - data: []
-  annotations: []
+  annotations:
+  - 
+  - 
+  - 
   displayBox: {fileID: 863205152}
   currentC: 0
 --- !u!21 &871244174
@@ -10316,7 +10331,10 @@ MonoBehaviour:
     - data:
       - 50.39812
     - data: []
-  annotations: []
+  annotations:
+  - hi
+  - okay
+  - hi
   displayBox: {fileID: 1106563251}
   currentC: 0
 --- !u!1 &1141013926
