@@ -5,12 +5,12 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/VisualViewer.unity
-    guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
     path: Assets/Scenes/LobbyHost.unity
     guid: ce982db492248a04688bb9565af9de77
+  - enabled: 1
+    path: Assets/Scenes/VisualViewer.unity
+    guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
     path: Assets/Scenes/CardboardVR.unity
     guid: cafc8ba7ccbb9064c83405e89cc0eaa5
@@ -20,6 +20,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/AR.unity
     guid: feb8a1b092c1ef74cb6193e8a8ff60ff
+  - enabled: 1
+    path: Assets/Scenes/VisualDashboardPhone.unity
+    guid: e25ecbba962906e4e912ae5c392bbb8e
   m_configObjects:
     UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 799ac53e751797644bef8ded8ea015f9,
       type: 2}
