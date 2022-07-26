@@ -873,12 +873,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b50ad3f5d9024549b0a549c5a03a084, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Session: {fileID: 1274261149}
-  SessionOrigin: {fileID: 398379163}
-  CameraManager: {fileID: 437865581}
-  ARCoreExtensionsConfig: {fileID: 11400000, guid: 1f25bd432bcf9d34ab4eaa44ec6d437b,
-    type: 2}
-  CameraConfigFilter: {fileID: 11400000, guid: 483fd638ee327b94693201f4f1b8cdd9, type: 2}
 --- !u!1 &1084820371
 GameObject:
   m_ObjectHideFlags: 0

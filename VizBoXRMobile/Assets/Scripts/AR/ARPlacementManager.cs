@@ -7,11 +7,13 @@ using UnityEngine.XR.ARFoundation;
 public class ARPlacementManager : MonoBehaviour
 {
     ARRaycastManager arRaycastManager;
+    Transform graph;
     // Start is called before the first frame update
     void Start()
     {
         arRaycastManager = FindObjectOfType<ARRaycastManager>();
-
+        graph = FindObjectOfType<Holder>().transform;
+        graph.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -34,7 +36,10 @@ public class ARPlacementManager : MonoBehaviour
 
     void DoPlacementRoutine()
     {
-        if (placedObject!= null) return;
+        if (placedObject != null) 
+        {
+            return;
+        }
 
         //if (placementCooldownTimer < placementCooldown)
         //{
@@ -52,8 +57,12 @@ public class ARPlacementManager : MonoBehaviour
         {
             var hitPose = hits[0].pose;
             DebugCanvas.Instance.Log("2");
-            ARAnchor anchor = Instantiate(anchorPrefab, hitPose.position, hitPose.rotation);
-            placedObject = Instantiate(objectToPlace, anchor.transform);
+
+            graph.gameObject.SetActive(true);
+            graph.position = hitPose.position;
+            graph.rotation = hitPose.rotation;
+            graph.gameObject.AddComponent<ARAnchor>();
+            placedObject = graph.gameObject;
             DebugCanvas.Instance.Log("3");
             //placementCooldownTimer = 0;
         }
