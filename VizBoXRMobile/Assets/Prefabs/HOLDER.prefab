@@ -144,7 +144,6 @@ GameObject:
   - component: {fileID: 1675146734884446884}
   - component: {fileID: 1062065862408167720}
   - component: {fileID: -1930970284762367714}
-  - component: {fileID: 7176032967638954964}
   m_Layer: 0
   m_Name: HOLDER
   m_TagString: Untagged
@@ -233,7 +232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d305fdd28d8d98f40bcf421dffb2cad5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  holder: {fileID: 0}
+  holder: {fileID: 2413362435559014646}
 --- !u!120 &1062065862408167720
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -349,18 +348,6 @@ MonoBehaviour:
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &7176032967638954964
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2413362435559014647}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 785647678f2b1c84cba7e87337500983, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4943408091956994011
 GameObject:
   m_ObjectHideFlags: 0

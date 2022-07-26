@@ -8,12 +8,11 @@ public class NetworkGrapher : MonoBehaviour
 {
     [SerializeField] GameObject dataPointPrefab;
     [SerializeField] GameObject holderPrefab;
+    [SerializeField] GameObject rotatorPrefab;
 
     // Start is called before the first frame update
     void Start()
     {
-        
-
         foreach (Holder holder in FindObjectsOfType<Holder>())
         {
             SpawnPoints(holder);
@@ -39,6 +38,10 @@ public class NetworkGrapher : MonoBehaviour
             netPoint.GetComponent<NetworkObject>().Spawn();
             netPoint.transform.SetParent(netHolder.transform);
         }
+        GameObject rotator = Instantiate(rotatorPrefab, netHolder.GetComponent<Holder>().CalculateCenterPoint(), Quaternion.identity, netHolder.transform);
+        rotator.GetComponent<NetworkObject>().Spawn();
+        rotator.transform.SetParent(null);
+        netHolder.transform.SetParent(rotator.transform);
 
     }
 
@@ -61,8 +64,6 @@ public class NetworkGrapher : MonoBehaviour
             return;
         }
 
-       
-
         if (destination.GetComponent<T>() == null) destination.AddComponent<T>();
         System.Type type = original.GetType();
         Component copy = destination.GetComponent<T>();
@@ -79,4 +80,5 @@ public class NetworkGrapher : MonoBehaviour
             destination.GetComponent<MeshRenderer>().material.color = renderer.material.color;
         }
     }
+
 }

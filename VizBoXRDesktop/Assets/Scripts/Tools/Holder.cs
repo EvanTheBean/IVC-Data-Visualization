@@ -147,8 +147,34 @@ public class Holder : NetworkBehaviour, INetworkSerializable
         LineRenderer line = GetComponent<LineRenderer>();
 
         Vector3[] linePositions = new Vector3[line.positionCount];
-        line.GetPositions(linePositions);
-        SendHolderClientRpc(this, line.enabled, linePositions);
+        if (line != null)
+        {
+            line.GetPositions(linePositions);
+        }
+
+        SendHolderClientRpc(this, (line != null), linePositions);
+    }
+
+    public Vector3 CalculateCenterPoint()
+    {
+        Vector3 centerPoint = Vector3.zero;
+        for (int i = 0; i < axisTypes.Count; i++)
+        {
+            if (axisTypes[i] == axisType.X)
+            {
+                centerPoint.x = ((axisMinMax[i].y + axisMinMax[i].x) / 2) + offsets[i];
+            }
+            if (axisTypes[i] == axisType.Y)
+            {
+                centerPoint.y = ((axisMinMax[i].y + axisMinMax[i].x) / 2) + offsets[i];
+            }
+            if (axisTypes[i] == axisType.Z)
+            {
+                centerPoint.z = ((axisMinMax[i].y + axisMinMax[i].x) / 2) + offsets[i];
+            }
+        }
+
+        return centerPoint;
     }
 
     [ClientRpc]

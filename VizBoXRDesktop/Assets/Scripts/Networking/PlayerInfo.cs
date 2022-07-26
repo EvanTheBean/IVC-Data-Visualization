@@ -18,7 +18,6 @@ public class PlayerEvent : UnityEvent<ulong, string, Activity> { };
 public class PlayerInfo : NetworkBehaviour
 {
     Dictionary<ulong, (string, Activity)> players = new Dictionary<ulong, (string, Activity)>();
-    NetworkVariable<int> playerCount = new NetworkVariable<int>(0);
 
     public PlayerEvent OnPlayerJoin;
     public PlayerEvent OnPlayerLeave;
@@ -35,7 +34,6 @@ public class PlayerInfo : NetworkBehaviour
     {
         players.Add(id, (username, Activity.Annotating));
         Debug.Log(username + " joined the lobby.");
-        playerCount.Value++;
         OnPlayerJoin.Invoke(id, username, Activity.Annotating);
     }
 
@@ -44,9 +42,7 @@ public class PlayerInfo : NetworkBehaviour
     {
         Debug.Log(players[id].Item1 + " left the lobby.");
         OnPlayerLeave?.Invoke(id, players[id].Item1, Activity.Annotating);
-        players.Remove(id);
-        playerCount.Value--;
-        
+        players.Remove(id);        
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -67,17 +63,6 @@ public class PlayerInfo : NetworkBehaviour
     [ClientRpc]
     void StartLobbyClientRpc()
     {
-    }
-
-    private new void OnDestroy()
-    {
-        playerCount.Dispose();
-        base.OnDestroy();
-    }
-
-    private void OnApplicationQuit()
-    {
-        playerCount.Dispose();
     }
 
 }

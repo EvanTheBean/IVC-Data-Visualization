@@ -70,12 +70,14 @@ public class Holder : NetworkBehaviour, INetworkSerializable
     public float Xn, Yn, Zn;
 
     public ChartType chartType = 0;
+
+    LineRenderer lineRenderer;
     // Start is called before the first frame update
     void Start()
     {
-        DontDestroyOnLoad(this);
-        transform.localScale = 0.01f * transform.localScale;
+        lineRenderer = GetComponent<LineRenderer>();
         hiding = false;
+
     }
 
     // Update is called once per frame
@@ -156,10 +158,34 @@ public class Holder : NetworkBehaviour, INetworkSerializable
         var json = JsonUtility.ToJson(holder);
         JsonUtility.FromJsonOverwrite(json, this);
 
+        lineRenderer = GetComponent<LineRenderer>();
+        lineRenderer.enabled = lineEnabled;
         if (lineEnabled)
         {
-            GetComponent<LineRenderer>().SetPositions(linePositions);
+            lineRenderer.SetPositions(linePositions);
         }
+    }
+
+    private Vector3 CalculateCenterPoint()
+    {
+        Vector3 centerPoint = Vector3.zero;
+        for(int i = 0; i < axisTypes.Count; i++)
+        {
+            if (axisTypes[i] == axisType.X)
+            {
+                centerPoint.x = ((axisMinMax[i].y + axisMinMax[i].x) / 2) + offsets[i];
+            }
+            if (axisTypes[i] == axisType.Y)
+            {
+                centerPoint.y = ((axisMinMax[i].y + axisMinMax[i].x) / 2) + offsets[i];
+            }
+            if (axisTypes[i] == axisType.Z)
+            {
+                centerPoint.z = ((axisMinMax[i].y + axisMinMax[i].x) / 2) + offsets[i];
+            }
+        }
+
+        return centerPoint;
     }
 
     void CopyComponentOnto<T>(T original, GameObject destination) where T : Component
