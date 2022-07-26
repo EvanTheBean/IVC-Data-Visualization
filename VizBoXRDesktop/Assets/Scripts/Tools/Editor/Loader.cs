@@ -36,7 +36,7 @@ public class Loader : EditorWindow
 
     ChartType prevchartType;
 
-    [MenuItem("Tools/Loader")]
+    [MenuItem("Tools/Graphing")]
     static void Init()
     {
         Loader window = EditorWindow.GetWindow<Loader>();
