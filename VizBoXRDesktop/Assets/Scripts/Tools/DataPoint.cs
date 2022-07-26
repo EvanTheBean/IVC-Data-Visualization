@@ -58,6 +58,7 @@ public class DataPoint : NetworkBehaviour, IPointerDownHandler, IPointerUpHandle
     public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
     {
         serializer.SerializeValue(ref variables);
+        serializer.SerializeValue(ref annotations);
     }
 
 }
