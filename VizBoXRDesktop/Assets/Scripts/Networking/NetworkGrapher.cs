@@ -26,7 +26,6 @@ public class NetworkGrapher : MonoBehaviour
         DataPoint[] dataPoints = holder.transform.GetComponentsInChildren<DataPoint>();
         foreach (DataPoint dataPoint in dataPoints)
         {
-            Debug.Log("spawning datapoint " + dataPoint.name);
             GameObject netPoint = Instantiate(dataPointPrefab);
             netPoint.name = "NetPoint " + dataPoint.name;
             CopyComponentOnto(dataPoint.transform, netPoint);
@@ -38,11 +37,9 @@ public class NetworkGrapher : MonoBehaviour
             netPoint.GetComponent<NetworkObject>().Spawn();
             netPoint.transform.SetParent(netHolder.transform);
         }
-        GameObject rotator = Instantiate(rotatorPrefab, netHolder.GetComponent<Holder>().CalculateCenterPoint(), Quaternion.identity, netHolder.transform);
+        GameObject rotator = Instantiate(rotatorPrefab, netHolder.GetComponent<Holder>().CalculateCenterPoint(), Quaternion.identity);
         rotator.GetComponent<NetworkObject>().Spawn();
-        rotator.transform.SetParent(null);
         netHolder.transform.SetParent(rotator.transform);
-
     }
 
     GameObject SpawnHolder(Holder holder)

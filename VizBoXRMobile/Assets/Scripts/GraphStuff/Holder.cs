@@ -37,7 +37,7 @@ public enum ChartType
     Line,
     Bar
 }
-public class Holder : NetworkBehaviour, INetworkSerializable
+public class Holder : NetworkBehaviour
 {
     public List<string> rowNames = new List<string>();
     public List<rowType> rowTypes = new List<rowType>();
@@ -51,7 +51,9 @@ public class Holder : NetworkBehaviour, INetworkSerializable
     public List<bool> catagorical = new List<bool>();
     public List<float> offsets = new List<float>();
     public List<bool> isCatagorical = new List<bool>();
+    public List<float> randomness = new List<float>();
     public List<ListWrapper> catagories = new List<ListWrapper>();
+    public List<bool> centered = new List<bool>();
 
     [HideInInspector]
     public List<gradientTypes> gTypes = new List<gradientTypes>();
@@ -68,14 +70,14 @@ public class Holder : NetworkBehaviour, INetworkSerializable
 
     public bool check, hiding, dataRead, dataLoaded, bestFit, xN, yN, zN, xLines, yLines, zLines;
     public float Xn, Yn, Zn;
+    public float overScale = 1f;
+    public Color defaultColor;
 
     public ChartType chartType = 0;
 
-    LineRenderer lineRenderer;
     // Start is called before the first frame update
     void Start()
     {
-        lineRenderer = GetComponent<LineRenderer>();
         hiding = false;
 
     }
@@ -131,45 +133,10 @@ public class Holder : NetworkBehaviour, INetworkSerializable
         path.Clear();
     }
 
-    public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
-    {
-        serializer.SerializeValue(ref rowNames);
-        serializer.SerializeValue(ref rowTypes);
-        serializer.SerializeValue(ref axisTypes);
-        serializer.SerializeValue(ref axisScales);
-        serializer.SerializeValue(ref axisGradients);
-        serializer.SerializeValue(ref axisMinMax);
-        serializer.SerializeValue(ref connectedTypes);
-        serializer.SerializeValue(ref catagorical);
-        serializer.SerializeValue(ref offsets);
-        serializer.SerializeValue(ref gTypes);
-        serializer.SerializeValue(ref catagoricalGradientsNames);
-        serializer.SerializeValue(ref sequentialGradientsNames);
-        serializer.SerializeValue(ref divergingGradientsNames);
-        serializer.SerializeValue(ref path);
-        serializer.SerializeValue(ref isCatagorical);
-        serializer.SerializeValue(ref catagories);
-        serializer.SerializeValue(ref chartType);
-    }
-
-    [ClientRpc]
-    void SendHolderClientRpc(Holder holder, bool lineEnabled, Vector3[] linePositions)
-    {
-        var json = JsonUtility.ToJson(holder);
-        JsonUtility.FromJsonOverwrite(json, this);
-
-        lineRenderer = GetComponent<LineRenderer>();
-        lineRenderer.enabled = lineEnabled;
-        if (lineEnabled)
-        {
-            lineRenderer.SetPositions(linePositions);
-        }
-    }
-
     private Vector3 CalculateCenterPoint()
     {
         Vector3 centerPoint = Vector3.zero;
-        for(int i = 0; i < axisTypes.Count; i++)
+        for (int i = 0; i < axisTypes.Count; i++)
         {
             if (axisTypes[i] == axisType.X)
             {
@@ -188,18 +155,164 @@ public class Holder : NetworkBehaviour, INetworkSerializable
         return centerPoint;
     }
 
-    void CopyComponentOnto<T>(T original, GameObject destination) where T : Component
+    [ClientRpc]
+    void SendHolderClientRpc(HolderValues vals)
     {
-        if (destination.GetComponent<T>() == null) destination.AddComponent<T>();
-        System.Type type = original.GetType();
-        Component copy = destination.GetComponent<T>();
+        rowNames = vals.rowNames;
+        rowTypes = vals.rowTypes;
+        axisTypes = vals.axisTypes;
+        axisScales = vals.axisScales;
+        axisGradients = vals.axisGradients;
+        axisMinMax = vals.axisMinMax;
+        connectedTypes = vals.connectedTypes;
+        catagorical = vals.catagorical;
+        offsets = vals.offsets;
+        isCatagorical = vals.isCatagorical;
+        randomness = vals.randomness;
+        catagories = vals.catagories;
+        centered = vals.centered;
+        gTypes = vals.gTypes;
+        catagoricalGradientsNames = vals.catagoricalGradientsNames;
+        sequentialGradientsNames = vals.sequentialGradientsNames;
+        divergingGradientsNames = vals.divergingGradientsNames;
+        path = vals.path;
 
-        System.Reflection.FieldInfo[] fields = type.GetFields();
-        foreach (System.Reflection.FieldInfo field in fields)
+        check = vals.check;
+        hiding = vals.hiding;
+        dataRead = vals.dataRead;
+        dataLoaded = vals.dataLoaded;
+        bestFit = vals.bestFit;
+        xN = vals.xN;
+        yN = vals.yN;
+        zN = vals.zN;
+        xLines = vals.xLines;
+        yLines = vals.yLines;
+        zLines = vals.zLines;
+
+        defaultColor = vals.defaultColor;
+        chartType = vals.chartType;
+
+        LineRenderer lineRenderer = GetComponent<LineRenderer>();
+        lineRenderer.enabled = bestFit;
+        if (bestFit)
         {
-            field.SetValue(copy, field.GetValue(original));
+            lineRenderer.SetPositions(vals.linePositions);
+        }
+    }
+
+    private class HolderValues : INetworkSerializable
+    {
+        public List<string> rowNames = new List<string>();
+        public List<rowType> rowTypes = new List<rowType>();
+        public List<axisType> axisTypes = new List<axisType>();
+        public List<GameObject> objects = new List<GameObject>();
+
+        public List<float> axisScales = new List<float>();
+        public List<Gradient> axisGradients = new List<Gradient>();
+        public List<Vector2> axisMinMax = new List<Vector2>();
+        public List<ConnectedTypes> connectedTypes = new List<ConnectedTypes>();
+        public List<bool> catagorical = new List<bool>();
+        public List<float> offsets = new List<float>();
+        public List<bool> isCatagorical = new List<bool>();
+        public List<float> randomness = new List<float>();
+        public List<ListWrapper> catagories = new List<ListWrapper>();
+        public List<bool> centered = new List<bool>();
+
+        public List<gradientTypes> gTypes = new List<gradientTypes>();
+        public List<catagoricalGradientsNames> catagoricalGradientsNames = new List<catagoricalGradientsNames>();
+        public List<sequentialGradientsNames> sequentialGradientsNames = new List<sequentialGradientsNames>();
+        public List<divergingGradientsNames> divergingGradientsNames = new List<divergingGradientsNames>();
+
+        public List<string> path = new List<string>(1);
+
+        public bool check, hiding, dataRead, dataLoaded, bestFit, xN, yN, zN, xLines, yLines, zLines;
+        public float Xn, Yn, Zn;
+        public float overScale = 1f;
+        public Color defaultColor;
+
+        public ChartType chartType = 0;
+
+        public Vector3[] linePositions = new Vector3[0];
+
+        public HolderValues() { }
+
+        public HolderValues(Holder holder)
+        {
+            rowNames = holder.rowNames;
+            rowTypes = holder.rowTypes;
+            axisTypes = holder.axisTypes;
+            axisScales = holder.axisScales;
+            axisGradients = holder.axisGradients;
+            axisMinMax = holder.axisMinMax;
+            connectedTypes = holder.connectedTypes;
+            catagorical = holder.catagorical;
+            offsets = holder.offsets;
+            isCatagorical = holder.isCatagorical;
+            randomness = holder.randomness;
+            catagories = holder.catagories;
+            centered = holder.centered;
+            gTypes = holder.gTypes;
+            catagoricalGradientsNames = holder.catagoricalGradientsNames;
+            sequentialGradientsNames = holder.sequentialGradientsNames;
+            divergingGradientsNames = holder.divergingGradientsNames;
+            path = holder.path;
+
+            check = holder.check;
+            hiding = holder.hiding;
+            dataRead = holder.dataRead;
+            dataLoaded = holder.dataLoaded;
+            bestFit = holder.bestFit;
+            xN = holder.xN;
+            yN = holder.yN;
+            zN = holder.zN;
+            xLines = holder.xLines;
+            yLines = holder.yLines;
+            zLines = holder.zLines;
+
+            defaultColor = holder.defaultColor;
+            chartType = holder.chartType;
+
+            if (holder.bestFit)
+            {
+                linePositions = new Vector3[holder.GetComponent<LineRenderer>().positionCount];
+                holder.GetComponent<LineRenderer>().GetPositions(linePositions);
+            }
         }
 
+        public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+        {
+            serializer.SerializeValue(ref rowNames);
+            serializer.SerializeValue(ref rowTypes);
+            serializer.SerializeValue(ref axisTypes);
+            serializer.SerializeValue(ref axisScales);
+            serializer.SerializeValue(ref axisGradients);
+            serializer.SerializeValue(ref axisMinMax);
+            serializer.SerializeValue(ref connectedTypes); 
+            serializer.SerializeValue(ref catagorical);
+            serializer.SerializeValue(ref offsets); 
+            serializer.SerializeValue(ref isCatagorical); 
+            serializer.SerializeValue(ref randomness);
+            serializer.SerializeValue(ref catagories); 
+            serializer.SerializeValue(ref centered);
+            serializer.SerializeValue(ref gTypes);
+            serializer.SerializeValue(ref catagoricalGradientsNames); 
+            serializer.SerializeValue(ref sequentialGradientsNames);
+            serializer.SerializeValue(ref divergingGradientsNames);
+            serializer.SerializeValue(ref path);
+            serializer.SerializeValue(ref check);
+            serializer.SerializeValue(ref hiding);
+            serializer.SerializeValue(ref dataRead); 
+            serializer.SerializeValue(ref dataLoaded);
+            serializer.SerializeValue(ref bestFit);
+            serializer.SerializeValue(ref xN);
+            serializer.SerializeValue(ref yN);
+            serializer.SerializeValue(ref zN);
+            serializer.SerializeValue(ref xLines); 
+            serializer.SerializeValue(ref yLines); 
+            serializer.SerializeValue(ref zLines); 
+            serializer.SerializeValue(ref defaultColor);
+            serializer.SerializeValue(ref chartType);
+        }
     }
 }
 
@@ -252,4 +365,5 @@ public class ListWrapper
     {
         myList.Add(temp);
     }
+
 }

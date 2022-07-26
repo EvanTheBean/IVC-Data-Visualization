@@ -15,8 +15,8 @@ public class ObjectRotator : MonoBehaviour
 			YaxisRotation = 0.002f * Input.touches[0].deltaPosition.y;
 		}
 
-		transform.RotateAround(Vector3.down, XaxisRotation);
-		transform.RotateAround(Vector3.right, YaxisRotation);
+		transform.Rotate(Vector3.down, XaxisRotation);
+		transform.Rotate(Vector3.right, YaxisRotation);
 	}
 
 }
