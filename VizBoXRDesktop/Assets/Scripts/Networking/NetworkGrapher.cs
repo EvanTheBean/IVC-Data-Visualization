@@ -76,10 +76,6 @@ public class NetworkGrapher : MonoBehaviour
             Vector3[] positions = new Vector3[line.positionCount];
             line.GetPositions(positions);
 
-            foreach(Vector3 vector in positions)
-            {
-                Debug.Log(vector);
-            }    
             lineDestination.SetPositions(positions);
 
             lineDestination.widthCurve = line.widthCurve;
