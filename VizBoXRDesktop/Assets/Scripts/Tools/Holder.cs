@@ -78,7 +78,7 @@ public class Holder : NetworkBehaviour
     public bool check, hiding,dataRead,dataLoaded, bestFit,xN, yN, zN, xLines, yLines, zLines;
     public float Xn, Yn, Zn;
     public float overScale = 1f;
-    public Color defaultColor;
+    public Color defaultColor = Color.white;
 
     public ChartType chartType = 0;
 
@@ -140,6 +140,10 @@ public class Holder : NetworkBehaviour
         centered.Clear();
 
         path.Clear();
+
+        defaultColor = Color.white;
+        overScale = 1f;
+        chartType = 0;
     }
 
     public override void OnNetworkSpawn()

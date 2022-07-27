@@ -220,6 +220,7 @@ public class Loader : EditorWindow
                 }
             }
             */
+            EditorGUILayout.BeginHorizontal();
             if(!holder.axisTypes.Contains(axisType.Size))
             {
                 EditorGUIUtility.labelWidth = 100;
@@ -229,6 +230,14 @@ public class Loader : EditorWindow
                     holder.overScale = -holder.overScale;
                 }
             }
+            if(!holder.axisTypes.Contains(axisType.Color))
+            {
+                EditorGUIUtility.labelWidth = 125;
+                holder.defaultColor = EditorGUILayout.ColorField("Default Color: ", holder.defaultColor);
+            }
+
+            EditorGUILayout.EndHorizontal();
+
             EditorGUILayout.BeginHorizontal();
             string label2;
             if (holder.axisTypes.Contains(axisType.X) && holder.axisTypes.Contains(axisType.Y) && holder.axisTypes.Contains(axisType.Z))
@@ -1227,6 +1236,10 @@ public class Loader : EditorWindow
                 {
                     temp.transform.localScale = new Vector3(temp.transform.localScale.x, temp.transform.localScale.y, holder.overScale);
                 }
+            }
+            if(!holder.axisTypes.Contains(axisType.Color))
+            {
+                temp.GetComponent<MeshRenderer>().material.color = holder.defaultColor;
             }
         }
     }
