@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class GraphPositionEditor : MonoBehaviour
 {
     GameObject holder;
+    Vector3 centerPoint;
 
     // Start is called before the first frame update
     void Start()
@@ -13,8 +14,8 @@ public class GraphPositionEditor : MonoBehaviour
         DontDestroyOnLoad(this);
         SceneManager.sceneLoaded += OnSceneLoaded;
         holder = transform.GetChild(0).gameObject;
-        transform.position = new Vector3(0, -1.24f, 4.26f);
-
+        centerPoint = holder.GetComponent<Holder>().CalculateCenterPoint();
+        transform.position = new Vector3(0, 0f, centerPoint.z*4);
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -23,12 +24,12 @@ public class GraphPositionEditor : MonoBehaviour
         transform.localPosition = Vector3.zero;
         transform.rotation = Quaternion.identity;
         transform.localScale = Vector3.one;
-        holder.transform.localPosition = -holder.GetComponent<Holder>().CalculateCenterPoint();
+        holder.transform.localPosition = -centerPoint;
         holder.transform.rotation = Quaternion.identity;
 
         if (scene.name == "VisualViewer")
         {
-            transform.position = new Vector3(0, -1.24f, 4.26f);
+            transform.position = new Vector3(0, 0f, centerPoint.z*4);
         }
 
         if (scene.name == "AR")

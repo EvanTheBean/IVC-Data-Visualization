@@ -4,19 +4,37 @@ using UnityEngine;
 using Unity.Netcode;
 using System;
 
-public class NetworkGrapher : MonoBehaviour
+public class NetworkGrapher : NetworkBehaviour
 {
     [SerializeField] GameObject dataPointPrefab;
     [SerializeField] GameObject holderPrefab;
     [SerializeField] GameObject rotatorPrefab;
 
+    [SerializeField] GameObject xAxis;
+    [SerializeField] GameObject yAxis;
+    [SerializeField] GameObject zAxis;
+
     // Start is called before the first frame update
     void Start()
     {
+        GetComponent<NetworkObject>().Spawn();
+        SetupSkybox();
+
         foreach (Holder holder in FindObjectsOfType<Holder>())
         {
             SpawnPoints(holder);
         }
+    }
+
+    private void SetupSkybox()
+    {
+        SendSkyboxClientRpc(new SkyboxValues(RenderSettings.skybox));
+    }
+
+    [ClientRpc]
+    void SendSkyboxClientRpc(SkyboxValues skybox)
+    {
+
     }
 
     private void SpawnPoints(Holder holder)
@@ -48,6 +66,7 @@ public class NetworkGrapher : MonoBehaviour
         CopyComponentOnto(holder, netHolder);
         CopyComponentOnto(holder.GetComponent<LineRenderer>(), netHolder);
         netHolder.GetComponent<NetworkObject>().Spawn();
+        netHolder.GetComponent<Holder>().SetAxis(new AxisValues(xAxis), new AxisValues(yAxis), new AxisValues(zAxis));
         return netHolder;
     }
 
@@ -101,3 +120,5 @@ public class NetworkGrapher : MonoBehaviour
     }
 
 }
+
+

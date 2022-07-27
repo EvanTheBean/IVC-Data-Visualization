@@ -179,6 +179,17 @@ public class Holder : NetworkBehaviour
         
     }
 
+    public void SetAxis(AxisValues x, AxisValues y, AxisValues z)
+    {
+        SetAxisClientRpc(x, y, z);
+    }
+
+    [ClientRpc]
+    void SetAxisClientRpc(AxisValues x, AxisValues y, AxisValues z)
+    {
+
+    }
+
     private class HolderValues : INetworkSerializable
     {
         public List<string> rowNames = new List<string>();

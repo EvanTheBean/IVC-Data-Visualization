@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: M_Skybox
-  m_Shader: {fileID: -6465566751694194690, guid: f2ceb42d18f0dfa43bcf3d2ad827f24a,
+  m_Shader: {fileID: -6465566751694194690, guid: 517776d0a66927644a7a26cc63ebfa3a,
     type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -43,8 +43,8 @@ Material:
     - _QueueOffset: 0
     - _Stars: 57.53
     m_Colors:
-    - _Horizon_Color: {r: 0.6240963, g: 0.4012549, b: 0.6698113, a: 1}
-    - _Sky_Color: {r: 1, g: 0.9733994, b: 0.25098038, a: 0}
+    - _Horizon_Color: {r: 0.6240963, g: 0.40125486, b: 0.6698113, a: 1}
+    - _Sky_Color: {r: 1, g: 0.97339934, b: 0.25098035, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &740117432853096710
 MonoBehaviour:

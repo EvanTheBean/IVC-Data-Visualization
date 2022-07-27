@@ -75,6 +75,8 @@ public class Holder : NetworkBehaviour
 
     public ChartType chartType = 0;
 
+    [SerializeField] GameObject xAxis, yAxis, zAxis;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -200,7 +202,20 @@ public class Holder : NetworkBehaviour
         }
     }
 
+    [ClientRpc]
+    public void SetAxisClientRpc(AxisValues x, AxisValues y, AxisValues z)
+    {
+        ValsToAxis(x, xAxis);
+        ValsToAxis(y, yAxis);
+        ValsToAxis(z, zAxis);
+    }
 
+    void ValsToAxis(AxisValues axis, GameObject obj)
+    {
+        obj.transform.GetChild(0).position = axis.position;
+        obj.GetComponent<LineRenderer>().ConvertFromValues(axis.lineRenderer);
+        obj.GetComponentInChildren<TMPro.TextMeshPro>().text = axis.axisText;
+    }
 
     private class HolderValues : INetworkSerializable
     {

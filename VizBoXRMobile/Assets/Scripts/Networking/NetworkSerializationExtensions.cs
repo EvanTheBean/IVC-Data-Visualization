@@ -584,27 +584,6 @@ public static class NetworkSerializationExtensions
         }
     }
 
-    public static void ReadValueSafe(this FastBufferReader reader, out LineRenderer value)
-    {
-        reader.ReadValueSafe(out int val);
-        reader.ReadValueSafe(out string val1);
-        reader.ReadValueSafe(out string val2);
-        reader.ReadValueSafe(out float val3);
-        Debug.Log(val);
-        Debug.Log(val1);
-        Debug.Log(val2);
-        Debug.Log(val3);
-        value = new LineRenderer();
-    }
-
-    public static void WriteValueSafe(this FastBufferWriter writer, in LineRenderer value)
-    {
-        writer.WriteValueSafe(0);
-        writer.WriteValueSafe("hi");
-        writer.WriteValueSafe("hello");
-        writer.WriteValueSafe(0.2);
-    }
-
     public static void SerializeValue<TReaderWriter>(this BufferSerializer<TReaderWriter> serializer, ref AnimationCurve value) where TReaderWriter : IReaderWriter
     {
         if (serializer.IsReader)
@@ -688,10 +667,31 @@ public static class NetworkSerializationExtensions
         {
             vals = new LineRendererValues();
         }
-
         serializer.SerializeValue(ref vals.positions);
         serializer.SerializeValue(ref vals.widthCurve);
         serializer.SerializeValue(ref vals.color);
+    }
+
+    public static void SerializeValue<TReaderWriter>(this BufferSerializer<TReaderWriter> serializer, ref AxisValues axis) where TReaderWriter : IReaderWriter
+    {
+        if (serializer.IsReader)
+        {
+            axis = new AxisValues();
+        }
+        serializer.SerializeValue(ref axis.axisText);
+        serializer.SerializeValue(ref axis.lineRenderer);
+        serializer.SerializeValue(ref axis.position);
+    }
+
+    public static void SerializeValue<TReaderWriter>(this BufferSerializer<TReaderWriter> serializer, ref SkyboxValues skybox) where TReaderWriter : IReaderWriter
+    {
+        if (serializer.IsReader)
+        {
+            skybox = new SkyboxValues();
+        }
+        serializer.SerializeValue(ref skybox.skyColor);
+        serializer.SerializeValue(ref skybox.horizonColor);
+        serializer.SerializeValue(ref skybox.stars);
     }
 }
 
@@ -724,4 +724,46 @@ public class LineRendererValues
     }
 }
 
+public class AxisValues : INetworkSerializable
+{
+    public string axisText = "";
+    public LineRendererValues lineRenderer = new LineRendererValues();
+    public Vector3 position = Vector3.zero;
+    public AxisValues() { }
 
+    public AxisValues(GameObject axis)
+    {
+        lineRenderer = new LineRendererValues(axis.GetComponent<LineRenderer>());
+        axisText = axis.GetComponent<TMPro.TextMeshProUGUI>().text;
+        position = axis.transform.position;
+    }
+
+    public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+    {
+        serializer.SerializeValue(ref axisText);
+        serializer.SerializeValue(ref lineRenderer);
+        serializer.SerializeValue(ref position);
+    }
+}
+
+public class SkyboxValues : INetworkSerializable
+{
+    public Color skyColor = new Color();
+    public Color horizonColor = new Color();
+    public float stars = 0f;
+
+    public SkyboxValues() { }
+    public SkyboxValues(Material skybox)
+    {
+        skyColor = skybox.GetColor("_Sky_Color");
+        horizonColor = skybox.GetColor("_Horizon_Color");
+        stars = skybox.GetFloat("_Stars");
+    }
+
+    public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+    {
+        serializer.SerializeValue(ref skyColor);
+        serializer.SerializeValue(ref horizonColor);
+        serializer.SerializeValue(ref stars);
+    }
+}
