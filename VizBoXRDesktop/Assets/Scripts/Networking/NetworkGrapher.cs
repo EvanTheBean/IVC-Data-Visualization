@@ -8,12 +8,11 @@ public class NetworkGrapher : MonoBehaviour
 {
     [SerializeField] GameObject dataPointPrefab;
     [SerializeField] GameObject holderPrefab;
+    [SerializeField] GameObject rotatorPrefab;
 
     // Start is called before the first frame update
     void Start()
     {
-        
-
         foreach (Holder holder in FindObjectsOfType<Holder>())
         {
             SpawnPoints(holder);
@@ -27,7 +26,6 @@ public class NetworkGrapher : MonoBehaviour
         DataPoint[] dataPoints = holder.transform.GetComponentsInChildren<DataPoint>();
         foreach (DataPoint dataPoint in dataPoints)
         {
-            Debug.Log("spawning datapoint " + dataPoint.name);
             GameObject netPoint = Instantiate(dataPointPrefab);
             netPoint.name = "NetPoint " + dataPoint.name;
             CopyComponentOnto(dataPoint.transform, netPoint);
@@ -39,13 +37,16 @@ public class NetworkGrapher : MonoBehaviour
             netPoint.GetComponent<NetworkObject>().Spawn();
             netPoint.transform.SetParent(netHolder.transform);
         }
-
+        GameObject rotator = Instantiate(rotatorPrefab, netHolder.GetComponent<Holder>().CalculateCenterPoint(), Quaternion.identity);
+        rotator.GetComponent<NetworkObject>().Spawn();
+        netHolder.transform.SetParent(rotator.transform);
     }
 
     GameObject SpawnHolder(Holder holder)
     {
         GameObject netHolder = Instantiate(holderPrefab);
         CopyComponentOnto(holder, netHolder);
+        CopyComponentOnto(holder.GetComponent<LineRenderer>(), netHolder);
         netHolder.GetComponent<NetworkObject>().Spawn();
         return netHolder;
     }
@@ -61,7 +62,26 @@ public class NetworkGrapher : MonoBehaviour
             return;
         }
 
-       
+        if (typeof(T) == typeof(LineRenderer))
+        {
+            LineRenderer line = (LineRenderer)Convert.ChangeType(original, typeof(LineRenderer));
+            LineRenderer lineDestination = destination.GetComponent<LineRenderer>();
+
+            if (line == null)
+            {
+                lineDestination.enabled = false;
+                return;
+            }
+
+            Vector3[] positions = new Vector3[line.positionCount];
+            line.GetPositions(positions);
+
+            lineDestination.SetPositions(positions);
+
+            lineDestination.widthCurve = line.widthCurve;
+
+            return;
+        }
 
         if (destination.GetComponent<T>() == null) destination.AddComponent<T>();
         System.Type type = original.GetType();
@@ -79,4 +99,5 @@ public class NetworkGrapher : MonoBehaviour
             destination.GetComponent<MeshRenderer>().material.color = renderer.material.color;
         }
     }
+
 }

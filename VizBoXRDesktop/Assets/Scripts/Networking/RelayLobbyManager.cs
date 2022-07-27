@@ -139,4 +139,9 @@ public class RelayLobbyManager : MonoBehaviour
         var dtlsEndpoint = allocation.ServerEndpoints.First(e => e.ConnectionType == "dtls");
         return (dtlsEndpoint.Host, (ushort)dtlsEndpoint.Port, allocation.AllocationIdBytes, allocation.ConnectionData, allocation.HostConnectionData, allocation.Key);
     }
+
+    private void OnApplicationQuit()
+    {
+        NetworkManager.Singleton.Shutdown();
+    }
 }

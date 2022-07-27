@@ -9,9 +9,14 @@ public class ObjectRotator : MonoBehaviour
 	{
 		float XaxisRotation = Input.GetAxis("Mouse X") * rotationSpeed;
 		float YaxisRotation = Input.GetAxis("Mouse Y") * rotationSpeed;
-		// select the axis by which you want to rotate the GameObject
-		transform.RotateAround(Vector3.down, XaxisRotation);
-		transform.RotateAround(Vector3.right, YaxisRotation);
+		if (Input.touchCount > 0)
+		{
+			XaxisRotation = Input.touches[0].deltaPosition.x;
+			YaxisRotation = Input.touches[0].deltaPosition.y;
+		}
+
+		transform.Rotate(Vector3.down, XaxisRotation);
+		transform.Rotate(Vector3.right, YaxisRotation);
 	}
 
 }

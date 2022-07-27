@@ -194,7 +194,9 @@ MonoBehaviour:
   catagorical: 
   offsets: []
   isCatagorical: 
+  randomness: []
   catagories: []
+  centered: 
   gTypes: 
   catagoricalGradientsNames: 
   sequentialGradientsNames: 
@@ -219,6 +221,8 @@ MonoBehaviour:
   Xn: 0
   Yn: 0
   Zn: 0
+  overScale: 1
+  defaultColor: {r: 0, g: 0, b: 0, a: 0}
   chartType: 0
 --- !u!114 &1675146734884446884
 MonoBehaviour:
@@ -232,7 +236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d305fdd28d8d98f40bcf421dffb2cad5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  holder: {fileID: 0}
+  holder: {fileID: 2413362435559014646}
 --- !u!120 &1062065862408167720
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -330,7 +334,7 @@ LineRenderer:
     textureMode: 0
     shadowBias: 0.5
     generateLightingData: 0
-  m_UseWorldSpace: 1
+  m_UseWorldSpace: 0
   m_Loop: 0
 --- !u!114 &-1930970284762367714
 MonoBehaviour:

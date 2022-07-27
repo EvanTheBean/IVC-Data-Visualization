@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3540544813451765698
+--- !u!1 &1761458710487192995
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3540544813451765696}
-  - component: {fileID: 3540544813451765699}
+  - component: {fileID: 1761458710487192994}
+  - component: {fileID: 1761458710487193005}
   m_Layer: 0
-  m_Name: NetworkGrapher
+  m_Name: GraphManipulator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3540544813451765696
+--- !u!4 &1761458710487192994
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3540544813451765698}
+  m_GameObject: {fileID: 1761458710487192995}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -32,21 +32,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3540544813451765699
+--- !u!114 &1761458710487193005
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3540544813451765698}
+  m_GameObject: {fileID: 1761458710487192995}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e895ce45912299243808e8cbce533f61, type: 3}
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dataPointPrefab: {fileID: 5303000421713815878, guid: fb6449e23beadc641a227717073b2692,
-    type: 3}
-  holderPrefab: {fileID: 2413362435559014647, guid: cb34accd002a8604485ed78155f948df,
-    type: 3}
-  rotatorPrefab: {fileID: 1761458710487192995, guid: eb8287da35ddf2f468483f9d28800e44,
-    type: 3}
+  GlobalObjectIdHash: 951099334
+  AlwaysReplicateAsRoot: 0
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1

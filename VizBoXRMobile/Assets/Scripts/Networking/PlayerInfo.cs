@@ -18,12 +18,9 @@ public class PlayerInfo : NetworkBehaviour
 
     ulong id;
     Activity currentActivity = Activity.Annotating;
-
-    NetworkVariable<int> playerCount = new NetworkVariable<int>(0);
     // Start is called before the first frame update
     void Start()
     {
-        playerCount.OnValueChanged += OnPlayerJoin;
         DontDestroyOnLoad(this);
         if (!IsHost)
         {
@@ -68,10 +65,4 @@ public class PlayerInfo : NetworkBehaviour
     {
         FindObjectOfType<RelayLobbyManager>().OnLobbyStart.Invoke();
     }
-
-    private void OnApplicationQuit()
-    {
-        playerCount.Dispose();
-    }
-
 }

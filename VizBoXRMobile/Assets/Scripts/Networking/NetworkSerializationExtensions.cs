@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 
-public static class NetworkSerializationExtensions 
+public static class NetworkSerializationExtensions
 {
     public static void SerializeValue<TReaderWriter>(this BufferSerializer<TReaderWriter> serializer, ref List<string> value) where TReaderWriter : IReaderWriter
     {
@@ -23,13 +23,13 @@ public static class NetworkSerializationExtensions
         else
         {
             array = value.ToArray();
-        }    
-        
+        }
+
         for (int i = 0; i < count; i++)
         {
             serializer.SerializeValue(ref array[i]);
         }
-        
+
         if (serializer.IsReader)
         {
             value = new List<string>(array);
@@ -508,11 +508,11 @@ public static class NetworkSerializationExtensions
 
         string[] keys = new string[count];
         List<string>[] values = new List<string>[count];
-        
+
         if (serializer.IsWriter)
         {
             int i = 0;
-            foreach(KeyValuePair<string, List<string>> entry in dict)
+            foreach (KeyValuePair<string, List<string>> entry in dict)
             {
                 keys[i] = entry.Key;
                 values[i] = entry.Value;
@@ -520,7 +520,7 @@ public static class NetworkSerializationExtensions
             }
         }
 
-        for(int i = 0; i < count; i++)
+        for (int i = 0; i < count; i++)
         {
             serializer.SerializeValue(ref keys[i]);
             serializer.SerializeValue(ref values[i]);
@@ -604,4 +604,124 @@ public static class NetworkSerializationExtensions
         writer.WriteValueSafe("hello");
         writer.WriteValueSafe(0.2);
     }
+
+    public static void SerializeValue<TReaderWriter>(this BufferSerializer<TReaderWriter> serializer, ref AnimationCurve value) where TReaderWriter : IReaderWriter
+    {
+        if (serializer.IsReader)
+        {
+            value = new AnimationCurve();
+        }
+
+        Keyframe[] keys = value.keys;
+        WrapMode preWrapMode = value.preWrapMode;
+        WrapMode postWrapMode = value.postWrapMode;
+
+
+        serializer.SerializeValue(ref keys);
+        serializer.SerializeValue(ref preWrapMode);
+        serializer.SerializeValue(ref postWrapMode);
+
+        if (serializer.IsReader)
+        {
+            value = new AnimationCurve(keys);
+            value.preWrapMode = preWrapMode;
+            value.postWrapMode = postWrapMode;
+        }
+    }
+
+    public static void SerializeValue<TReaderWriter>(this BufferSerializer<TReaderWriter> serializer, ref Keyframe[] array) where TReaderWriter : IReaderWriter
+    {
+        int count = 0;
+        if (!serializer.IsReader)
+        {
+            count = array.Length;
+        }
+        serializer.SerializeValue(ref count);
+
+
+        if (serializer.IsReader)
+        {
+            array = new Keyframe[count];
+        }
+
+        for (int i = 0; i < count; i++)
+        {
+            serializer.SerializeValue(ref array[i]);
+        }
+    }
+
+    public static void SerializeValue<TReaderWriter>(this BufferSerializer<TReaderWriter> serializer, ref Keyframe frame) where TReaderWriter : IReaderWriter
+    {
+        float inTangent = 0f, inWeight = 0f, outTangent = 0f, outWeight = 0f, time = 0f, value = 0f;
+        WeightedMode weightedMode = WeightedMode.None;
+
+        if (serializer.IsWriter)
+        {
+            inTangent = frame.inTangent;
+            inWeight = frame.inWeight;
+            outTangent = frame.outTangent;
+            outWeight = frame.outWeight;
+            time = frame.time;
+            value = frame.value;
+            weightedMode = frame.weightedMode;
+        }
+
+        serializer.SerializeValue(ref inTangent);
+        serializer.SerializeValue(ref inWeight);
+        serializer.SerializeValue(ref outTangent);
+        serializer.SerializeValue(ref outWeight);
+        serializer.SerializeValue(ref time);
+        serializer.SerializeValue(ref value);
+        serializer.SerializeValue(ref weightedMode);
+
+        if (serializer.IsReader)
+        {
+            frame = new Keyframe(time, value, inTangent, outTangent, inWeight, outWeight);
+            frame.weightedMode = weightedMode;
+        }
+
+    }
+
+    public static void SerializeValue<TReaderWriter>(this BufferSerializer<TReaderWriter> serializer, ref LineRendererValues vals) where TReaderWriter : IReaderWriter
+    {
+        if (serializer.IsReader)
+        {
+            vals = new LineRendererValues();
+        }
+
+        serializer.SerializeValue(ref vals.positions);
+        serializer.SerializeValue(ref vals.widthCurve);
+        serializer.SerializeValue(ref vals.color);
+    }
 }
+
+public static class LineRendererExtensions
+{ 
+    public static void ConvertFromValues(this LineRenderer lineRenderer, LineRendererValues values)
+    {
+        lineRenderer.SetPositions(values.positions);
+        lineRenderer.widthCurve = values.widthCurve;
+        lineRenderer.colorGradient = values.color;
+    }
+
+}
+
+public class LineRendererValues
+{
+
+    public Vector3[] positions = new Vector3[0];
+    public AnimationCurve widthCurve = new AnimationCurve();
+    public Gradient color = new Gradient();
+
+    public LineRendererValues() { }
+
+    public LineRendererValues(LineRenderer line)
+    {
+        positions = new Vector3[line.positionCount];
+        line.GetPositions(positions);
+        widthCurve = line.widthCurve;
+        color = line.colorGradient;
+    }
+}
+
+
