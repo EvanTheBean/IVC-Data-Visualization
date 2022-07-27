@@ -35,6 +35,28 @@ public class DataPoint : NetworkBehaviour, IPointerDownHandler, IPointerUpHandle
 
         displayBox.text = display;
     }
+
+    public void Click()
+    {
+        displayBox.enabled = !displayBox.enabled;
+        string display = "";
+        foreach (string var in variables.Keys)
+        {
+            if (var != "Annotations")
+                display += var + " " + variables[var][currentC].ToString() + "\n";
+        }
+        display += "Annotations: ";
+        for (int i = 0; i < variables["Annotations"].Count; i++)
+        {
+            display += variables["Annotations"][0].ToString() + "\n";
+        }
+        for (int i = 0; i < annotations.Count; i++)
+        {
+            display += annotations[i].ToString() + "\n";
+        }
+
+        displayBox.text = display;
+    }
     public void HideDisplay()
     {
         //displayBox.enabled = false;
