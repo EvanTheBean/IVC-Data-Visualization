@@ -691,6 +691,7 @@ public static class NetworkSerializationExtensions
 
         serializer.SerializeValue(ref vals.positions);
         serializer.SerializeValue(ref vals.widthCurve);
+        serializer.SerializeValue(ref vals.color);
     }
 }
 
@@ -700,6 +701,7 @@ public static class LineRendererExtensions
     {
         lineRenderer.SetPositions(values.positions);
         lineRenderer.widthCurve = values.widthCurve;
+        lineRenderer.colorGradient = values.color;
     }
 
 }
@@ -707,9 +709,9 @@ public static class LineRendererExtensions
 public class LineRendererValues
 {
 
-    public Vector3[] positions;
-
-    public AnimationCurve widthCurve;
+    public Vector3[] positions = new Vector3[0];
+    public AnimationCurve widthCurve = new AnimationCurve();
+    public Gradient color = new Gradient();
 
     public LineRendererValues() { }
 
@@ -718,6 +720,7 @@ public class LineRendererValues
         positions = new Vector3[line.positionCount];
         line.GetPositions(positions);
         widthCurve = line.widthCurve;
+        color = line.colorGradient;
     }
 }
 

@@ -11,8 +11,8 @@ public class ObjectRotator : MonoBehaviour
 		float YaxisRotation = Input.GetAxis("Mouse Y") * rotationSpeed;
 		if (Input.touchCount > 0)
 		{
-			XaxisRotation = 0.002f * Input.touches[0].deltaPosition.x;
-			YaxisRotation = 0.002f * Input.touches[0].deltaPosition.y;
+			XaxisRotation = Input.touches[0].deltaPosition.x;
+			YaxisRotation = Input.touches[0].deltaPosition.y;
 		}
 
 		transform.Rotate(Vector3.down, XaxisRotation);

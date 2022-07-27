@@ -133,7 +133,7 @@ public class Holder : NetworkBehaviour
         path.Clear();
     }
 
-    private Vector3 CalculateCenterPoint()
+    public Vector3 CalculateCenterPoint()
     {
         Vector3 centerPoint = Vector3.zero;
         for (int i = 0; i < axisTypes.Count; i++)
@@ -200,6 +200,8 @@ public class Holder : NetworkBehaviour
         }
     }
 
+
+
     private class HolderValues : INetworkSerializable
     {
         public List<string> rowNames = new List<string>();
@@ -232,7 +234,7 @@ public class Holder : NetworkBehaviour
 
         public ChartType chartType = 0;
 
-        public LineRendererValues lineRenderer;
+        public LineRendererValues lineRenderer = new LineRendererValues();
 
 
         public HolderValues() { }

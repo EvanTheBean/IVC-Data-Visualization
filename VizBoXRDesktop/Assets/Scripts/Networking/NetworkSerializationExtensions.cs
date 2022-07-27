@@ -686,9 +686,9 @@ public static class LineRendererExtensions
 public class LineRendererValues
 {
 
-    public Vector3[] positions;
-    public AnimationCurve widthCurve;
-    public Gradient color;
+    public Vector3[] positions = new Vector3[0];
+    public AnimationCurve widthCurve = new AnimationCurve();
+    public Gradient color = new Gradient();
 
     public LineRendererValues() { }
 

@@ -211,7 +211,7 @@ public class Holder : NetworkBehaviour
 
         public ChartType chartType = 0;
 
-        public LineRendererValues lineRenderer;
+        public LineRendererValues lineRenderer = new LineRendererValues();
 
         public HolderValues() { }
 
