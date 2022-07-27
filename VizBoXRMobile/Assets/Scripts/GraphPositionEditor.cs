@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,9 @@ public class GraphPositionEditor : MonoBehaviour
 {
     GameObject holder;
     Vector3 centerPoint;
+
+    float rotationSpeed = 0.2f;
+    bool rotationInputLocked = false;
 
     // Start is called before the first frame update
     void Start()
@@ -18,6 +22,28 @@ public class GraphPositionEditor : MonoBehaviour
         transform.position = new Vector3(0, 0f, centerPoint.z*4);
     }
 
+    private void Update()
+    {
+        if (!rotationInputLocked)
+        {
+            DoRotation();
+        }
+    }
+
+    private void DoRotation()
+    {
+        float XaxisRotation = Input.GetAxis("Mouse X") * rotationSpeed;
+        float YaxisRotation = Input.GetAxis("Mouse Y") * rotationSpeed;
+        if (Input.touchCount > 0)
+        {
+            XaxisRotation = Input.touches[0].deltaPosition.x * rotationSpeed;
+            YaxisRotation = Input.touches[0].deltaPosition.y * rotationSpeed;
+        }
+
+        transform.Rotate(Vector3.down, XaxisRotation,Space.World);
+        transform.Rotate(Vector3.right, YaxisRotation,Space.World);
+    }
+
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         holder.SetActive(true);
@@ -27,20 +53,29 @@ public class GraphPositionEditor : MonoBehaviour
         holder.transform.localPosition = -centerPoint;
         holder.transform.rotation = Quaternion.identity;
 
-        if (scene.name == "VisualViewer")
+        switch (scene.name)
         {
-            transform.position = new Vector3(0, 0f, centerPoint.z*4);
-        }
+            case "VisualViewer":
+            {
+                transform.position = new Vector3(0, 0f, centerPoint.z * 4);
+                rotationInputLocked = false;
+                break;
+            }
 
-        if (scene.name == "AR")
-        {
-            transform.localScale = 0.01f * Vector3.one;
-            holder.SetActive(false);
-        }
+            case "AR":
+            {
+                transform.localScale = 0.01f * Vector3.one;
+                holder.SetActive(false);
+                rotationInputLocked = true;
+                break;
+            }
 
-        if (scene.name == "CardboardVR")
-        {
-            transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 2));
+            case "CardboardVR":
+            {
+                transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 2));
+                    rotationInputLocked = true;
+                    break;
+            }
         }
     }
 
