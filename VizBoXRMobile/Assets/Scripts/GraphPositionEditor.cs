@@ -104,32 +104,32 @@ public class GraphPositionEditor : MonoBehaviour
     AnimationCurve[] defaultLineScales = new AnimationCurve[0];
     void SetScale(Vector3 vector)
     {
-        if (defaultLineScales.Length == 0)
-        {
-            Debug.Log("saving default line widths");
-            defaultLineScales = new AnimationCurve[lines.Length];
-
-            for (int i = 0; i < lines.Length; i++)
-            {
-                defaultLineScales[i] = lines[i].widthCurve;
-            }
-        }
+        //if (defaultLineScales.Length == 0)
+        //{
+        //    Debug.Log("saving default line widths");
+        //    defaultLineScales = new AnimationCurve[lines.Length];
+        //
+        //    for (int i = 0; i < lines.Length; i++)
+        //    {
+        //        defaultLineScales[i] = lines[i].widthCurve;
+        //    }
+        //}
 
         transform.localScale = vector;
-        for (int i = 0; i <lines.Length; i++)
-        {
-            Debug.Log(lines[i].widthCurve.length);
-
-            Keyframe[] temp = new Keyframe[defaultLineScales[i].length];
-
-            for (int j = 0; j < lines[i].widthCurve.length; j++)
-            {
-                temp[j].value = defaultLineScales[i].keys[j].value * vector.x;
-            }
-            lines[i].widthCurve = new AnimationCurve(temp);
-            lines[i].widthCurve.preWrapMode = defaultLineScales[i].preWrapMode;
-            lines[i].widthCurve.postWrapMode = defaultLineScales[i].postWrapMode;
-        }
+        //for (int i = 0; i <lines.Length; i++)
+        //{
+        //    Debug.Log(lines[i].widthCurve.length);
+        //
+        //    Keyframe[] temp = new Keyframe[defaultLineScales[i].length];
+        //
+        //    for (int j = 0; j < lines[i].widthCurve.length; j++)
+        //    {
+        //        temp[j].value = defaultLineScales[i].keys[j].value * vector.x;
+        //    }
+        //    lines[i].widthCurve = new AnimationCurve(temp);
+        //    lines[i].widthCurve.preWrapMode = defaultLineScales[i].preWrapMode;
+        //    lines[i].widthCurve.postWrapMode = defaultLineScales[i].postWrapMode;
+        //}
     }
 
     Vector2 CalcCenterOfPoints(Vector2[] points)
@@ -182,8 +182,8 @@ public class GraphPositionEditor : MonoBehaviour
             case "CardboardVR":
             {
                 transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 2));
-                    freetransform = false;
-                    break;
+                freetransform = false;
+                break;
             }
         }
     }
