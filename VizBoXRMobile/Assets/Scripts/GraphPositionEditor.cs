@@ -10,7 +10,10 @@ public class GraphPositionEditor : MonoBehaviour
     Vector3 centerPoint;
 
     float rotationSpeed = 0.2f;
-    bool rotationInputLocked = false;
+    bool freetransform = true;
+
+    float arSize;
+    LineRenderer[] lines;
 
     // Start is called before the first frame update
     void Start()
@@ -18,19 +21,23 @@ public class GraphPositionEditor : MonoBehaviour
         DontDestroyOnLoad(this);
         SceneManager.sceneLoaded += OnSceneLoaded;
         holder = transform.GetChild(0).gameObject;
+        lines = GetComponentsInChildren<LineRenderer>();
+        Debug.Log(lines.Length);
+
         centerPoint = holder.GetComponent<Holder>().CalculateCenterPoint();
         transform.position = new Vector3(0, 0f, centerPoint.z*4);
     }
 
     private void Update()
     {
-        if (!rotationInputLocked)
+        if (freetransform)
         {
             DoRotation();
+            DoZoom();
         }
     }
 
-    private void DoRotation()
+    void DoRotation()
     {
         float XaxisRotation = Input.GetAxis("Mouse X") * rotationSpeed;
         float YaxisRotation = Input.GetAxis("Mouse Y") * rotationSpeed;
@@ -44,12 +51,114 @@ public class GraphPositionEditor : MonoBehaviour
         transform.Rotate(Vector3.right, YaxisRotation,Space.World);
     }
 
+    Touch[] touches;
+
+    float initialDistance;
+    Vector3 initialScale;
+    void DoZoom()
+    {
+        if (Input.touchCount >= 2)
+        {
+            touches = new Touch[Input.touchCount];
+            for (int i = 0; i < Input.touchCount; i++)
+            {
+                touches[i] = Input.GetTouch(i);
+            }
+
+            Vector2[] positions = new Vector2[Input.touchCount];
+            for (int i = 0; i < touches.Length; i++)
+            {
+                if (touches[i].phase == TouchPhase.Ended || touches[i].phase == TouchPhase.Canceled)
+                {
+                    return;
+                }
+                positions[i] = touches[i].position;
+            }
+
+            Vector2 center = CalcCenterOfPoints(positions);
+            bool noneBegan = true;
+            foreach (Touch touch in touches)
+            {
+                if (touch.phase == TouchPhase.Began)
+                {
+                    initialDistance = CalcTotalDistFromPoint(positions, center);
+                    initialScale = transform.localScale;
+                    noneBegan = false;
+                }
+            }
+
+            if (noneBegan)
+            {
+                float currentDistance = CalcTotalDistFromPoint(positions, center);
+                if (Mathf.Approximately(initialDistance, 0)) return;
+
+                float factor = currentDistance / initialDistance;
+
+
+                SetScale(initialScale * factor);
+            }
+
+        }
+    }
+
+    AnimationCurve[] defaultLineScales = new AnimationCurve[0];
+    void SetScale(Vector3 vector)
+    {
+        if (defaultLineScales.Length == 0)
+        {
+            Debug.Log("saving default line widths");
+            defaultLineScales = new AnimationCurve[lines.Length];
+
+            for (int i = 0; i < lines.Length; i++)
+            {
+                defaultLineScales[i] = lines[i].widthCurve;
+            }
+        }
+
+        transform.localScale = vector;
+        for (int i = 0; i <lines.Length; i++)
+        {
+            Debug.Log(lines[i].widthCurve.length);
+
+            Keyframe[] temp = new Keyframe[defaultLineScales[i].length];
+
+            for (int j = 0; j < lines[i].widthCurve.length; j++)
+            {
+                temp[j].value = defaultLineScales[i].keys[j].value * vector.x;
+            }
+            lines[i].widthCurve = new AnimationCurve(temp);
+            lines[i].widthCurve.preWrapMode = defaultLineScales[i].preWrapMode;
+            lines[i].widthCurve.postWrapMode = defaultLineScales[i].postWrapMode;
+        }
+    }
+
+    Vector2 CalcCenterOfPoints(Vector2[] points)
+    {
+        Vector2 total = Vector2.zero;
+        for (int i = 0; i < points.Length; i++)
+        {
+            total += points[i];
+        }
+
+        return total / points.Length;
+    }
+
+    float CalcTotalDistFromPoint(Vector2[] points, Vector2 point)
+    {
+        float total = 0;
+        foreach (Vector2 pt in points)
+        {
+            total += Vector2.Distance(point, pt);
+        }
+        return total;
+    }
+
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         holder.SetActive(true);
         transform.localPosition = Vector3.zero;
         transform.rotation = Quaternion.identity;
-        transform.localScale = Vector3.one;
+        SetScale(Vector3.one);
         holder.transform.localPosition = -centerPoint;
         holder.transform.rotation = Quaternion.identity;
 
@@ -58,22 +167,22 @@ public class GraphPositionEditor : MonoBehaviour
             case "VisualViewer":
             {
                 transform.position = new Vector3(0, 0f, centerPoint.z * 4);
-                rotationInputLocked = false;
+                freetransform = true;
                 break;
             }
 
             case "AR":
             {
-                transform.localScale = 0.01f * Vector3.one;
+                SetScale(arSize * Vector3.one);
                 holder.SetActive(false);
-                rotationInputLocked = true;
+                freetransform = false;
                 break;
             }
 
             case "CardboardVR":
             {
                 transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 2));
-                    rotationInputLocked = true;
+                    freetransform = false;
                     break;
             }
         }
@@ -85,4 +194,5 @@ public class GraphPositionEditor : MonoBehaviour
         holder.transform.position = hitPose.position;
         holder.transform.rotation = hitPose.rotation;
     }
+
 }

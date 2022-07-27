@@ -44,7 +44,7 @@ public class Stretchable : MonoBehaviour
                 positions[i] = touches[i].position;
             }
 
-            Vector2 center = CalcCenterPoint(positions);
+            Vector2 center = CalcCenterOfPoints(positions);
             if (!(Physics.Raycast(Camera.main.ScreenPointToRay(center), out RaycastHit hit)
                 && hit.collider.gameObject == gameObject))
             {
@@ -60,7 +60,7 @@ public class Stretchable : MonoBehaviour
             {
                 if (touch.phase == TouchPhase.Began)
                 {
-                    initialDistance = CalcTotalDist(positions, center);
+                    initialDistance = CalcTotalDistFromPoint(positions, center);
                     initialScale = hit.transform.localScale;
                     noneBegan = false;
                 }
@@ -68,7 +68,7 @@ public class Stretchable : MonoBehaviour
 
             if (noneBegan)
             {
-                float currentDistance = CalcTotalDist(positions, center);
+                float currentDistance = CalcTotalDistFromPoint(positions, center);
                 if (Mathf.Approximately(initialDistance, 0)) return;
 
                 float factor = currentDistance / initialDistance;
@@ -80,7 +80,7 @@ public class Stretchable : MonoBehaviour
         }
     }
 
-    Vector2 CalcCenterPoint(Vector2[] points)
+    Vector2 CalcCenterOfPoints(Vector2[] points)
     {
         Vector2 total = Vector2.zero;
         for (int i = 0; i < points.Length; i++)
@@ -91,7 +91,7 @@ public class Stretchable : MonoBehaviour
         return total / points.Length;
     }
 
-    float CalcTotalDist(Vector2[] points, Vector2 point)
+    float CalcTotalDistFromPoint(Vector2[] points, Vector2 point)
     {
         float total = 0;
         foreach (Vector2 pt in points)

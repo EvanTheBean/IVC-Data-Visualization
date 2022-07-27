@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.99999905, g: 0, b: 0.99999905, a: 1}
+  m_IndirectSpecularColor: {r: 0.34786066, g: 0.13428314, b: 0.40662718, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -7558,7 +7558,8 @@ MonoBehaviour:
     - data:
       - False
     - data: []
-  annotations: []
+  annotations:
+  - test
   displayBox: {fileID: 863007210}
   currentC: 0
 --- !u!1001 &881101520
