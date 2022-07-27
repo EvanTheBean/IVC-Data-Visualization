@@ -207,7 +207,7 @@ public class Holder : NetworkBehaviour
 
         public ChartType chartType = 0;
 
-        public Vector3[] linePositions;
+        public LineRendererValues lineRenderer;
 
         public HolderValues() { }
 
@@ -249,8 +249,7 @@ public class Holder : NetworkBehaviour
 
             if (holder.bestFit)
             {
-                linePositions = new Vector3[holder.GetComponent<LineRenderer>().positionCount];
-                holder.GetComponent<LineRenderer>().GetPositions(linePositions);
+                lineRenderer = new LineRendererValues(holder.GetComponent<LineRenderer>());
             }
         }
 
@@ -287,6 +286,7 @@ public class Holder : NetworkBehaviour
             serializer.SerializeValue(ref zLines);
             serializer.SerializeValue(ref defaultColor);
             serializer.SerializeValue(ref chartType);
+            serializer.SerializeValue(ref lineRenderer);
         }
     }
 }

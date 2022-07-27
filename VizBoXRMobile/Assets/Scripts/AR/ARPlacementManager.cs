@@ -12,8 +12,6 @@ public class ARPlacementManager : MonoBehaviour
     void Start()
     {
         arRaycastManager = FindObjectOfType<ARRaycastManager>();
-        graph = FindObjectOfType<Holder>().transform;
-        graph.gameObject.SetActive(false);
     }
 
     // Update is called once per frame

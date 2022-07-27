@@ -194,7 +194,9 @@ MonoBehaviour:
   catagorical: 
   offsets: []
   isCatagorical: 
+  randomness: []
   catagories: []
+  centered: 
   gTypes: 
   catagoricalGradientsNames: 
   sequentialGradientsNames: 
@@ -219,6 +221,8 @@ MonoBehaviour:
   Xn: 0
   Yn: 0
   Zn: 0
+  overScale: 1
+  defaultColor: {r: 0, g: 0, b: 0, a: 0}
   chartType: 0
 --- !u!114 &1675146734884446884
 MonoBehaviour:
@@ -330,7 +334,7 @@ LineRenderer:
     textureMode: 0
     shadowBias: 0.5
     generateLightingData: 0
-  m_UseWorldSpace: 1
+  m_UseWorldSpace: 0
   m_Loop: 0
 --- !u!114 &-1930970284762367714
 MonoBehaviour:

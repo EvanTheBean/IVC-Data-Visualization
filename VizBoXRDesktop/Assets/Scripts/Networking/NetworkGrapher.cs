@@ -46,6 +46,7 @@ public class NetworkGrapher : MonoBehaviour
     {
         GameObject netHolder = Instantiate(holderPrefab);
         CopyComponentOnto(holder, netHolder);
+        CopyComponentOnto(holder.GetComponent<LineRenderer>(), netHolder);
         netHolder.GetComponent<NetworkObject>().Spawn();
         return netHolder;
     }
@@ -58,6 +59,31 @@ public class NetworkGrapher : MonoBehaviour
             destination.transform.position = orig.position;
             destination.transform.rotation = orig.rotation;
             destination.transform.localScale = orig.localScale;
+            return;
+        }
+
+        if (typeof(T) == typeof(LineRenderer))
+        {
+            LineRenderer line = (LineRenderer)Convert.ChangeType(original, typeof(LineRenderer));
+            LineRenderer lineDestination = destination.GetComponent<LineRenderer>();
+
+            if (line == null)
+            {
+                lineDestination.enabled = false;
+                return;
+            }
+
+            Vector3[] positions = new Vector3[line.positionCount];
+            line.GetPositions(positions);
+
+            foreach(Vector3 vector in positions)
+            {
+                Debug.Log(vector);
+            }    
+            lineDestination.SetPositions(positions);
+
+            lineDestination.widthCurve = line.widthCurve;
+
             return;
         }
 
