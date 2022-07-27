@@ -61,7 +61,7 @@ public class CameraController : MonoBehaviour
 
             }
 
-            Debug.Log("mouse 2 " + transform.rotation + " " + Input.GetAxis("Mouse Y") + " " + Input.GetAxis("Mouse X"));
+            //Debug.Log("mouse 2 " + transform.rotation + " " + Input.GetAxis("Mouse Y") + " " + Input.GetAxis("Mouse X"));
         }
         else if (Input.GetMouseButton(1))
         {
@@ -74,12 +74,12 @@ public class CameraController : MonoBehaviour
             {
                 transform.position += transform.up * Input.GetAxis("Mouse Y") * moveSpeed;
             }
-            Debug.Log("mouse 1 " + transform.position);
+            //Debug.Log("mouse 1 " + transform.position);
         }
 
         if (Input.GetMouseButtonDown(0) && !Input.GetKey(KeyCode.LeftControl))
         {
-            Debug.Log("mouse 0");
+            //Debug.Log("mouse 0");
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -96,7 +96,7 @@ public class CameraController : MonoBehaviour
                 //selectedObject.
                 //selectedObject.GetComponent<MeshRenderer>().material.color = Color.red;
                 //selectedObject.GetComponent("Halo").GetType().GetProperty("enabled").SetValue(selectedObject.GetComponent("Halo"), true, null);
-                //selectedObject.GetComponent<DataPoint>().ShowDisplay();
+                selectedObject.GetComponent<DataPoint>().Click();
                 //Debug.Log("clicked " + selectedObject.name);
             }
         }

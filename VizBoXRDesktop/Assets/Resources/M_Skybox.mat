@@ -41,10 +41,10 @@ Material:
     m_Floats:
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Stars: 100
+    - _Stars: 211.3
     m_Colors:
-    - _Horizon_Color: {r: 0.49056602, g: 0.49056602, b: 0.49056602, a: 1}
-    - _Sky_Color: {r: 0, g: 0.3140161, b: 1, a: 0}
+    - _Horizon_Color: {r: 0.7264151, g: 0.7264151, b: 0.7264151, a: 1}
+    - _Sky_Color: {r: 1, g: 1, b: 1, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &740117432853096710
 MonoBehaviour:
