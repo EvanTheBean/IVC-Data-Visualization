@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.3478638, g: 0.13428645, b: 0.40663046, a: 1}
+  m_IndirectSpecularColor: {r: 0.34786066, g: 0.13428313, b: 0.40662718, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1803,7 +1803,7 @@ MonoBehaviour:
   m_ProtocolType: 1
   m_MaxPacketQueueSize: 128
   m_MaxPayloadSize: 20000
-  m_MaxSendQueueSize: 98304
+  m_MaxSendQueueSize: 200000
   m_HeartbeatTimeoutMS: 500
   m_ConnectTimeoutMS: 1000
   m_MaxConnectAttempts: 60
@@ -1865,6 +1865,12 @@ MonoBehaviour:
       SourcePrefabToOverride: {fileID: 0}
       SourceHashToOverride: 2276333970
       OverridingTargetPrefab: {fileID: 3540544813451765698, guid: f0ae82976f089814e964484cd9b1f0ca,
+        type: 3}
+    - Override: 2
+      Prefab: {fileID: 0}
+      SourcePrefabToOverride: {fileID: 0}
+      SourceHashToOverride: 4212325640
+      OverridingTargetPrefab: {fileID: 3540544813451765698, guid: e5dd0af5c8ddb6543908bbcfffeda0f1,
         type: 3}
     TickRate: 30
     ClientConnectionBufferTimeout: 10
