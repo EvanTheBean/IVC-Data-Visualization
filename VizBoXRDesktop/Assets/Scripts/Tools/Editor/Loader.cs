@@ -28,7 +28,7 @@ public class Loader : EditorWindow
     public List<GameObject> axisText = new List<GameObject>();
 
     int holderNum;
-    Holder[] allHolders;
+    List<Holder> allHolders = new List<Holder>();
 
     int AxisShowNum;
 
@@ -62,6 +62,8 @@ public class Loader : EditorWindow
         {
             window.dataLoaded = true;
         }
+        window.
+        allHolders = GameObject.FindObjectsOfType<Holder>().ToList();
 
         //window.placingText = Resources.Load("Prefabs/AxisText") as GameObject;
         //window.axisText = new List<GameObject>(GameObject.FindGameObjectsWithTag("axisText"));
@@ -103,7 +105,8 @@ public class Loader : EditorWindow
                 holder.axisTypes[i] = (axisType)EditorGUILayout.EnumPopup(label, holder.axisTypes[i], ShowAxisType, true);
                 if (holder.axisTypes[i] == axisType.X || holder.axisTypes[i] == axisType.Y || holder.axisTypes[i] == axisType.Z || holder.axisTypes[i] == axisType.Width || holder.axisTypes[i] == axisType.Length || holder.axisTypes[i] == axisType.Height)
                 {
-                    holder.axisScales[i] = EditorGUILayout.Slider(holder.axisScales[i], 0.1f, 5f);
+                    EditorGUIUtility.labelWidth = 40;
+                    holder.axisScales[i] = EditorGUILayout.FloatField("Scale",holder.axisScales[i]);
                     if (holder.axisTypes[i] == axisType.X || holder.axisTypes[i] == axisType.Y || holder.axisTypes[i] == axisType.Z)
                     {
                         EditorGUIUtility.labelWidth = 40;
@@ -454,8 +457,6 @@ public class Loader : EditorWindow
 
 
         GUILayout.Space(50);
-
-        allHolders = GameObject.FindObjectsOfType<Holder>();
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("<"))
         {
@@ -463,9 +464,9 @@ public class Loader : EditorWindow
             holderNum--;
             if (holderNum < 0)
             {
-                holderNum = allHolders.Length - 1;
+                holderNum = allHolders.Count - 1;
             }
-            else if (holderNum > allHolders.Length - 1)
+            else if (holderNum > allHolders.Count - 1)
             {
                 holderNum = 0;
             }
@@ -473,15 +474,16 @@ public class Loader : EditorWindow
             Selection.activeGameObject = holder.gameObject;
         }
         holder.name = EditorGUILayout.TextField(holder.name);
+        holder.gameObject.active = EditorGUILayout.Toggle(holder.gameObject.active);
         if (GUILayout.Button(">"))
         {
             UnityEditor.PrefabUtility.RecordPrefabInstancePropertyModifications(holder);
             holderNum++;
             if (holderNum < 0)
             {
-                holderNum = allHolders.Length - 1;
+                holderNum = allHolders.Count - 1;
             }
-            else if (holderNum > allHolders.Length - 1)
+            else if (holderNum > allHolders.Count - 1)
             {
                 holderNum = 0;
             }
@@ -491,13 +493,14 @@ public class Loader : EditorWindow
 
         GUILayout.Space(10);
 
-        if (allHolders.Length > 1)
+        if (allHolders.Count > 1)
         {
             if (GUILayout.Button("-"))
             {
+                allHolders.Remove(holder);
                 DestroyImmediate(holder.gameObject);
                 holderNum--;
-                allHolders = GameObject.FindObjectsOfType<Holder>();
+                //allHolders = GameObject.FindObjectsOfType<Holder>();
                 if (holderNum < 0)
                 {
                     holderNum = 0;
@@ -510,9 +513,9 @@ public class Loader : EditorWindow
         {
             UnityEditor.PrefabUtility.RecordPrefabInstancePropertyModifications(holder);
             GameObject temp = PrefabUtility.InstantiatePrefab(Resources.Load("Prefabs/HOLDER")) as GameObject;
-            temp.name = "HOLDER " + (allHolders.Length + 1);
+            temp.name = "HOLDER " + (allHolders.Count + 1);
             holder = temp.GetComponent<Holder>();
-            allHolders = GameObject.FindObjectsOfType<Holder>();
+            allHolders.Add(holder);
             Selection.activeGameObject = holder.gameObject;
         }
 
