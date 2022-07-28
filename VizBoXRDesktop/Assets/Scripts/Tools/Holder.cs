@@ -79,6 +79,7 @@ public class Holder : NetworkBehaviour
     public float Xn, Yn, Zn;
     public float overScale = 1f;
     public Color defaultColor = Color.white;
+    public float Dalpha = 1f;
 
     public ChartType chartType = 0;
 
@@ -144,6 +145,7 @@ public class Holder : NetworkBehaviour
         defaultColor = Color.white;
         overScale = 1f;
         chartType = 0;
+        Dalpha = 1f;
     }
 
     public override void OnNetworkSpawn()
@@ -261,6 +263,7 @@ public class Holder : NetworkBehaviour
 
             defaultColor = holder.defaultColor;
             chartType = holder.chartType;
+            
 
             if (holder.bestFit)
             {
