@@ -182,6 +182,7 @@ public class Loader : EditorWindow
                     holder.axisGradients[i] = EditorGUILayout.GradientField(holder.axisGradients[i]);
 
                     EditorGUIUtility.labelWidth = 40;
+                    holder.Dalpha = EditorGUILayout.Slider("Alpha: ", holder.Dalpha, 0f, 1f);
                     holder.offsets[i] = EditorGUILayout.FloatField("Offset: ", holder.offsets[i]);
                     EditorGUIUtility.labelWidth = 0;
                 }
@@ -234,6 +235,7 @@ public class Loader : EditorWindow
             {
                 EditorGUIUtility.labelWidth = 125;
                 holder.defaultColor = EditorGUILayout.ColorField("Default Color: ", holder.defaultColor);
+                holder.Dalpha = holder.defaultColor.a;
             }
 
             EditorGUILayout.EndHorizontal();
@@ -389,7 +391,7 @@ public class Loader : EditorWindow
 
             GUILayout.Space(10);
             EditorGUIUtility.labelWidth = 0;
-            placeHolder = (GameObject)EditorGUILayout.ObjectField("Object", placeHolder, typeof(GameObject), false);
+            //placeHolder = (GameObject)EditorGUILayout.ObjectField("Object", placeHolder, typeof(GameObject), false);
             if (holder.axisTypes.Contains(axisType.Connected))
             {
                 foreach (string path in holder.path)
@@ -427,7 +429,7 @@ public class Loader : EditorWindow
         }
         else
         {
-            placeHolder = (GameObject)EditorGUILayout.ObjectField("Object", placeHolder, typeof(GameObject), false);
+            //placeHolder = (GameObject)EditorGUILayout.ObjectField("Object", placeHolder, typeof(GameObject), false);
             if(placeHolder != null)
             {
                 if (GUILayout.Button("Load File"))
@@ -1061,6 +1063,9 @@ public class Loader : EditorWindow
                         //Debug.Log(holder.axisGradients[j].Evaluate((replaceF - holder.axisMinMax[j].x) / (holder.axisMinMax[j].y - holder.axisMinMax[j].x)) + " " + (replaceF - holder.axisMinMax[j].x) / (holder.axisMinMax[j].y - holder.axisMinMax[j].x));
                         //Debug.Log(replaceF);
                     }
+                    Color c = temp.GetComponent<MeshRenderer>().material.color;
+                    c.a = holder.Dalpha;
+                    temp.GetComponent<MeshRenderer>().material.color = c;
                 }
                 if (holder.axisTypes[j] == axisType.Size)
                 {
