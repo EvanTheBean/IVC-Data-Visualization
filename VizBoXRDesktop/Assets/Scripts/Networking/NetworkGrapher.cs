@@ -52,6 +52,7 @@ public class NetworkGrapher : NetworkBehaviour
             netPoint.transform.SetParent(netHolder.transform);
         }
         GameObject rotator = Instantiate(rotatorPrefab, netHolder.GetComponent<Holder>().CalculateCenterPoint(), Quaternion.identity);
+        Debug.Log("spawning manipulator");
         rotator.GetComponent<NetworkObject>().Spawn();
         netHolder.transform.SetParent(rotator.transform);
     }

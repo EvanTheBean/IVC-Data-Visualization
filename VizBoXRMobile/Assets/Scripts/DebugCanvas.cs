@@ -9,6 +9,8 @@ public class DebugCanvas : MonoBehaviour
 
     static public DebugCanvas Instance;
 
+    public bool debug = true;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,7 +28,7 @@ public class DebugCanvas : MonoBehaviour
 
     public void Log(object output)
     {
-        if (text.gameObject.activeSelf)
+        if (debug)
         {
             text.text += output.ToString() + '\n';
         }

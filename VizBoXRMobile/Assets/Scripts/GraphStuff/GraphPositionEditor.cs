@@ -13,6 +13,7 @@ public class GraphPositionEditor : MonoBehaviour
     bool freetransform = true;
 
     float arSize = 0.03f;
+    float vrSize = 0.6f;
     LineRenderer[] lines;
 
     // Start is called before the first frame update
@@ -25,7 +26,6 @@ public class GraphPositionEditor : MonoBehaviour
 
         centerPoint = holder.GetComponent<Holder>().CalculateCenterPoint();
         transform.position = new Vector3(0, 0f, centerPoint.z*4);
-
         GraphsManager.Instance.ReceiveGraph(gameObject);
     }
 
@@ -179,7 +179,8 @@ public class GraphPositionEditor : MonoBehaviour
 
             case "CardboardVR":
             {
-                transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 2));
+                SetScale(vrSize * Vector3.one);
+                holder.transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 2));
                 freetransform = false;
                 break;
             }
