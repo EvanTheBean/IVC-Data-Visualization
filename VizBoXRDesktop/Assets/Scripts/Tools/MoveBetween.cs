@@ -9,14 +9,16 @@ using UnityEngine.UI;
 public class MoveBetween : MonoBehaviour
 {
     public Holder holder;
+    public List<Slider> sliders;
     public int num1, num2;
     public bool fullBar, singleChunks;
     // Start is called before the first frame update
     void Start()
     {
-        holder = GameObject.FindObjectOfType<Holder>();
-        GameObject.Find("SliderSmooth").GetComponent<Slider>().maxValue = holder.path.Count - 1;
-        GameObject.Find("SliderChunks").GetComponent<Slider>().maxValue = holder.path.Count - 1;
+        foreach(Slider s in sliders)
+        {
+            s.maxValue = holder.path.Count - 1;
+        }
     }
 
     // Update is called once per frame

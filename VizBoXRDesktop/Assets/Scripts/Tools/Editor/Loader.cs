@@ -63,8 +63,8 @@ public class Loader : EditorWindow
             window.dataLoaded = true;
         }
 
-        window.placingText = Resources.Load("Prefabs/AxisText") as GameObject;
-        window.axisText = new List<GameObject>(GameObject.FindGameObjectsWithTag("axisText"));
+        //window.placingText = Resources.Load("Prefabs/AxisText") as GameObject;
+        //window.axisText = new List<GameObject>(GameObject.FindGameObjectsWithTag("axisText"));
         //Debug.Log("I am being a bitch");
         Gradients g = new Gradients();
         window.gua = new GradientUsageAttribute(false);
@@ -472,7 +472,7 @@ public class Loader : EditorWindow
             holder = allHolders[holderNum];
             Selection.activeGameObject = holder.gameObject;
         }
-        GUILayout.Label(holder.name);
+        holder.name = EditorGUILayout.TextField(holder.name);
         if (GUILayout.Button(">"))
         {
             UnityEditor.PrefabUtility.RecordPrefabInstancePropertyModifications(holder);
@@ -1254,22 +1254,7 @@ public class Loader : EditorWindow
 
     void CreateAxisRows(Vector2 minMaxLabels, Vector2 minMaxPlacement, axisType correspondingAxis)
     {
-        GameObject x = null, y = null, z = null, parent = null;
-        foreach (GameObject temp in axisText)
-        {
-            if (temp.name == "AxisText X")
-            {
-                x = temp;
-            }
-            if (temp.name == "AxisText Y")
-            {
-                y = temp;
-            }
-            if (temp.name == "AxisText Z")
-            {
-                z = temp;
-            }
-        }
+        GameObject x = holder.AxisX, y = holder.AxisY, z = holder.AxisZ, parent = null;
 
         parent = x.transform.parent.gameObject;
 
