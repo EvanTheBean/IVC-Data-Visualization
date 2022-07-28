@@ -26,6 +26,9 @@ public class DebugCanvas : MonoBehaviour
 
     public void Log(object output)
     {
-        text.text += output.ToString() + '\n';
+        if (text.gameObject.activeSelf)
+        {
+            text.text += output.ToString() + '\n';
+        }
     }
 }
