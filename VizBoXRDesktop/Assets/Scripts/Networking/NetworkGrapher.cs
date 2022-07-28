@@ -10,10 +10,6 @@ public class NetworkGrapher : NetworkBehaviour
     [SerializeField] GameObject holderPrefab;
     [SerializeField] GameObject rotatorPrefab;
 
-    [SerializeField] GameObject xAxis;
-    [SerializeField] GameObject yAxis;
-    [SerializeField] GameObject zAxis;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -69,7 +65,6 @@ public class NetworkGrapher : NetworkBehaviour
         CopyComponentOnto(holder.lineGraph.GetComponent<LineRenderer>(), netHolder.GetComponent<Holder>().lineGraph);
 
         netHolder.GetComponent<NetworkObject>().Spawn();
-        netHolder.GetComponent<Holder>().SetAxis(new AxisValues(xAxis), new AxisValues(yAxis), new AxisValues(zAxis));
         return netHolder;
     }
 
