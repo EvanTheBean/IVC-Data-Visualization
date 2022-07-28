@@ -53,12 +53,22 @@ public class ARPlacementManager : MonoBehaviour
         if (arRaycastManager.Raycast(touchPosition, hits, UnityEngine.XR.ARSubsystems.TrackableType.PlaneWithinBounds))
         {
             Pose hitPose = hits[0].pose;
-            DebugCanvas.Instance.Log("2");
 
-            graph.PlaceInAR(hitPose);
+            for (int i = 0; i < hits.Count; i++)
+            {
+                DebugCanvas.Instance.Log("Pose:" + hits[i].pose.ToString());
+                DebugCanvas.Instance.Log("Distance:" + hits[i].distance.ToString());
+            }
+
+
+            graph.PlaceInAR(hits[0].pose);
             placedObject = true;
             DebugCanvas.Instance.Log("3");
             //placementCooldownTimer = 0;
+        }
+        else
+        {
+            UIManager.Singleton.DisplayWarning("Please scan area more before placing.");
         }
     }
 

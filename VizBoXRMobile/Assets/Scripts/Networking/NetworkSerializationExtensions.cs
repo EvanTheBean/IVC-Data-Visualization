@@ -699,6 +699,7 @@ public static class LineRendererExtensions
 { 
     public static void ConvertFromValues(this LineRenderer lineRenderer, LineRendererValues values)
     {
+        lineRenderer.positionCount = values.positions.Length;
         lineRenderer.SetPositions(values.positions);
         lineRenderer.widthCurve = values.widthCurve;
         lineRenderer.colorGradient = values.color;

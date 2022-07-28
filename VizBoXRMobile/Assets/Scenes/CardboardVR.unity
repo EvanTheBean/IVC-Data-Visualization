@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.34786066, g: 0.13428313, b: 0.40662718, a: 1}
+  m_IndirectSpecularColor: {r: 0.3478638, g: 0.13428645, b: 0.40663046, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -130,6 +130,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1971008243952167556, guid: 8195c15e1b8ca86408bee09cfba8e5c0,
+        type: 3}
+      propertyPath: m_ClearFlags
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1971008243952167558, guid: 8195c15e1b8ca86408bee09cfba8e5c0,
         type: 3}
       propertyPath: m_RendererIndex
@@ -643,7 +648,6 @@ GameObject:
   - component: {fileID: 1112065070}
   - component: {fileID: 1112065071}
   - component: {fileID: 1112065072}
-  - component: {fileID: 1112065073}
   m_Layer: 0
   m_Name: VR_Mode_Controller
   m_TagString: Untagged
@@ -678,7 +682,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f478d43f27e324b7199d5dccff4298b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  heatmapMaterial: {fileID: 2100000, guid: 1ae7438a643bfa24789b08e03b982030, type: 2}
 --- !u!114 &1112065072
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -745,18 +748,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
---- !u!114 &1112065073
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1112065069}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a6bec2721815a84285c80ee4d6e4717, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1592360889
 GameObject:
   m_ObjectHideFlags: 0

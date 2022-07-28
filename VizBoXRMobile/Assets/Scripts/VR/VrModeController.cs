@@ -36,8 +36,6 @@ public class VrModeController : MonoBehaviour
     private Camera _mainCamera;
 
     UnityEngine.XR.Management.XRLoader vrLoader;
-
-    [SerializeField] Material heatmapMaterial;
     /// <summary>
     /// Gets a value indicating whether the screen has been touched this frame.
     /// </summary>

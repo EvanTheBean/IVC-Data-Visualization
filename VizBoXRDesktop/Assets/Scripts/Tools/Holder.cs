@@ -223,6 +223,8 @@ public class Holder : NetworkBehaviour
         public ChartType chartType = 0;
 
         public LineRendererValues lineRenderer = new LineRendererValues();
+        public LineRendererValues lineGraph = new LineRendererValues();
+
 
         public HolderValues() { }
 
@@ -266,6 +268,11 @@ public class Holder : NetworkBehaviour
             {
                 lineRenderer = new LineRendererValues(holder.GetComponent<LineRenderer>());
             }
+            if (xLines || yLines || zLines)
+            {
+                lineGraph = new LineRendererValues(holder.lineGraph.GetComponent<LineRenderer>());
+            }
+
         }
 
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
@@ -302,6 +309,7 @@ public class Holder : NetworkBehaviour
             serializer.SerializeValue(ref defaultColor);
             serializer.SerializeValue(ref chartType);
             serializer.SerializeValue(ref lineRenderer);
+            serializer.SerializeValue(ref lineGraph);
         }
     }
 }

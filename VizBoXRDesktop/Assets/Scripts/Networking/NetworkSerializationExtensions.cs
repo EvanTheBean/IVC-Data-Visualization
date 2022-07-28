@@ -719,6 +719,7 @@ public class LineRendererValues
     {
         positions = new Vector3[line.positionCount];
         line.GetPositions(positions);
+
         widthCurve = line.widthCurve;
         color = line.colorGradient;
     }

@@ -12,7 +12,7 @@ public class GraphPositionEditor : MonoBehaviour
     float rotationSpeed = 0.2f;
     bool freetransform = true;
 
-    float arSize;
+    float arSize = 0.03f;
     LineRenderer[] lines;
 
     // Start is called before the first frame update
@@ -22,7 +22,6 @@ public class GraphPositionEditor : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
         holder = transform.GetChild(0).gameObject;
         lines = GetComponentsInChildren<LineRenderer>();
-        Debug.Log(lines.Length);
 
         centerPoint = holder.GetComponent<Holder>().CalculateCenterPoint();
         transform.position = new Vector3(0, 0f, centerPoint.z*4);
@@ -104,32 +103,29 @@ public class GraphPositionEditor : MonoBehaviour
     AnimationCurve[] defaultLineScales = new AnimationCurve[0];
     void SetScale(Vector3 vector)
     {
-        //if (defaultLineScales.Length == 0)
-        //{
-        //    Debug.Log("saving default line widths");
-        //    defaultLineScales = new AnimationCurve[lines.Length];
-        //
-        //    for (int i = 0; i < lines.Length; i++)
-        //    {
-        //        defaultLineScales[i] = lines[i].widthCurve;
-        //    }
-        //}
+        if (defaultLineScales.Length == 0)
+        {
+            defaultLineScales = new AnimationCurve[lines.Length];
+        
+            for (int i = 0; i < lines.Length; i++)
+            {
+                defaultLineScales[i] = lines[i].widthCurve;
+            }
+        }
 
         transform.localScale = vector;
-        //for (int i = 0; i <lines.Length; i++)
-        //{
-        //    Debug.Log(lines[i].widthCurve.length);
-        //
-        //    Keyframe[] temp = new Keyframe[defaultLineScales[i].length];
-        //
-        //    for (int j = 0; j < lines[i].widthCurve.length; j++)
-        //    {
-        //        temp[j].value = defaultLineScales[i].keys[j].value * vector.x;
-        //    }
-        //    lines[i].widthCurve = new AnimationCurve(temp);
-        //    lines[i].widthCurve.preWrapMode = defaultLineScales[i].preWrapMode;
-        //    lines[i].widthCurve.postWrapMode = defaultLineScales[i].postWrapMode;
-        //}
+        for (int i = 0; i <lines.Length; i++)
+        {        
+            Keyframe[] temp = new Keyframe[defaultLineScales[i].length];
+        
+            for (int j = 0; j < lines[i].widthCurve.length; j++)
+            {
+                temp[j].value = defaultLineScales[i].keys[j].value * vector.x;
+            }
+            lines[i].widthCurve = new AnimationCurve(temp);
+            lines[i].widthCurve.preWrapMode = defaultLineScales[i].preWrapMode;
+            lines[i].widthCurve.postWrapMode = defaultLineScales[i].postWrapMode;
+        }
     }
 
     Vector2 CalcCenterOfPoints(Vector2[] points)
@@ -190,7 +186,7 @@ public class GraphPositionEditor : MonoBehaviour
 
     public void PlaceInAR(Pose hitPose)
     {
-        holder.gameObject.SetActive(true);
+        holder.SetActive(true);
         holder.transform.position = hitPose.position;
         holder.transform.rotation = hitPose.rotation;
     }

@@ -63,8 +63,11 @@ public class NetworkGrapher : NetworkBehaviour
     GameObject SpawnHolder(Holder holder)
     {
         GameObject netHolder = Instantiate(holderPrefab);
+
         CopyComponentOnto(holder, netHolder);
         CopyComponentOnto(holder.GetComponent<LineRenderer>(), netHolder);
+        CopyComponentOnto(holder.lineGraph.GetComponent<LineRenderer>(), netHolder.GetComponent<Holder>().lineGraph);
+
         netHolder.GetComponent<NetworkObject>().Spawn();
         netHolder.GetComponent<Holder>().SetAxis(new AxisValues(xAxis), new AxisValues(yAxis), new AxisValues(zAxis));
         return netHolder;
