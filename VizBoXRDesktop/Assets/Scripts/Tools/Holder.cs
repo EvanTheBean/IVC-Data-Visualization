@@ -271,7 +271,7 @@ public class Holder : NetworkBehaviour
             {
                 lineRenderer = new LineRendererValues(holder.GetComponent<LineRenderer>());
             }
-            if (xLines || yLines || zLines)
+            if (chartType == ChartType.Line)
             {
                 lineGraph = new LineRendererValues(holder.lineGraph.GetComponent<LineRenderer>());
             }

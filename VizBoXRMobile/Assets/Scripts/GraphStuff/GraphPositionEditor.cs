@@ -25,6 +25,8 @@ public class GraphPositionEditor : MonoBehaviour
 
         centerPoint = holder.GetComponent<Holder>().CalculateCenterPoint();
         transform.position = new Vector3(0, 0f, centerPoint.z*4);
+
+        GraphsManager.Instance.ReceiveGraph(gameObject);
     }
 
     private void Update()

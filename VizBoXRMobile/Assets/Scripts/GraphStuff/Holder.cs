@@ -201,7 +201,7 @@ public class Holder : NetworkBehaviour
             lineRenderer.ConvertFromValues(vals.lineRenderer);
         }
 
-        if (xLines || yLines || zLines)
+        if (chartType == ChartType.Line)
         {
             lineGraph.GetComponent<LineRenderer>().enabled = true;
             lineGraph.GetComponent<LineRenderer>().ConvertFromValues(vals.lineGraph);
@@ -301,7 +301,7 @@ public class Holder : NetworkBehaviour
             {
                 lineRenderer = new LineRendererValues(holder.GetComponent<LineRenderer>());
             }
-            if (xLines || yLines || zLines)
+            if (chartType == ChartType.Line)
             {
                 lineGraph = new LineRendererValues(holder.lineGraph.GetComponent<LineRenderer>());
             }
