@@ -1064,6 +1064,7 @@ public class Loader : EditorWindow
                 }
                 if (holder.axisTypes[j] == axisType.Size)
                 {
+                    GetMinMax(j);
                     if (holder.offsets[j] == 0)
                     {
                         holder.offsets[j] = 1f;
@@ -1085,8 +1086,8 @@ public class Loader : EditorWindow
                     {
                         float replaceF;
                         float.TryParse(tempDP.variables[holder.rowNames[j].Replace(" ", "")][0], out replaceF);
-
-                        temp.transform.localScale = Vector3.one * Mathf.Lerp(1, 1 * holder.axisScales[j], replaceF / (holder.axisMinMax[j].y - holder.axisMinMax[j].x)) * holder.offsets[j];
+                        //Debug.Log(replaceF + " " + holder.axisMinMax[j]);
+                        temp.transform.localScale = Vector3.one * Mathf.Lerp(1, holder.axisScales[j], replaceF / (holder.axisMinMax[j].y - holder.axisMinMax[j].x)) * holder.offsets[j];
                     }
                 }
                 if (holder.axisTypes[j] == axisType.Positional)
@@ -1564,6 +1565,11 @@ public class Loader : EditorWindow
                         }
                     }
                 }
+                if(holder.axisTypes[location] == axisType.Size)
+                {
+                    if (holder.rowTypes[location] != rowType.String)
+                        holder.axisMinMax[location] = new Vector2(float.Parse(temp.GetComponent<DataPoint>().variables[holder.rowNames[location].Replace(" ", "")][0]) - holder.offsets[location], float.Parse(temp.GetComponent<DataPoint>().variables[holder.rowNames[location].Replace(" ", "")][0]) - holder.offsets[location]);
+                }
             }
             else
             {
@@ -1620,6 +1626,20 @@ public class Loader : EditorWindow
                         else if (num < holder.axisMinMax[location].x)
                         {
                             holder.axisMinMax[location] = new Vector2(num, holder.axisMinMax[location].y);
+                        }
+                    }
+                }
+                if(holder.axisTypes[location] == axisType.Size)
+                {
+                    if (holder.rowTypes[location] != rowType.String)
+                    {
+                        if (float.Parse(temp.GetComponent<DataPoint>().variables[holder.rowNames[location].Replace(" ", "")][0]) - holder.offsets[location] > holder.axisMinMax[location].y)
+                        {
+                            holder.axisMinMax[location] = new Vector2(holder.axisMinMax[location].x, float.Parse(temp.GetComponent<DataPoint>().variables[holder.rowNames[location].Replace(" ", "")][0]) - holder.offsets[location]);
+                        }
+                        else if (float.Parse(temp.GetComponent<DataPoint>().variables[holder.rowNames[location].Replace(" ", "")][0]) - holder.offsets[location] < holder.axisMinMax[location].x)
+                        {
+                            holder.axisMinMax[location] = new Vector2(float.Parse(temp.GetComponent<DataPoint>().variables[holder.rowNames[location].Replace(" ", "")][0]) - holder.offsets[location], holder.axisMinMax[location].y);
                         }
                     }
                 }
