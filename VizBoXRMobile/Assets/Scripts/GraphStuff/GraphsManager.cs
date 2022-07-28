@@ -58,7 +58,6 @@ public class GraphsManager : MonoBehaviour
 
     public void SelectGraph(int index)
     {
-        Debug.Log(index);
         foreach (GameObject graph in graphs)
         {
             graph.SetActive(false);

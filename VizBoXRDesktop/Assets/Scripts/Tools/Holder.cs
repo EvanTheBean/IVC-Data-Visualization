@@ -151,6 +151,7 @@ public class Holder : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         SendHolderClientRpc(new HolderValues(this));
+        SetAxis(new AxisValues(AxisX), new AxisValues(AxisY), new AxisValues(AxisZ));
     }
 
     public Vector3 CalculateCenterPoint()
