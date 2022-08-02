@@ -4,13 +4,19 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+// MOBILE VERSION (EXCLUSIVE)
+
+// === Graphs Manager === // ( SINGLETON )
+// Purpose: Manages which graph is selected to view 
+//          Sets up buttons for graph selection
+
 public class GraphsManager : MonoBehaviour
 {
+    public static GraphsManager Instance; // singleton
 
-    public static GraphsManager Instance;
-    // Start is called before the first frame update
     void Start()
     {
+        #region Singleton Setup
         if (Instance != null && Instance != this)
         {
             Destroy(this);
@@ -20,6 +26,7 @@ public class GraphsManager : MonoBehaviour
         {
             Instance = this;
         }
+        #endregion
 
         DontDestroyOnLoad(this);
     }
@@ -42,7 +49,7 @@ public class GraphsManager : MonoBehaviour
         }
     }
 
-    public void FillWithButtons(Transform buttonContainer)
+    public void FillWithButtons(Transform buttonContainer) // instantiates graph selection buttons as children of the given transform
     {
         buttonContainerStored = buttonContainer;
         for (int i = 0; i < graphs.Count; i++)
@@ -56,7 +63,7 @@ public class GraphsManager : MonoBehaviour
         }
     }
 
-    public void SelectGraph(int index)
+    public void SelectGraph(int index) // Called by instantiated buttons to select graph; Sets active the selected graph 
     {
         foreach (GameObject graph in graphs)
         {
