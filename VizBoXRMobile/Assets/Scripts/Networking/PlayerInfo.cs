@@ -25,7 +25,7 @@ public class PlayerInfo : NetworkBehaviour
         if (!IsHost)
         {
             id = NetworkManager.LocalClientId;
-            username = FindObjectOfType<UsernameManager>().GetUsername();
+            username = FindObjectOfType<LobbyJoinUIHandler>().GetUsername();
             JoinLobbyServerRpc(id, username);
         }
     }

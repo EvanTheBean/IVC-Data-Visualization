@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-// === Username Manager === //
+// === Lobby Join UI Handler === //
 // Handles the username input UI
 //
 // If you are looking to access the username data of the player, go to PlayerInfo class.
 
 [RequireComponent(typeof(RelayLobbyManager))]
-public class UsernameManager : MonoBehaviour
+public class LobbyJoinUIHandler : MonoBehaviour
 {
     string username = "";
     [SerializeField] TMP_InputField nameInput;
